@@ -1,0 +1,33 @@
+plugins {
+    id 'java'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(8))
+    }
+}
+
+group 'com.dharbuzov'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    lombokVersion = '1.18.24'
+    jupiterVersion = '5.9.0'
+}
+
+dependencies {
+    testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+}
+
+test {
+    useJUnitPlatform()
+}
