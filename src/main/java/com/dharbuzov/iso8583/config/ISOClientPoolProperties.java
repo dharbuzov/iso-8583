@@ -7,7 +7,7 @@ package com.dharbuzov.iso8583.config;
 import lombok.Builder;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Builder
 public class ISOClientPoolProperties {

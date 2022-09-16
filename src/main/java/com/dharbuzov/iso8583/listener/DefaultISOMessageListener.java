@@ -9,7 +9,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Slf4j
 public class DefaultISOMessageListener implements ISOMessageListener {

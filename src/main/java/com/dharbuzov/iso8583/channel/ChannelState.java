@@ -5,7 +5,7 @@
 package com.dharbuzov.iso8583.channel;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum ChannelState {
   CREATED,

@@ -8,7 +8,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class StringUtils {

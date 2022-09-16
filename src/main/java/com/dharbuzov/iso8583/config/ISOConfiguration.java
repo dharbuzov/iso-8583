@@ -5,7 +5,7 @@
 package com.dharbuzov.iso8583.config;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOConfiguration {
 

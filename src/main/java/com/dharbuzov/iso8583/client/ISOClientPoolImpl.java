@@ -7,7 +7,7 @@ package com.dharbuzov.iso8583.client;
 import com.dharbuzov.iso8583.ISOClientPool;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOClientPoolImpl implements ISOClientPool {
 }

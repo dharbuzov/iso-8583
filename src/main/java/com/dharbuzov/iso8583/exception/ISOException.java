@@ -5,7 +5,7 @@
 package com.dharbuzov.iso8583.exception;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOException extends RuntimeException {
 

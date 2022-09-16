@@ -7,7 +7,7 @@ package com.dharbuzov.iso8583;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOMessageFactory {
 

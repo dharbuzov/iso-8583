@@ -10,7 +10,7 @@ import com.dharbuzov.iso8583.ISOMessageFactory;
 import lombok.RequiredArgsConstructor;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @RequiredArgsConstructor
 public abstract class ISOBaseChannel implements ISOChannel {

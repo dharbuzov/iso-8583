@@ -10,7 +10,7 @@ import com.dharbuzov.iso8583.ISOChannel;
 import com.dharbuzov.iso8583.config.ISOClientProperties;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOChannelImpl implements ISOChannel {
   private final String host;

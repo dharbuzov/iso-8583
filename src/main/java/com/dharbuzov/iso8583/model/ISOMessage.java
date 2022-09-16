@@ -9,7 +9,7 @@ import com.dharbuzov.iso8583.exception.ISOException;
 import lombok.Builder;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Builder
 public class ISOMessage {

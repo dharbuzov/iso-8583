@@ -15,7 +15,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.util.StringUtils;
 
 /**
- * @author Dmytriy Harbuzov (dmitriy.harbuzov@paydock.com).
+ * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOClientImpl implements ISOClient {
 
