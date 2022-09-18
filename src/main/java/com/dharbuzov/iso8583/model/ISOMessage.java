@@ -1,12 +1,9 @@
-/*
- * Copyright (c) 2022 Paydock, Inc. All rights reserved. Paydock Confidential
- */
-
 package com.dharbuzov.iso8583.model;
 
 import com.dharbuzov.iso8583.exception.ISOException;
 
 import lombok.Builder;
+import lombok.Getter;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
@@ -16,7 +13,13 @@ public class ISOMessage {
 
   public static final int FIELDS_SIZE = 129;
 
-  private final MessageType type;
+  @Getter
+  private final MessageSource source = MessageSource.OUT;
+
+  @Getter
+  private final MessageTypeIndicator mti;
+
+  @Getter
   private final String header;
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
 

@@ -1,10 +1,6 @@
-/*
- * Copyright (c) 2022 Paydock, Inc. All rights reserved. Paydock Confidential
- */
 
-package com.dharbuzov.iso8583;
 
-import java.util.List;
+package com.dharbuzov.iso8583.server;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
@@ -27,11 +23,4 @@ public interface ISOServer {
    * Method for shutting down the server.
    */
   void shutdown();
-
-  /**
-   * Gets all channels connected to the server.
-   *
-   * @return list of all channels connected to the server.
-   */
-  List<ISOChannel> getChannels();
 }
