@@ -8,16 +8,20 @@ import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.util.StringUtils;
 
+import lombok.Getter;
+
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultClient implements ISOSyncClient {
 
+  @Getter
   private final String name;
+
+  @Getter
   private final ISOClientChannel channel;
 
-  public ISODefaultClient(ISOClientProperties properties,
-      ISOClientChannel channel) {
+  public ISODefaultClient(ISOClientProperties properties, ISOClientChannel channel) {
     Objects.requireNonNull(properties);
     this.name = getOrCreateName(properties);
     this.channel = channel;
@@ -53,10 +57,5 @@ public class ISODefaultClient implements ISOSyncClient {
   @Override
   public ISOMessage send(ISOMessage msg) {
     return channel.send(msg);
-  }
-
-  @Override
-  public ISOClientChannel getChannel() {
-    return channel;
   }
 }
