@@ -58,4 +58,9 @@ public class ISODefaultClient implements ISOSyncClient {
   public ISOMessage send(ISOMessage msg) {
     return channel.send(msg);
   }
+
+  @Override
+  public ISOMessage send(ISOMessage msg, long requestTimeoutMs) {
+    return channel.send(msg, requestTimeoutMs);
+  }
 }

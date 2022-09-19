@@ -13,18 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.model;
-
-import lombok.Builder;
+package com.dharbuzov.iso8583.exception;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Builder
-public class MessageTypeIndicator {
+public class ISOPackageException extends ISOException {
 
-  private MessageVersion version;
-  private MessageClass messageClass;
-  private MessageFunction function;
-  private MessageOrigin origin;
+  public ISOPackageException(String message) {
+    super(message);
+  }
+
+  public ISOPackageException(String formatMessage, Object... args) {
+    super(formatMessage, args);
+  }
 }

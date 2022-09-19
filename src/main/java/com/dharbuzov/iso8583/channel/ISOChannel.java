@@ -16,12 +16,15 @@
 package com.dharbuzov.iso8583.channel;
 
 /**
+ * The interface which represents the channel abstraction to work with network protocol of any
+ * levels (Application, Network .etc).
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOChannel {
 
   /**
-   * Returns the flag which indicates that channel is active.
+   * Returns the flag which indicates that the channel is in active state.
    *
    * @return {@code true} if channel is active, otherwise {@code false}
    */

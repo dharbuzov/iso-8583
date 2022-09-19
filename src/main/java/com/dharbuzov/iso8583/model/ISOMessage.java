@@ -32,7 +32,7 @@ public class ISOMessage {
   private final MessageSource source = MessageSource.OUT;
 
   @Getter
-  private final MessageTypeIndicator mti;
+  private final MessageType type;
 
   @Getter
   private final String header;

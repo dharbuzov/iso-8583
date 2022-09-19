@@ -17,15 +17,44 @@ package com.dharbuzov.iso8583.client;
 
 import java.util.concurrent.Future;
 
-import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * The main synchronous client interface to interact with. This interface contains additional
+ * methods to work with an ISO-8583 server in synchronous mode where the client tries to receive the
+ * response message for the requested one.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOSyncClient extends ISOClient {
 
-  Future<ISOMessage> sendFuture(ISOMessage msg) throws ISOException;
+  /**
+   * Sends the message synchronously and waits the response message from the server. The
+   * {@link ISOClientProperties#getRequestTimeoutMsOrDefault()} timeout would be used. This method
+   * is blocking thread.
+   *
+   * @param msg message to send
+   * @return response message from the server
+   */
+  ISOMessage send(ISOMessage msg);
 
-  ISOMessage send(ISOMessage msg) throws ISOException;
+  /**
+   * Sends the message synchronously and waits the response message from the server. This method is
+   * blocking thread.
+   *
+   * @param msg              message to send
+   * @param requestTimeoutMs request timeout to wait for response in milliseconds
+   * @return response message from the server
+   */
+  ISOMessage send(ISOMessage msg, long requestTimeoutMs);
+
+  /**
+   * Sends the message asynchronously and wraps the response into the {@link Future} object, this
+   * method is not blocking.
+   *
+   * @param msg message to send
+   * @return the future of message response from the server
+   */
+  Future<ISOMessage> sendFuture(ISOMessage msg);
 }

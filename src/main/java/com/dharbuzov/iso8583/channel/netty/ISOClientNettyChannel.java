@@ -128,7 +128,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
   }
 
   @Override
-  public boolean sendAsync(ISOMessage msg) {
+  public void sendAsync(ISOMessage msg) {
     if (!isConnected()) {
       throw new ISOException("Channel is not connected!");
     }
@@ -136,7 +136,6 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
       throw new ISOException("Channel is not writable!");
     }
     nettyChannel.writeAndFlush(msg);
-    return true;
   }
 
   @Builder

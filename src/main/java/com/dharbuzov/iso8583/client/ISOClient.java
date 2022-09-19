@@ -19,15 +19,37 @@ import com.dharbuzov.iso8583.channel.ISOClientChannel;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * The main client interface to interact with. This interface contains all needed methods for
+ * library client to send and receive the messages.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOClient {
 
+  /**
+   * Connects the client to the target ISO-8583 server, by using the
+   * {@link com.dharbuzov.iso8583.client.config.ISOClientProperties}.
+   */
   void connect();
 
+  /**
+   * Returns the flag which indicates that the client is connected to the server.
+   *
+   * @return {@code true} if client is connected and active, otherwise {@code false}.
+   */
   boolean isConnected();
 
+  /**
+   * Sends the message asynchronously to the target ISO-8583 server.
+   *
+   * @param msg message to send
+   */
   void sendAsync(ISOMessage msg);
 
+  /**
+   * Gets the client channel associated with the client interface.
+   *
+   * @return associated channel
+   */
   ISOClientChannel getChannel();
 }

@@ -16,6 +16,8 @@
 package com.dharbuzov.iso8583.channel;
 
 /**
+ * The enum which represents supported channel types within the library.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum ChannelType {

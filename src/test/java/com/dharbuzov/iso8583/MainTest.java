@@ -8,7 +8,7 @@ import com.dharbuzov.iso8583.client.ISOClient;
 import com.dharbuzov.iso8583.client.config.ISOClientConfiguration;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.model.MessageTypeIndicator;
+import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.server.ISOServer;
 import com.dharbuzov.iso8583.server.config.ISOServerConfiguration;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
@@ -30,7 +30,7 @@ public class MainTest {
     final ISOClient client = clientConfiguration.getClient();
 
     client.sendAsync(ISOMessage.builder()
-            .mti(MessageTypeIndicator.builder()
+            .type(MessageType.builder()
                 .build())
         .build());
   }

@@ -17,26 +17,72 @@ package com.dharbuzov.iso8583.channel;
 
 import java.util.concurrent.Future;
 
+import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * The interface which represents the client level channel abstraction to work with network
+ * protocol.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOClientChannel extends ISOChannel {
+  /**
+   * Connects the channel to the target server.
+   */
   void connect();
 
+  /**
+   * Disconnects the channel from the target server.
+   */
   void disconnect();
 
+  /**
+   * Returns flag which indicates that the channel is connected.
+   *
+   * @return {@code true} if channel connected, otherwise {@code false}
+   */
   boolean isConnected();
 
-  boolean sendAsync(ISOMessage msg);
+  /**
+   * Sends the message asynchronously.
+   *
+   * @param msg message to send
+   */
+  void sendAsync(ISOMessage msg);
 
+  /**
+   * Sends the message synchronously and waits the response message from the server. The
+   * {@link ISOClientProperties#getRequestTimeoutMsOrDefault()} timeout would be used. This method
+   * is blocking thread.
+   *
+   * @param msg message to send
+   * @return response message from the server
+   */
   ISOMessage send(ISOMessage msg);
 
+  /**
+   * Sends the message synchronously and waits the response message from the server. This method is
+   * blocking thread.
+   *
+   * @param msg              message to send
+   * @param requestTimeoutMs request timeout to wait for response in milliseconds
+   * @return response message from the server
+   */
   ISOMessage send(ISOMessage msg, long requestTimeoutMs);
 
+  /**
+   * Sends the message asynchronously and wraps the response into the {@link Future} object, this
+   * method is not blocking.
+   *
+   * @param msg message to send
+   * @return the future of message response from the server
+   */
   Future<ISOMessage> sendFuture(ISOMessage msg);
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   default boolean isActive() {
     return isConnected();
