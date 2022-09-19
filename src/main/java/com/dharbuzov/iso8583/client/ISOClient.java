@@ -10,8 +10,6 @@ import com.dharbuzov.iso8583.model.ISOMessage;
  */
 public interface ISOClient {
 
-  String DEFAULT_CLIENT_NAME_FORMAT = "%s:%s";
-
   void connect();
 
   boolean isConnected();

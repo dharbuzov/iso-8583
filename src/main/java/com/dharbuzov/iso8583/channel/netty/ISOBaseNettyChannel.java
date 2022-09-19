@@ -2,10 +2,11 @@ package com.dharbuzov.iso8583.channel.netty;
 
 import java.util.List;
 
+import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
-import com.dharbuzov.iso8583.coordinator.ISOMessageCoordinator;
 import com.dharbuzov.iso8583.exception.ISOParseException;
-import com.dharbuzov.iso8583.factory.ISOMessageFactory;
+import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -22,19 +23,21 @@ import lombok.RequiredArgsConstructor;
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public abstract class ISOBaseNettyChannel {
+public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
 
+  protected final T properties;
   protected final ISOConnProperties connProperties;
-  protected final ISOMessageFactory messageFactory;
-  protected final ISOMessageCoordinator messageCoordinator;
+  protected final ISOPackagerFactory packagerFactory;
+  protected final ISOListenerFactory listenerFactory;
 
   protected Channel nettyChannel;
 
-  public ISOBaseNettyChannel(ISOConnProperties connProperties,
-      ISOMessageFactory messageFactory, ISOMessageCoordinator messageCoordinator) {
-    this.connProperties = connProperties;
-    this.messageFactory = messageFactory;
-    this.messageCoordinator = messageCoordinator;
+  public ISOBaseNettyChannel(T properties,
+      ISOPackagerFactory packagerFactory, ISOListenerFactory listenerFactory) {
+    this.properties = properties;
+    this.connProperties = properties.getConnection();
+    this.packagerFactory = packagerFactory;
+    this.listenerFactory = listenerFactory;
   }
 
   @Builder
@@ -57,7 +60,7 @@ public abstract class ISOBaseNettyChannel {
   @RequiredArgsConstructor
   protected static class NettyMessageDecoder extends ByteToMessageDecoder {
 
-    private final ISOMessageFactory messageFactory;
+    private final ISOPackagerFactory packagerFactory;
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out)
@@ -67,7 +70,7 @@ public abstract class ISOBaseNettyChannel {
       }
       final byte[] bytes = new byte[in.readableBytes()];
       in.readBytes(bytes);
-      final ISOMessage msg = messageFactory.unpack(bytes);
+      final ISOMessage msg = packagerFactory.unpack(bytes);
       if(msg != null) {
         out.add(msg);
       } else {
@@ -79,11 +82,11 @@ public abstract class ISOBaseNettyChannel {
   @RequiredArgsConstructor
   protected static class NettyMessageEncoder extends MessageToByteEncoder<ISOMessage> {
 
-    private final ISOMessageFactory messageFactory;
+    private final ISOPackagerFactory packagerFactory;
 
     @Override
     protected void encode(ChannelHandlerContext ctx, ISOMessage msg, ByteBuf out) throws Exception {
-      final byte[] bytes = messageFactory.pack(msg);
+      final byte[] bytes = packagerFactory.pack(msg);
       out.writeBytes(bytes);
     }
   }
@@ -91,11 +94,11 @@ public abstract class ISOBaseNettyChannel {
   @RequiredArgsConstructor
   protected static class NettyMessageHandler extends SimpleChannelInboundHandler<ISOMessage> {
 
-    private final ISOMessageCoordinator messageCoordinator;
+    protected final ISOListenerFactory listenerFactory;
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-      messageCoordinator.in(msg);
+      listenerFactory.onMessage(msg);
     }
   }
 }

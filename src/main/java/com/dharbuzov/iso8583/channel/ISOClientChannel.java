@@ -2,6 +2,8 @@
 
 package com.dharbuzov.iso8583.channel;
 
+import java.util.concurrent.Future;
+
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
@@ -14,7 +16,13 @@ public interface ISOClientChannel extends ISOChannel {
 
   boolean isConnected();
 
-  void send(ISOMessage msg);
+  boolean sendAsync(ISOMessage msg);
+
+  ISOMessage send(ISOMessage msg);
+
+  ISOMessage send(ISOMessage msg, long requestTimeoutMs);
+
+  Future<ISOMessage> sendFuture(ISOMessage msg);
 
   @Override
   default boolean isActive() {

@@ -10,12 +10,12 @@ import lombok.Data;
 @Data
 public abstract class ISOBaseProperties {
 
-  private ISOConnProperties connection;
+  private ISOMessageProperties messages;
 
+  private ISOConnProperties connection;
   private ChannelType channelType;
 
   public ChannelType getChannelTypeOrDefault() {
-    final ChannelType channelType;
     if (this.channelType == null) {
       return ChannelType.defaultChannelType();
     }

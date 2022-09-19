@@ -7,5 +7,5 @@ import com.dharbuzov.iso8583.model.ISOMessage;
  */
 public interface ISOListenerFactory {
 
-  ISOMessage notifyMessage(ISOMessage message);
+  ISOMessage onMessage(ISOMessage message);
 }

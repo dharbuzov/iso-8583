@@ -31,8 +31,7 @@ public class ISOServerConfiguration
     final ChannelType channelType = properties.getChannelTypeOrDefault();
     switch (channelType) {
       case NETTY:
-        return new ISOServerNettyChannel(properties.getConnection(), messageFactory,
-            messageCoordinator);
+        return new ISOServerNettyChannel(properties, packagerFactory, listenerFactory);
       default:
         throw new ISOException("Can't create a channel for type: '%s'", channelType);
     }

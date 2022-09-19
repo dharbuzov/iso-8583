@@ -8,7 +8,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 public class ISODefaultListenerFactory implements ISOListenerFactory {
 
   @Override
-  public ISOMessage notifyMessage(ISOMessage message) {
+  public ISOMessage onMessage(ISOMessage message) {
     return null;
   }
 }

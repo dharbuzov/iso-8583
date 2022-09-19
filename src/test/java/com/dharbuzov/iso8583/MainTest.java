@@ -4,8 +4,14 @@ package com.dharbuzov.iso8583;
 
 import org.junit.jupiter.api.Test;
 
+import com.dharbuzov.iso8583.client.ISOClient;
 import com.dharbuzov.iso8583.client.config.ISOClientConfiguration;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
+import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageTypeIndicator;
+import com.dharbuzov.iso8583.server.ISOServer;
+import com.dharbuzov.iso8583.server.config.ISOServerConfiguration;
+import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
@@ -13,7 +19,7 @@ import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 public class MainTest {
 
   @Test
-  public void test() {
+  public void testClient() {
 
     final ISOClientConfiguration clientConfiguration = ISOClientConfiguration.builder()
         .properties(ISOClientProperties.builder()
@@ -21,7 +27,21 @@ public class MainTest {
             .name("MyISO8583Client")
             .build())
         .build();
-    clientConfiguration.getClient();
+    final ISOClient client = clientConfiguration.getClient();
 
+    client.sendAsync(ISOMessage.builder()
+            .mti(MessageTypeIndicator.builder()
+                .build())
+        .build());
+  }
+
+  @Test
+  public void testServer() {
+    final ISOServerConfiguration serverConfiguration = ISOServerConfiguration.builder()
+        .properties(ISOServerProperties.builder()
+            .build())
+        .build();
+    final ISOServer server = serverConfiguration.getServer();
+    server.start();
   }
 }

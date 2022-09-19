@@ -5,6 +5,10 @@ package com.dharbuzov.iso8583.exception;
  */
 public class ISOException extends RuntimeException {
 
+  public ISOException(Exception ex) {
+    super(ex);
+  }
+
   public ISOException(String message) {
     super(message);
   }
