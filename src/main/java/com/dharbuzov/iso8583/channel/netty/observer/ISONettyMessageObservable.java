@@ -38,6 +38,7 @@ public class ISONettyMessageObservable {
         .isAfter(LocalDateTime.now()));
     for (ExpiredMessageObserver observer : observers) {
       if (observer.getObserver().notifyMessageIn(msg)) {
+        observers.remove(observer);
         return true;
       }
     }

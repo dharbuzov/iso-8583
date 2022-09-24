@@ -22,7 +22,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
  */
 public interface ISOMessagePackager {
 
-  byte[] encode(ISOMessage message);
+  byte[] pack(ISOMessage message);
 
-  ISOMessage decode(byte[] msgBytes);
+  ISOMessage unpack(byte[] msgBytes);
 }

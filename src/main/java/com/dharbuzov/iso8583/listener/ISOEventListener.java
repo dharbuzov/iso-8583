@@ -20,7 +20,7 @@ import com.dharbuzov.iso8583.model.event.Event;
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOEventListener extends ISOPrecedenceListener {
+public interface ISOEventListener extends ISOOrderedListener {
 
   void onEvent(Event event);
 }

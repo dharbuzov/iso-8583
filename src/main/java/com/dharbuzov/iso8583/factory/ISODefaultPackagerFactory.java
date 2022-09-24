@@ -18,15 +18,23 @@ package com.dharbuzov.iso8583.factory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * Default implementation of packager factory.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultPackagerFactory implements ISOPackagerFactory {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public byte[] pack(ISOMessage msg) {
     return new byte[0];
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ISOMessage unpack(byte[] msgBytes) {
     return null;

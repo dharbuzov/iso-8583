@@ -15,9 +15,16 @@
  */
 package com.dharbuzov.iso8583.client.config;
 
+import lombok.Builder;
+import lombok.Data;
+
 /**
+ * Client reconnect properties. Needed to have established connection with ISO-8583 server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Data
+@Builder
 public class ISOReconnectProperties {
   private boolean enabled;
   private long intervalMs;

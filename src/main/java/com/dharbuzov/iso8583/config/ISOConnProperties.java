@@ -23,6 +23,8 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
+ * Represents the connection properties.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
@@ -33,6 +35,11 @@ public class ISOConnProperties {
 
   private int port;
 
+  /**
+   * Gets the inet socket address based on provided host and port.
+   *
+   * @return inet socket address
+   */
   public InetSocketAddress getInetSocketAddress() {
     return new InetSocketAddress(StringUtils.isEmpty(host) ? "localhost" : host, port);
   }

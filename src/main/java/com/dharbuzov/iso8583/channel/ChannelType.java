@@ -21,6 +21,10 @@ package com.dharbuzov.iso8583.channel;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum ChannelType {
+
+  /*
+   * Netty(https://netty.io/) based TCP/IP channel.
+   */
   NETTY;
 
   /**

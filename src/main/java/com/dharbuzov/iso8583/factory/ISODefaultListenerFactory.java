@@ -18,6 +18,8 @@ package com.dharbuzov.iso8583.factory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * Default implementation of listener factory.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultListenerFactory implements ISOListenerFactory {

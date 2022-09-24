@@ -16,9 +16,10 @@
 package com.dharbuzov.iso8583.model;
 
 /**
+ * The enum type which resents the message destination source, like incoming or outgoing message.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum MessageSource {
-  IN,
-  OUT;
+  IN, OUT;
 }

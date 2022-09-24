@@ -16,6 +16,7 @@
 package com.dharbuzov.iso8583.config;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,5 @@ import lombok.Data;
 @Builder
 public class ISOMessageProperties {
 
-  private List<String> keys;
+  private Map<String, List<Integer>> keys;
 }

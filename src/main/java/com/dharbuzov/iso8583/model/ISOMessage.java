@@ -19,8 +19,11 @@ import com.dharbuzov.iso8583.exception.ISOException;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 /**
+ * The pojo class which represents the ISO 8583 message.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Builder
@@ -29,14 +32,30 @@ public class ISOMessage {
   public static final int FIELDS_SIZE = 129;
 
   @Getter
-  private final MessageSource source = MessageSource.OUT;
+  @Setter
+  private MessageSource source;
+
+  /**
+   * The message type indicator is a four-digit numeric field which indicates the overall function
+   * of the message. A message type indicator includes the ISO 8583 version, the Message Class, the
+   * Message Function and the Message Origin
+   */
+  @Getter
+  @Setter
+  private MessageType type;
 
   @Getter
-  private final MessageType type;
-
-  @Getter
-  private final String header;
+  @Setter
+  private String header;
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
+
+  /**
+   * Sets the current message as a response message.
+   */
+  public void setResponseType() {
+    this.type.setResponseType();
+    this.source = MessageSource.OUT;
+  }
 
   /**
    * Gets field by the position.

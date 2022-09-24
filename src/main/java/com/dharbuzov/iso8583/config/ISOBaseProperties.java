@@ -20,6 +20,8 @@ import com.dharbuzov.iso8583.channel.ChannelType;
 import lombok.Data;
 
 /**
+ * The base properties which are applicable for the client as well as server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
@@ -30,6 +32,11 @@ public abstract class ISOBaseProperties {
   private ISOConnProperties connection;
   private ChannelType channelType;
 
+  /**
+   * Gets the defined channel type of default one.
+   *
+   * @return channel type of default {@link ChannelType#NETTY}
+   */
   public ChannelType getChannelTypeOrDefault() {
     if (this.channelType == null) {
       return ChannelType.defaultChannelType();

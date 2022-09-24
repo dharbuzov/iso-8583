@@ -73,7 +73,7 @@ public interface ISOClientChannel extends ISOChannel {
 
   /**
    * Sends the message asynchronously and wraps the response into the {@link Future} object, this
-   * method is not blocking.
+   * method is not blocking the active thread.
    *
    * @param msg message to send
    * @return the future of message response from the server

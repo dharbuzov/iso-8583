@@ -13,17 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.binder;
+
+import com.dharbuzov.iso8583.config.ISOMessageProperties;
+import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageType;
+
+import lombok.RequiredArgsConstructor;
 
 /**
+ * Default implementation of message binder.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOPrecedenceListener {
+@RequiredArgsConstructor
+public class DefaultMessageBinder implements MessageBinder {
 
-  int MAX_PRECEDENCE = Integer.MAX_VALUE;
-  int LOWEST_PRECEDENCE = Integer.MIN_VALUE;
-
-  default int getPrecedence() {
-    return LOWEST_PRECEDENCE;
+  private final ISOMessageProperties properties;
+  private final MessageKeyGenerator messageKeyGenerator;
+  @Override
+  public boolean isBind(MessageType reqMsgType, String reqMsgKey, ISOMessage inMsg) {
+    final MessageType inMsgType = inMsg.getType();
+    //TODO: impl
+    return true;
   }
 }

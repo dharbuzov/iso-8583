@@ -18,6 +18,8 @@ package com.dharbuzov.iso8583.factory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * A Listener factory responsible for handling the incoming {@link ISOMessage} messages.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOListenerFactory {

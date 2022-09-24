@@ -20,10 +20,12 @@ import com.dharbuzov.iso8583.factory.ISODefaultListenerFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
-import com.dharbuzov.iso8583.generator.DefaultMessageKeyGenerator;
-import com.dharbuzov.iso8583.generator.MessageKeyGenerator;
 
 /**
+ * Base implementation of library configuration.
+ *
+ * @param <T> the generic type for library properties
+ * @param <C> the generic type for desired channel
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extends ISOChannel>
@@ -31,26 +33,30 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
 
   protected final C channel;
   protected final ISOListenerFactory listenerFactory;
-  protected final MessageKeyGenerator messageKeyGenerator;
   protected final ISOPackagerFactory packagerFactory;
 
+  /**
+   * Base configuration constructor.
+   *
+   * @param properties configuration properties
+   */
   public ISOBaseConfiguration(T properties) {
     this.channel = createChannel(properties);
     this.listenerFactory = createListenerFactory(properties);
-    this.messageKeyGenerator = createMessageKeyGenerator(properties);
     this.packagerFactory = createPackagerFactory(properties);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ISOListenerFactory createListenerFactory(T properties) {
     return new ISODefaultListenerFactory();
   }
 
-  @Override
-  public MessageKeyGenerator createMessageKeyGenerator(T properties) {
-    return new DefaultMessageKeyGenerator(properties.getMessages());
-  }
-
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public ISOPackagerFactory createPackagerFactory(T properties) {
     return new ISODefaultPackagerFactory();

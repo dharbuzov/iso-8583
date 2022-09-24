@@ -36,8 +36,8 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 /**
- * The base implementation of netty based channel, which defines the default channel handlers and
- * required classes for message handling.
+ * The abstract implementation of netty based channel, which defines the default channel handlers
+ * and required classes for message handling.
  *
  * @param <T> the generic subtype of iso base properties
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).

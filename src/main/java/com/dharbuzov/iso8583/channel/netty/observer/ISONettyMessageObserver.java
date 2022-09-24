@@ -17,8 +17,9 @@ package com.dharbuzov.iso8583.channel.netty.observer;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.dharbuzov.iso8583.generator.MessageKeyGenerator;
+import com.dharbuzov.iso8583.binder.MessageBinder;
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageType;
 
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +30,14 @@ import lombok.RequiredArgsConstructor;
 @Builder
 @RequiredArgsConstructor
 public class ISONettyMessageObserver {
+
+  private final MessageType outMsgType;
   private final String outMsgKey;
-  private final MessageKeyGenerator keyGenerator;
+  private final MessageBinder messageBinder;
   private final CompletableFuture<ISOMessage> awaitFuture;
 
   public boolean notifyMessageIn(ISOMessage inMsg) {
-    final String inMsgKey = keyGenerator.generate(inMsg);
-    if (outMsgKey.equals(inMsgKey)) {
+    if (messageBinder.isBind(outMsgType, outMsgKey, inMsg)) {
       awaitFuture.complete(inMsg);
       return true;
     }

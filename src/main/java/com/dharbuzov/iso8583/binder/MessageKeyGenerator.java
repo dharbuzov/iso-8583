@@ -13,23 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.generator;
+package com.dharbuzov.iso8583.binder;
 
 import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
-import lombok.RequiredArgsConstructor;
-
 /**
+ * Interface which represents message key generator, the key is used to bind the request and
+ * response messages from the server in synchronous communication model.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
+ * @see ISOMessageProperties#getKeys()
+ * @see com.dharbuzov.iso8583.client.ISOSyncClient
  */
-@RequiredArgsConstructor
-public class DefaultMessageKeyGenerator implements MessageKeyGenerator {
+public interface MessageKeyGenerator {
 
-  private final ISOMessageProperties messageProperties;
+  /**
+   * Generates the unique key for a message which could be used to bind the request and response
+   * message.
+   *
+   * @param msg msg to generate the key
+   * @return generated key
+   */
+  String generate(ISOMessage msg);
 
-  @Override
-  public String generate(ISOMessage msg) {
-    return msg.getHeader();
-  }
 }

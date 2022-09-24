@@ -13,17 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.binder;
 
+import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
+
+import lombok.RequiredArgsConstructor;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+@RequiredArgsConstructor
+public class DefaultMessageKeyGenerator implements MessageKeyGenerator {
 
-  void onMessage(ISOMessage message);
+  private final ISOMessageProperties messageProperties;
 
-  boolean isApplicable(ISOMessage message);
-
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public String generate(ISOMessage msg) {
+    //TODO: impl
+    return msg.getHeader();
+  }
 }

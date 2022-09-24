@@ -13,15 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.generator;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.model.event;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface MessageKeyGenerator {
-
-  String generate(ISOMessage msg);
-
+public enum EventType {
 }

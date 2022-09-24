@@ -24,7 +24,7 @@ package com.dharbuzov.iso8583.channel;
 public interface ISOChannel {
 
   /**
-   * Returns the flag which indicates that the channel is in active state.
+   * Returns the flag which indicates that the channel is in an active state.
    *
    * @return {@code true} if channel is active, otherwise {@code false}
    */

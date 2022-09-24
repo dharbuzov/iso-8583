@@ -41,11 +41,17 @@ public class ISOClientProperties extends ISOBaseProperties {
 
   private long requestTimeoutMs;
 
+
   public static class ISOClientPropertiesBuilder {
 
   }
 
+  /**
+   * Gets message request timeout or default {@link ISOClientProperties#DEFAULT_REQUEST_TIMEOUT}.
+   *
+   * @return message request timeout or default
+   */
   public long getRequestTimeoutMsOrDefault() {
-    return requestTimeoutMs == 0L ? DEFAULT_REQUEST_TIMEOUT: requestTimeoutMs;
+    return requestTimeoutMs == 0L ? DEFAULT_REQUEST_TIMEOUT : requestTimeoutMs;
   }
 }

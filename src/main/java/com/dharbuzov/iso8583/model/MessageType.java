@@ -15,16 +15,59 @@
  */
 package com.dharbuzov.iso8583.model;
 
+import com.dharbuzov.iso8583.exception.ISOException;
+
 import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
+ * The class wrapper for Message Type Indicator (MTI). The message type indicator is a four-digit
+ * numeric field which indicates the overall function of the message. A message type indicator
+ * includes the ISO 8583 version, the Message Class, the Message Function and the Message Origin.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Data
 @Builder
+@EqualsAndHashCode
 public class MessageType {
 
+  /**
+   * ISO 8583 version. First digit.
+   */
   private MessageVersion version;
-  private MessageClass messageClass;
+
+  /**
+   * ISO 8583 message class. Second digit.
+   */
+  private MessageClass clazz;
+
+  /**
+   * ISO 8583 message function. Third digit.
+   */
   private MessageFunction function;
+
+  /**
+   * ISO 8583 message origin. Fourth digit.
+   */
   private MessageOrigin origin;
+
+  /**
+   * Converts current type to response.
+   */
+  public void setResponseType() {
+    final MessageFunction function = this.function;
+    switch (function) {
+      case REQUEST:
+        this.function = MessageFunction.REQUEST_RESPONSE;
+        break;
+      case ADVICE:
+        this.function = MessageFunction.ADVICE_RESPONSE;
+        break;
+      default:
+        throw new ISOException("Can't set the proper response type, for message function: '%s'",
+            function);
+    }
+  }
 }

@@ -27,16 +27,30 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /**
+ * The netty server channel implementation, this type of channel creates the ISO-8583 tcp/ip server
+ * and implements the methods for starting the server and receive the messages from different
+ * clients.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperties>
     implements ISOServerChannel {
 
+  /**
+   * Netty server constructor based on properties and packager factory.
+   *
+   * @param serverProperties server properties
+   * @param packagerFactory  packager factory
+   * @param listenerFactory  listener factory
+   */
   public ISOServerNettyChannel(ISOServerProperties serverProperties,
       ISOPackagerFactory packagerFactory, ISOListenerFactory listenerFactory) {
     super(serverProperties, packagerFactory, listenerFactory);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void start() {
     if (nettyChannel == null) {
@@ -59,6 +73,9 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void shutdown() {
     if (nettyChannel != null) {
@@ -67,6 +84,9 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isRunning() {
     return nettyChannel != null && nettyChannel.isOpen() && nettyChannel.isActive();
