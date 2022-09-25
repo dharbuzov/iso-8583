@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.channel;
 
-import com.dharbuzov.iso8583.model.event.Event;
-import com.dharbuzov.iso8583.order.ISOOrdered;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOEventListener extends ISOOrdered {
+public class ChannelTypeTest {
 
-  void onEvent(Event event);
-
-  boolean isApplicable(Event event);
+  @Test
+  void defaultChannelTest() {
+    Assertions.assertEquals(ChannelType.NETTY, ChannelType.defaultChannelType());
+  }
 }

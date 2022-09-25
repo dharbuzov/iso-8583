@@ -22,15 +22,15 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.dharbuzov.iso8583.binder.MessageBinder;
+import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ISOClientChannel;
 import com.dharbuzov.iso8583.channel.netty.observer.ISONettyMessageObservable;
 import com.dharbuzov.iso8583.channel.netty.observer.ISONettyMessageObserver;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.client.config.ISOReconnectProperties;
 import com.dharbuzov.iso8583.exception.ISOException;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
-import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 import io.netty.bootstrap.Bootstrap;
@@ -65,9 +65,8 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
    * @param messageKeyGenerator message key generator
    */
   public ISOClientNettyChannel(ISOClientProperties clientProperties,
-      ISOPackagerFactory packagerFactory, ISOListenerFactory listenerFactory,
-      MessageBinder messageBinder,
-      MessageKeyGenerator messageKeyGenerator) {
+      ISOPackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory,
+      MessageBinder messageBinder, MessageKeyGenerator messageKeyGenerator) {
     super(clientProperties, packagerFactory, listenerFactory);
     this.messageBinder = messageBinder;
     this.messageKeyGenerator = messageKeyGenerator;
@@ -118,7 +117,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
     try {
       nettyChannel.disconnect().sync();
     } catch (InterruptedException e) {
-      throw new RuntimeException(e);
+      throw new ISOException(e);
     }
   }
 
@@ -188,7 +187,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
      * @param listenerFactory   listener factory
      * @param messageObservable message observable
      */
-    public SyncNettyMessageHandler(ISOListenerFactory listenerFactory,
+    public SyncNettyMessageHandler(ISOMessageListenerFactory listenerFactory,
         ISONettyMessageObservable messageObservable) {
       super(listenerFactory);
       this.messageObservable = messageObservable;

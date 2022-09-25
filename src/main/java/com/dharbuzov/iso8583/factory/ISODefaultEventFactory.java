@@ -15,39 +15,28 @@
  */
 package com.dharbuzov.iso8583.factory;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.model.event.Event;
+import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 
 /**
- * Default implementation of packager factory.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
+public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener>
+    implements ISOEventFactory {
 
   @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
+  public void notifyEvent(Event event) {
 
   }
 
   @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
+  public void addEventListener(ISOEventListener eventListener) {
+    addToOrderedSet(eventListener);
+  }
 
+  @Override
+  public void removeEventListener(ISOEventListener eventListener) {
+    removeFromOrderedSet(eventListener);
   }
 }

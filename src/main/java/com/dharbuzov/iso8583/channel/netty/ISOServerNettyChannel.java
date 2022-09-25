@@ -16,7 +16,7 @@
 package com.dharbuzov.iso8583.channel.netty;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
@@ -44,7 +44,7 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
    * @param listenerFactory  listener factory
    */
   public ISOServerNettyChannel(ISOServerProperties serverProperties,
-      ISOPackagerFactory packagerFactory, ISOListenerFactory listenerFactory) {
+      ISOPackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory) {
     super(serverProperties, packagerFactory, listenerFactory);
   }
 

@@ -13,41 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
+package com.dharbuzov.iso8583.order;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
- * Default implementation of packager factory.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public abstract class ISOOrderedContainer<T extends ISOOrdered> {
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
+  protected final Set<T> orderedSet = new TreeSet<>(new ISOOrdered.ISOOrderedComparator());
+
+  protected void addToOrderedSet(T element) {
+    this.orderedSet.add(element);
   }
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
-
-  @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
-
-  @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+  protected void removeFromOrderedSet(T element) {
+    this.orderedSet.remove(element);
   }
 }

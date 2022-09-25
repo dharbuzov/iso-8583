@@ -13,17 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.event.Event;
-import com.dharbuzov.iso8583.order.ISOOrdered;
+package com.dharbuzov.iso8583.binder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOEventListener extends ISOOrdered {
-
-  void onEvent(Event event);
-
-  boolean isApplicable(Event event);
+public class MessageBinderTest {
 }

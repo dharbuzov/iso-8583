@@ -15,14 +15,34 @@
  */
 package com.dharbuzov.iso8583.factory;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.model.event.Event;
 
 /**
- * A Listener factory responsible for handling the incoming {@link ISOMessage} messages.
+ * An Event factory responsible for handling the incoming {@link Event} events in the library.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOListenerFactory {
+public interface ISOEventFactory {
 
-  ISOMessage onMessage(ISOMessage message);
+  /**
+   * Notifies the occurred event in the library.
+   *
+   * @param event event to notify
+   */
+  void notifyEvent(Event event);
+
+  /**
+   * Adds event listener.
+   *
+   * @param eventListener event listener to add
+   */
+  void addEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes event listener.
+   *
+   * @param eventListener event listener to remove
+   */
+  void removeEventListener(ISOEventListener eventListener);
 }

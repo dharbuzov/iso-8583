@@ -27,6 +27,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
+ * Server configuration class.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOServerConfiguration
@@ -35,6 +37,11 @@ public class ISOServerConfiguration
   @Getter
   protected final ISOServer server;
 
+  /**
+   * Server configuration class.
+   *
+   * @param properties server properties
+   */
   @Builder
   public ISOServerConfiguration(ISOServerProperties properties) {
     super(properties);

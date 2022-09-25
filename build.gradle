@@ -8,8 +8,8 @@ java {
     }
 }
 
-group 'com.dharbuzov'
-version '1.0-SNAPSHOT'
+group 'com.github.dharbuzov'
+version '0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()

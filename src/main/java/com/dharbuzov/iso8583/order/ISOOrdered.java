@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.order;
+
+import java.util.Comparator;
 
 /**
  * {@code ISOPrecedenceListener} is an interface that can be implemented by listeners that should be
@@ -21,7 +23,7 @@ package com.dharbuzov.iso8583.listener;
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOOrderedListener {
+public interface ISOOrdered {
 
   int HIGHEST_PRECEDENCE = Integer.MIN_VALUE;
   int LOWEST_PRECEDENCE = Integer.MAX_VALUE;
@@ -38,5 +40,18 @@ public interface ISOOrderedListener {
    */
   default int getOrder() {
     return LOWEST_PRECEDENCE;
+  }
+
+  /**
+   * Ordered comparator to identify the proper order of {@link ISOOrdered} in collection.
+   *
+   * @see ISOOrdered
+   */
+  class ISOOrderedComparator implements Comparator<ISOOrdered> {
+
+    @Override
+    public int compare(ISOOrdered one, ISOOrdered other) {
+      return Integer.compare(one.getOrder(), other.getOrder());
+    }
   }
 }

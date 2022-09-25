@@ -15,39 +15,29 @@
  */
 package com.dharbuzov.iso8583.factory;
 
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 
 /**
- * Default implementation of packager factory.
+ * A Listener factory responsible for handling the incoming {@link ISOMessage} messages.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public interface ISOMessageListenerFactory {
+
+  ISOMessage onMessage(ISOMessage message);
 
   /**
-   * {@inheritDoc}
+   * Adds message listener.
+   *
+   * @param messageListener event listener to add
    */
-  @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
+  void addMessageListener(ISOMessageListener messageListener);
 
   /**
-   * {@inheritDoc}
+   * Removes message listener.
+   *
+   * @param messageListener message listener to remove
    */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
-
-  @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
-
-  @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
+  void removeMessageListener(ISOMessageListener messageListener);
 }

@@ -16,11 +16,12 @@
 package com.dharbuzov.iso8583.listener;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.order.ISOOrdered;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOMessageListener extends ISOOrdered {
 
   void onMessage(ISOMessage message);
 

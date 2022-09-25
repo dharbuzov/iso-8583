@@ -15,39 +15,35 @@
  */
 package com.dharbuzov.iso8583.factory;
 
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 
 /**
- * Default implementation of packager factory.
+ * Default implementation of listener factory.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public class ISODefaultMessageListenerFactory extends ISOOrderedContainer<ISOMessageListener>
+    implements ISOMessageListenerFactory {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+  public ISOMessage onMessage(ISOMessage message) {
+    for (ISOMessageListener messageListener : this.orderedSet) {
+      if (messageListener.isApplicable(message)) {
+        messageListener.onMessage(message);
+      }
+    }
+    return message;
   }
 
   @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
+  public void addMessageListener(ISOMessageListener messageListener) {
+    addToOrderedSet(messageListener);
   }
 
   @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+  public void removeMessageListener(ISOMessageListener messageListener) {
+    removeFromOrderedSet(messageListener);
   }
 }

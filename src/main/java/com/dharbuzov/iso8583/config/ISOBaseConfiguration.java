@@ -16,9 +16,9 @@
 package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ISOChannel;
-import com.dharbuzov.iso8583.factory.ISODefaultListenerFactory;
+import com.dharbuzov.iso8583.factory.ISODefaultMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultPackagerFactory;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 
 /**
@@ -32,7 +32,7 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
     implements ISOConfiguration<T, C> {
 
   protected final C channel;
-  protected final ISOListenerFactory listenerFactory;
+  protected final ISOMessageListenerFactory listenerFactory;
   protected final ISOPackagerFactory packagerFactory;
 
   /**
@@ -50,8 +50,8 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
    * {@inheritDoc}
    */
   @Override
-  public ISOListenerFactory createListenerFactory(T properties) {
-    return new ISODefaultListenerFactory();
+  public ISOMessageListenerFactory createListenerFactory(T properties) {
+    return new ISODefaultMessageListenerFactory();
   }
 
   /**
