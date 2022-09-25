@@ -19,64 +19,66 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * The enum describes the ISO 8583 protocol available versions.
+ * The enum describes the ISO 8583 protocol available message origins.
  * <p>
- * The placements of fields in different versions of the standard varies; for example, the currency
- * elements of the 1987 and 1993 versions of the standard are no longer used in the 2003 version,
- * which holds currency as a sub-element of any financial amount element.
+ * Position four of the MTI defines the location of the message source within the payment chain.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Getter
 @AllArgsConstructor
-public enum MessageVersion {
+public enum MessageOrigin {
   /**
-   * ISO 8583:1987.
+   * xxx0	Acquirer
    */
-  V1987(0),
+  ACQUIRER(0),
 
   /**
-   * ISO 8583:1993.
+   * xxx1	Acquirer repeat
    */
-  V1993(1),
+  ACQUIRER_REPEAT(1),
 
   /**
-   * ISO 8583:2003.
+   * xxx2	Issuer
    */
-  V2003(2),
+  ISSUER(2),
 
   /**
-   * Reserved ISO use.
+   * xxx3	Issuer repeat
    */
-  RESERVED_3(3),
+  ISSUER_REPEAT(3),
 
   /**
-   * Reserved ISO use.
+   * xxx4	Other
    */
-  RESERVED_4(4),
+  OTHER(4),
 
   /**
-   * Reserved ISO use.
+   * xxx5	Other repeat
    */
-  RESERVED_5(5),
+  OTHER_REPEAT(5),
 
   /**
-   * Reserved ISO use.
+   * xxx6	Reserved for ISO use
+   * <p>
    */
   RESERVED_6(6),
 
   /**
-   * Reserved ISO use.
+   * xxx7	Reserved for ISO use
+   * <p>
    */
   RESERVED_7(7),
 
   /**
-   * Reserved ISO use.
+   * xxx8	Reserved for ISO use
+   * <p>
    */
   RESERVED_8(8),
 
   /**
-   * Reserved ISO use.
+   * xxx9	Reserved for ISO use
+   * <p>
    */
   RESERVED_9(9);
 

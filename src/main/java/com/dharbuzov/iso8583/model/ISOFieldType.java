@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.model;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
-
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+public enum ISOFieldType {
+  /* Constructed data type. This type has predefined number of sub elements.*/
+  CONSTRUCTED,
+  /* Primitive data type. This type doesn't have sub elements.*/
+  PRIMITIVE,
+  /* Composite data type. This type has dynamic number of sub elements.*/
+  COMPOSITE;
 }

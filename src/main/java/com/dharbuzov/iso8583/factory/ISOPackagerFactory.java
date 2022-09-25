@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.factory;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * A Packager factory responsible for orchestrating the {@link ISOMessage} message packaging into
+ * the protocol level representation and vice versa.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
+ * @see com.dharbuzov.iso8583.packager.ISOMessagePackager
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOPackagerFactory {
 
-  void onMessage(ISOMessage message);
+  /**
+   * Packs the message into ISO-8583 byte representation.
+   *
+   * @param msg message to pack
+   * @return the packed message
+   */
+  byte[] pack(ISOMessage msg);
 
-  boolean isApplicable(ISOMessage message);
-
+  /**
+   * Un packs the message from byte into message object representation.
+   *
+   * @param msgBytes message byte representation
+   * @return unpacked message object
+   */
+  ISOMessage unpack(byte[] msgBytes);
 }

@@ -13,17 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.packager;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOMessagePackager {
 
-  void onMessage(ISOMessage message);
+  byte[] pack(ISOMessage message);
 
-  boolean isApplicable(ISOMessage message);
-
+  ISOMessage unpack(byte[] msgBytes);
 }

@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.client.config;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import lombok.Builder;
+import lombok.Data;
 
 /**
+ * Client reconnect properties. Needed to have established connection with ISO-8583 server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
-
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+@Data
+@Builder
+public class ISOReconnectProperties {
+  private boolean enabled;
+  private long intervalMs;
 }

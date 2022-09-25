@@ -15,15 +15,12 @@
  */
 package com.dharbuzov.iso8583.listener;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.event.Event;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOEventListener extends ISOOrderedListener {
 
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+  void onEvent(Event event);
 }

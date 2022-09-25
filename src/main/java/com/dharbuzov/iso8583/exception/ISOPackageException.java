@@ -13,17 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.exception;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public class ISOPackageException extends ISOException {
 
-  void onMessage(ISOMessage message);
+  public ISOPackageException(String message) {
+    super(message);
+  }
 
-  boolean isApplicable(ISOMessage message);
-
+  public ISOPackageException(String formatMessage, Object... args) {
+    super(formatMessage, args);
+  }
 }

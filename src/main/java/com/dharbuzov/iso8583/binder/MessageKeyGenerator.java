@@ -13,17 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.binder;
 
+import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * Interface which represents message key generator, the key is used to bind the request and
+ * response messages from the server in synchronous communication model.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
+ * @see ISOMessageProperties#getKeys()
+ * @see com.dharbuzov.iso8583.client.ISOSyncClient
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface MessageKeyGenerator {
 
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
+  /**
+   * Generates the unique key for a message which could be used to bind the request and response
+   * message.
+   *
+   * @param msg msg to generate the key
+   * @return generated key
+   */
+  String generate(ISOMessage msg);
 
 }

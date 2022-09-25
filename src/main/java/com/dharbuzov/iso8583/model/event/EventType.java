@@ -13,17 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.model.event;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
-
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+public enum EventType {
 }

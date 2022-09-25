@@ -13,22 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.exception;
+package com.dharbuzov.iso8583.config;
+
+import com.dharbuzov.iso8583.channel.ChannelType;
+
+import lombok.Data;
 
 /**
+ * The base properties which are applicable for the client as well as server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISOException extends RuntimeException {
+@Data
+public abstract class ISOBaseProperties {
 
-  public ISOException(Exception ex) {
-    super(ex);
-  }
+  private ISOMessageProperties messages;
 
-  public ISOException(String message) {
-    super(message);
-  }
+  private ISOConnProperties connection;
+  private ChannelType channelType;
 
-  public ISOException(String formatMessage, Object... args) {
-    super(String.format(formatMessage, args));
+  /**
+   * Gets the defined channel type of default one.
+   *
+   * @return channel type of default {@link ChannelType#NETTY}
+   */
+  public ChannelType getChannelTypeOrDefault() {
+    if (this.channelType == null) {
+      return ChannelType.defaultChannelType();
+    }
+    return this.channelType;
   }
 }

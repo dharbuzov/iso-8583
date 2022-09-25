@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.channel;
 
 /**
+ * The enum which represents supported channel types within the library.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public enum ChannelType {
 
-  void onMessage(ISOMessage message);
+  /*
+   * Netty(https://netty.io/) based TCP/IP channel.
+   */
+  NETTY;
 
-  boolean isApplicable(ISOMessage message);
-
+  /**
+   * Returns the default channel type.
+   *
+   * @return {@link ChannelType#NETTY}
+   */
+  public static ChannelType defaultChannelType() {
+    return ChannelType.NETTY;
+  }
 }

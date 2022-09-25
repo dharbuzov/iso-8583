@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.factory;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
+ * Default implementation of listener factory.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public class ISODefaultListenerFactory implements ISOListenerFactory {
 
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+  @Override
+  public ISOMessage onMessage(ISOMessage message) {
+    return null;
+  }
 }

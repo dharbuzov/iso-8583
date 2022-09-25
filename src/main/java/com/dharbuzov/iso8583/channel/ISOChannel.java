@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.channel;
 
 /**
+ * The interface which represents the channel abstraction to work with network protocol of any
+ * levels (Application, Network .etc).
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOChannel {
 
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+  /**
+   * Returns the flag which indicates that the channel is in an active state.
+   *
+   * @return {@code true} if channel is active, otherwise {@code false}
+   */
+  boolean isActive();
 }

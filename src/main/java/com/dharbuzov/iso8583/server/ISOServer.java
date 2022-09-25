@@ -13,17 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.server;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public interface ISOServer {
 
-  void onMessage(ISOMessage message);
+  /**
+   * Starts the ISO-8583 server instance.
+   */
+  void start();
 
-  boolean isApplicable(ISOMessage message);
+  /**
+   * Returns flag which indicates that server is running.
+   *
+   * @return {@code true} if server is running, otherwise {@code false}
+   */
+  boolean isRunning();
 
+  /**
+   * Method for shutting down the ISO-8583 server.
+   */
+  void shutdown();
 }

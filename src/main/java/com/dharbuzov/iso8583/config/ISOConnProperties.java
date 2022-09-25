@@ -13,17 +13,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.config;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import java.net.InetSocketAddress;
+
+import com.dharbuzov.iso8583.util.StringUtils;
+
+import lombok.Builder;
+import lombok.Data;
 
 /**
+ * Represents the connection properties.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+@Data
+@Builder
+public class ISOConnProperties {
 
-  void onMessage(ISOMessage message);
+  private String host;
 
-  boolean isApplicable(ISOMessage message);
+  private int port;
 
+  /**
+   * Gets the inet socket address based on provided host and port.
+   *
+   * @return inet socket address
+   */
+  public InetSocketAddress getInetSocketAddress() {
+    return new InetSocketAddress(StringUtils.isEmpty(host) ? "localhost" : host, port);
+  }
 }

@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.config;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import java.util.List;
+import java.util.Map;
+
+import lombok.Builder;
+import lombok.Data;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+@Data
+@Builder
+public class ISOMessageProperties {
 
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
-
+  private Map<String, List<Integer>> keys;
 }

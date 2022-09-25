@@ -13,17 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.server.config;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.config.ISOBaseProperties;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
-
-  void onMessage(ISOMessage message);
-
-  boolean isApplicable(ISOMessage message);
+@Data
+@Builder
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ISOServerProperties extends ISOBaseProperties {
 
 }

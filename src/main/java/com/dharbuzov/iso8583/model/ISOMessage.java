@@ -1,14 +1,29 @@
 /*
- * Copyright (c) 2022 Paydock, Inc. All rights reserved. Paydock Confidential
+ * Copyright 2022.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *          http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package com.dharbuzov.iso8583.model;
 
 import com.dharbuzov.iso8583.exception.ISOException;
 
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
+ * The pojo class which represents the ISO 8583 message.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Builder
@@ -16,9 +31,31 @@ public class ISOMessage {
 
   public static final int FIELDS_SIZE = 129;
 
-  private final MessageType type;
-  private final String header;
+  @Getter
+  @Setter
+  private MessageSource source;
+
+  /**
+   * The message type indicator is a four-digit numeric field which indicates the overall function
+   * of the message. A message type indicator includes the ISO 8583 version, the Message Class, the
+   * Message Function and the Message Origin
+   */
+  @Getter
+  @Setter
+  private MessageType type;
+
+  @Getter
+  @Setter
+  private String header;
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
+
+  /**
+   * Sets the current message as a response message.
+   */
+  public void setResponseType() {
+    this.type.setResponseType();
+    this.source = MessageSource.OUT;
+  }
 
   /**
    * Gets field by the position.

@@ -13,17 +13,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.server;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.channel.ISOServerChannel;
+import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrderedListener {
+public class ISODefaultServer implements ISOServer {
 
-  void onMessage(ISOMessage message);
+  public ISODefaultServer(ISOServerProperties properties, ISOServerChannel channel) {
 
-  boolean isApplicable(ISOMessage message);
+  }
 
+  @Override
+  public void start() {
+
+  }
+
+  @Override
+  public boolean isRunning() {
+    return false;
+  }
+
+  @Override
+  public void shutdown() {
+
+  }
 }
