@@ -13,36 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.config;
+package com.dharbuzov.iso8583.listener;
 
-import java.net.InetSocketAddress;
-
-import com.dharbuzov.iso8583.util.StringUtils;
-
-import lombok.Builder;
-import lombok.Data;
+import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageClass;
 
 /**
- * Represents the connection properties.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Data
-@Builder
-public class ISOConnProperties {
+public interface ISOReconciliationMessageListener extends ISOMessageListener {
 
-  public static final String DEFAULT_HOST = "localhost";
-
-  private String host;
-
-  private int port;
-
-  /**
-   * Gets the inet socket address based on provided host and port.
-   *
-   * @return inet socket address
-   */
-  public InetSocketAddress getInetSocketAddress() {
-    return new InetSocketAddress(StringUtils.isEmpty(host) ? DEFAULT_HOST : host, port);
+  @Override
+  default boolean isApplicable(ISOMessage message) {
+    return message != null && message.getType() != null
+           && MessageClass.RECONCILIATION == message.getType().getClazz();
   }
 }

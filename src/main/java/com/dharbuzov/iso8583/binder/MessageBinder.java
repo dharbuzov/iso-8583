@@ -20,8 +20,8 @@ import com.dharbuzov.iso8583.model.MessageType;
 
 /**
  * The interface which is used to bind the request message to incoming message by the client, this
- * interface is used to establish proper synchronous communication client fully relies on this class
- * to identify whatever incoming message is bind to original request.
+ * interface is used to establish proper synchronous communication, client fully relies on this
+ * class to identify whatever incoming message is bind to original request.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  * @see com.dharbuzov.iso8583.client.ISOSyncClient

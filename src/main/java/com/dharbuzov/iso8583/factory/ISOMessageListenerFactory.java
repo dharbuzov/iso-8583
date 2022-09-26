@@ -15,6 +15,7 @@
  */
 package com.dharbuzov.iso8583.factory;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
@@ -25,7 +26,13 @@ import com.dharbuzov.iso8583.model.ISOMessage;
  */
 public interface ISOMessageListenerFactory {
 
-  ISOMessage onMessage(ISOMessage message);
+  /**
+   * Method which is invoked once the client receives any message.
+   *
+   * @param replyChannel channel is used to reply the response for request messages
+   * @param message      incoming message
+   */
+  void onMessage(ISOReplyChannel replyChannel, ISOMessage message);
 
   /**
    * Adds message listener.

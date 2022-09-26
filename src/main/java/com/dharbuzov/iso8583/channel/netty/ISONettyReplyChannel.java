@@ -13,36 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.config;
+package com.dharbuzov.iso8583.channel.netty;
 
-import java.net.InetSocketAddress;
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
+import com.dharbuzov.iso8583.model.ISOMessage;
 
-import com.dharbuzov.iso8583.util.StringUtils;
-
-import lombok.Builder;
-import lombok.Data;
+import io.netty.channel.ChannelHandlerContext;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Represents the connection properties.
+ * Netty based reply channel, which writes to the channel message and flushes.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Data
-@Builder
-public class ISOConnProperties {
+@RequiredArgsConstructor
+public class ISONettyReplyChannel implements ISOReplyChannel {
 
-  public static final String DEFAULT_HOST = "localhost";
-
-  private String host;
-
-  private int port;
+  private final ChannelHandlerContext ctx;
 
   /**
-   * Gets the inet socket address based on provided host and port.
-   *
-   * @return inet socket address
+   * {@inheritDoc}
    */
-  public InetSocketAddress getInetSocketAddress() {
-    return new InetSocketAddress(StringUtils.isEmpty(host) ? DEFAULT_HOST : host, port);
+  @Override
+  public void reply(ISOMessage message) {
+    ctx.writeAndFlush(message);
   }
 }

@@ -13,36 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.config;
-
-import java.net.InetSocketAddress;
-
-import com.dharbuzov.iso8583.util.StringUtils;
-
-import lombok.Builder;
-import lombok.Data;
+package com.dharbuzov.iso8583.model.event;
 
 /**
- * Represents the connection properties.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Data
-@Builder
-public class ISOConnProperties {
+public abstract class AbstractEvent implements Event {
+  protected final EventType eventType;
+  protected final Object value;
 
-  public static final String DEFAULT_HOST = "localhost";
+  public AbstractEvent(EventType eventType, Object value) {
+    this.eventType = eventType;
+    this.value = value;
+  }
 
-  private String host;
+  @Override
+  public EventType getEventType() {
+    return eventType;
+  }
 
-  private int port;
-
-  /**
-   * Gets the inet socket address based on provided host and port.
-   *
-   * @return inet socket address
-   */
-  public InetSocketAddress getInetSocketAddress() {
-    return new InetSocketAddress(StringUtils.isEmpty(host) ? DEFAULT_HOST : host, port);
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getValue() {
+    return (T) value;
   }
 }

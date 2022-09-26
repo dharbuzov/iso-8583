@@ -16,8 +16,10 @@
 package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ISOChannel;
+import com.dharbuzov.iso8583.factory.ISODefaultEventFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 
@@ -44,6 +46,14 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
     this.channel = createChannel(properties);
     this.listenerFactory = createListenerFactory(properties);
     this.packagerFactory = createPackagerFactory(properties);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ISOEventFactory createEventFactory(T properties) {
+    return new ISODefaultEventFactory();
   }
 
   /**

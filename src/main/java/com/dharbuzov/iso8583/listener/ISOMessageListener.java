@@ -15,6 +15,7 @@
  */
 package com.dharbuzov.iso8583.listener;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.order.ISOOrdered;
 
@@ -23,7 +24,7 @@ import com.dharbuzov.iso8583.order.ISOOrdered;
  */
 public interface ISOMessageListener extends ISOOrdered {
 
-  void onMessage(ISOMessage message);
+  void onMessage(ISOReplyChannel replyChannel, ISOMessage message);
 
   boolean isApplicable(ISOMessage message);
 

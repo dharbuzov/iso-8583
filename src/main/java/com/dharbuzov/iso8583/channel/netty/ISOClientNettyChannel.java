@@ -176,7 +176,6 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
    * {@link MessageKeyGenerator} to identify that the response message is applicable for a request
    * message.
    */
-  @Builder
   protected static class SyncNettyMessageHandler extends NettyMessageHandler {
 
     protected final ISONettyMessageObservable messageObservable;
@@ -187,6 +186,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
      * @param listenerFactory   listener factory
      * @param messageObservable message observable
      */
+    @Builder
     public SyncNettyMessageHandler(ISOMessageListenerFactory listenerFactory,
         ISONettyMessageObservable messageObservable) {
       super(listenerFactory);
@@ -198,7 +198,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-      final boolean consumed = messageObservable.notifyMessageIn(msg);
+      final boolean consumed = messageObservable.onMessage(msg);
       if (consumed) {
         // This message has been consumed by await future in #sendFuture() method
         return;

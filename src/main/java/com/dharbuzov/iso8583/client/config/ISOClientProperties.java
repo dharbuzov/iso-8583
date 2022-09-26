@@ -31,7 +31,7 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class ISOClientProperties extends ISOBaseProperties {
 
-  public static long DEFAULT_REQUEST_TIMEOUT = 60000;
+  public static long DEFAULT_REQUEST_TIMEOUT = 60000L;
 
   private String name;
 
@@ -40,11 +40,6 @@ public class ISOClientProperties extends ISOBaseProperties {
   private ISOReconnectProperties reconnect;
 
   private long requestTimeoutMs;
-
-
-  public static class ISOClientPropertiesBuilder {
-
-  }
 
   /**
    * Gets message request timeout or default {@link ISOClientProperties#DEFAULT_REQUEST_TIMEOUT}.

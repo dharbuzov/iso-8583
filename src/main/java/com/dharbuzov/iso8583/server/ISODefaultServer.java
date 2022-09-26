@@ -19,26 +19,33 @@ import com.dharbuzov.iso8583.channel.ISOServerChannel;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 /**
+ * Default implementation of {@link ISOServer} which works properly. This class could be easily
+ * extended based on specific needs.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultServer implements ISOServer {
 
-  public ISODefaultServer(ISOServerProperties properties, ISOServerChannel channel) {
+  protected final ISOServerProperties serverProperties;
+  protected final ISOServerChannel serverChannel;
 
+  public ISODefaultServer(ISOServerProperties serverProperties, ISOServerChannel serverChannel) {
+    this.serverProperties = serverProperties;
+    this.serverChannel = serverChannel;
   }
 
   @Override
   public void start() {
-
+    this.serverChannel.start();
   }
 
   @Override
   public boolean isRunning() {
-    return false;
+    return serverChannel.isRunning();
   }
 
   @Override
   public void shutdown() {
-
+    serverChannel.shutdown();
   }
 }

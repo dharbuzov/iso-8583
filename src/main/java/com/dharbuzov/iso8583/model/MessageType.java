@@ -16,6 +16,8 @@
 package com.dharbuzov.iso8583.model;
 
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.exception.ISOPackageException;
+import com.dharbuzov.iso8583.util.StringUtils;
 
 import lombok.Builder;
 import lombok.Data;
@@ -69,5 +71,35 @@ public class MessageType {
         throw new ISOException("Can't set the proper response type, for message function: '%s'",
             function);
     }
+  }
+
+  /**
+   * Returns message type as a MTI string like 'xxxx'.
+   *
+   * @return mti string
+   */
+  public String toMTIString() {
+    return String.format("%s%s%s%s", version.getValue(), clazz.getValue(), function.getValue(),
+        origin.getValue());
+  }
+
+  /**
+   * Returns message type constructed from mti string.
+   *
+   * @param mtiStr mti string to get message type from
+   * @return message type instance
+   */
+  public static MessageType fromMTIString(String mtiStr) {
+    if (StringUtils.isEmpty(mtiStr)) {
+      throw new ISOPackageException("MTI header is missing!");
+    }
+    if (mtiStr.length() != 4) {
+      throw new ISOPackageException("MTI header should have length equals to 4!");
+    }
+    final char[] mtiChars = mtiStr.toCharArray();
+    return MessageType.builder().build();
+    /*return MessageType.builder().version(MessageVersion.fromChar(mtiChars[0]))
+        .clazz(MessageClass.fromChar(mtiChars[1])).function(MessageFunction.fromChar(mtiChars[2]))
+        .origin(MessageOrigin.fromChar(mtiChars[3])).build();*/
   }
 }

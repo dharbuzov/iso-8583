@@ -15,12 +15,14 @@
  */
 package com.dharbuzov.iso8583.factory;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 
 /**
- * Default implementation of listener factory.
+ * Default implementation of {@link ISOMessageListenerFactory} listener factory. This class could be
+ * easily extended based on specific needs.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
@@ -28,13 +30,12 @@ public class ISODefaultMessageListenerFactory extends ISOOrderedContainer<ISOMes
     implements ISOMessageListenerFactory {
 
   @Override
-  public ISOMessage onMessage(ISOMessage message) {
+  public void onMessage(ISOReplyChannel replyChannel, ISOMessage message) {
     for (ISOMessageListener messageListener : this.orderedSet) {
       if (messageListener.isApplicable(message)) {
-        messageListener.onMessage(message);
+        messageListener.onMessage(replyChannel, message);
       }
     }
-    return message;
   }
 
   @Override

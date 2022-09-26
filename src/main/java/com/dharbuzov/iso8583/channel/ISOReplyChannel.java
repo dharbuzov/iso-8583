@@ -13,36 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.config;
+package com.dharbuzov.iso8583.channel;
 
-import java.net.InetSocketAddress;
-
-import com.dharbuzov.iso8583.util.StringUtils;
-
-import lombok.Builder;
-import lombok.Data;
+import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
- * Represents the connection properties.
+ * The interface which represents the channel abstraction to reply message into the same channel
+ * from which message came in.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Data
-@Builder
-public class ISOConnProperties {
-
-  public static final String DEFAULT_HOST = "localhost";
-
-  private String host;
-
-  private int port;
+@FunctionalInterface
+public interface ISOReplyChannel {
 
   /**
-   * Gets the inet socket address based on provided host and port.
+   * Reply message to the source channel.
    *
-   * @return inet socket address
+   * @param message to reply with
    */
-  public InetSocketAddress getInetSocketAddress() {
-    return new InetSocketAddress(StringUtils.isEmpty(host) ? DEFAULT_HOST : host, port);
-  }
+  void reply(ISOMessage message);
 }

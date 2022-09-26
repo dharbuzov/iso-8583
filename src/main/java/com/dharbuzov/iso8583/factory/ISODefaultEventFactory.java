@@ -20,6 +20,9 @@ import com.dharbuzov.iso8583.model.event.Event;
 import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 
 /**
+ * Default implementation of {@link ISOEventFactory}. This class could be easily extended based on
+ * specific needs.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener>
@@ -27,7 +30,11 @@ public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener
 
   @Override
   public void notifyEvent(Event event) {
-
+    for (ISOEventListener listener : this.orderedSet) {
+      if (listener.isApplicable(event)) {
+        listener.onEvent(event);
+      }
+    }
   }
 
   @Override

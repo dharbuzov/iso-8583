@@ -17,6 +17,7 @@ package com.dharbuzov.iso8583.channel.netty;
 
 import java.util.List;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.exception.ISOPackageException;
@@ -159,8 +160,8 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
 
   /**
    * The message handler class, the main responsibility of this class is to obtain the decoded
-   * incoming message and notify the message listeners {@link ISOMessageListenerFactory} defined in the
-   * library.
+   * incoming message and notify the message listeners {@link ISOMessageListenerFactory} defined in
+   * the library.
    */
   @RequiredArgsConstructor
   protected static class NettyMessageHandler extends SimpleChannelInboundHandler<ISOMessage> {
@@ -177,10 +178,8 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-      final ISOMessage resMsg = listenerFactory.onMessage(msg);
-      if (resMsg != null) {
-        ctx.writeAndFlush(resMsg);
-      }
+      final ISOReplyChannel replyChannel = new ISONettyReplyChannel(ctx);
+      listenerFactory.onMessage(replyChannel, msg);
     }
   }
 }

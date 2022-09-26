@@ -15,8 +15,12 @@
  */
 package com.dharbuzov.iso8583.config;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.dharbuzov.iso8583.model.MessageType;
 
 import lombok.Builder;
 import lombok.Data;
@@ -28,5 +32,16 @@ import lombok.Data;
 @Builder
 public class ISOMessageProperties {
 
-  private Map<String, List<Integer>> keys;
+  private Map<MessageType, List<Integer>> fieldKeys;
+
+  public static class ISOMessagePropertiesBuilder {
+
+    private Map<MessageType, List<Integer>> fieldKeys = new HashMap<>();
+
+    public ISOMessagePropertiesBuilder messageTypeFieldKeys(MessageType messageType, Integer... fields) {
+      fieldKeys.put(messageType, Arrays.asList(fields));
+      return this;
+    }
+
+  }
 }
