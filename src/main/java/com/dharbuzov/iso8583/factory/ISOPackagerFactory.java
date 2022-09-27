@@ -16,6 +16,7 @@
 package com.dharbuzov.iso8583.factory;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 
 /**
  * A Packager factory responsible for orchestrating the {@link ISOMessage} message packaging into
@@ -41,4 +42,18 @@ public interface ISOPackagerFactory {
    * @return unpacked message object
    */
   ISOMessage unpack(byte[] msgBytes);
+
+  /**
+   * Adds message packager to factory.
+   *
+   * @param messagePackager message packager to add
+   */
+  void addMessagePackager(ISOMessagePackager messagePackager);
+
+  /**
+   * Removes message packager from factory.
+   *
+   * @param messagePackager message packager to remove
+   */
+  void removeMessagePackager(ISOMessagePackager messagePackager);
 }

@@ -17,6 +17,7 @@ package com.dharbuzov.iso8583.binder;
 
 import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageFunction;
 import com.dharbuzov.iso8583.model.MessageType;
 
 import lombok.RequiredArgsConstructor;
@@ -31,10 +32,24 @@ public class DefaultMessageBinder implements MessageBinder {
 
   private final ISOMessageProperties properties;
   private final MessageKeyGenerator messageKeyGenerator;
+
   @Override
   public boolean isBind(MessageType reqMsgType, String reqMsgKey, ISOMessage inMsg) {
     final MessageType inMsgType = inMsg.getType();
-    //TODO: impl
-    return true;
+    if (!(reqMsgType.getVersion() == inMsgType.getVersion())) {
+      return false;
+    }
+    if (!(reqMsgType.getClazz() == inMsgType.getClazz())) {
+      return false;
+    }
+    if (!(MessageFunction.REQUEST == reqMsgType.getFunction()
+          && MessageFunction.REQUEST_RESPONSE == inMsgType.getFunction())) {
+      return false;
+    }
+    if (!(MessageFunction.ADVICE == reqMsgType.getFunction()
+          && MessageFunction.ADVICE_RESPONSE == inMsgType.getFunction())) {
+      return false;
+    }
+    return reqMsgKey.equals(messageKeyGenerator.generate(inMsg));
   }
 }

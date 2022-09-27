@@ -13,31 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.exception;
+package com.dharbuzov.iso8583.channel;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 /**
- * Exception thrown to indicate any errors occurred in the message packaging process.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISOPackageException extends ISOException {
+public class ChannelTypeTest {
 
-  /**
-   * Constructor based on exception message.
-   *
-   * @param message error message
-   */
-  public ISOPackageException(String message) {
-    super(message);
-  }
-
-  /**
-   * Constructor based on format message.
-   *
-   * @param formatMessage format message
-   * @param args          arguments of formatted message
-   */
-  public ISOPackageException(String formatMessage, Object... args) {
-    super(formatMessage, args);
+  @Test
+  void defaultChannelTest() {
+    Assertions.assertEquals(ChannelType.NETTY, ChannelType.defaultChannelType());
   }
 }

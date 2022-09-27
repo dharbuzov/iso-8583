@@ -13,41 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
+package com.dharbuzov.iso8583.channel;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 
 /**
- * Default implementation of packager factory.
+ * The interface which represents the channel abstraction to reply message into the same channel
+ * from which message came in.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+@FunctionalInterface
+public interface ISOReplyChannel {
 
   /**
-   * {@inheritDoc}
+   * Reply message to the source channel.
+   *
+   * @param message to reply with
    */
-  @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
-
-  @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
-
-  @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
+  void reply(ISOMessage message);
 }

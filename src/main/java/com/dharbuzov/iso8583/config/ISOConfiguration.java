@@ -16,7 +16,8 @@
 package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ISOChannel;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 
 /**
@@ -38,12 +39,20 @@ public interface ISOConfiguration<T extends ISOBaseProperties, C extends ISOChan
   C createChannel(T properties);
 
   /**
+   * Creates the event factory.
+   *
+   * @param properties properties to configure the event factory
+   * @return created event factory
+   */
+  ISOEventFactory createEventFactory(T properties);
+
+  /**
    * Creates the listener factory.
    *
    * @param properties properties to configure the listener factory
    * @return created listener factory
    */
-  ISOListenerFactory createListenerFactory(T properties);
+  ISOMessageListenerFactory createListenerFactory(T properties);
 
   /**
    * Creates the packager factory.

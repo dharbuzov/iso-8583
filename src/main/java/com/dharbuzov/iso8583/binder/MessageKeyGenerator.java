@@ -23,7 +23,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
  * response messages from the server in synchronous communication model.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
- * @see ISOMessageProperties#getKeys()
+ * @see ISOMessageProperties#getFieldKeys()
  * @see com.dharbuzov.iso8583.client.ISOSyncClient
  */
 public interface MessageKeyGenerator {

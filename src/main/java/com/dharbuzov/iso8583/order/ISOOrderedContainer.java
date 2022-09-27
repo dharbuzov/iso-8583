@@ -13,40 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.exception;
+package com.dharbuzov.iso8583.order;
+
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
- * Exception thrown to indicate any errors occurred in the library.
+ * Base class which represents the container which might keep elements in ordered manner.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
+ * @see ISOOrdered
  */
-public class ISOException extends RuntimeException {
+public abstract class ISOOrderedContainer<T extends ISOOrdered> {
+
+  /* Ordered container */
+  protected final Queue<T> queue = new PriorityQueue<>(new ISOOrdered.ISOOrderedComparator());
 
   /**
-   * Constructor based on another exception.
+   * Adds element to the ordered queue.
    *
-   * @param ex another exception
+   * @param element element to add
    */
-  public ISOException(Exception ex) {
-    super(ex);
+  protected void addToQueue(T element) {
+    this.queue.add(element);
   }
 
   /**
-   * Constructor based on exception message.
+   * Removes element from the ordered queue.
    *
-   * @param message error message
+   * @param element element to remove
    */
-  public ISOException(String message) {
-    super(message);
-  }
-
-  /**
-   * Constructor based on format message.
-   *
-   * @param formatMessage format message
-   * @param args          arguments of formatted message
-   */
-  public ISOException(String formatMessage, Object... args) {
-    super(String.format(formatMessage, args));
+  protected void removeFromQueue(T element) {
+    this.queue.remove(element);
   }
 }

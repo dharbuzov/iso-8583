@@ -33,7 +33,7 @@ public class ISONettyMessageObservable {
 
   private List<ExpiredMessageObserver> observers = new LinkedList<>();
 
-  public boolean notifyMessageIn(ISOMessage msg) {
+  public boolean onMessage(ISOMessage msg) {
     observers.removeIf(expiredMessageObserver -> expiredMessageObserver.getExpiredAt()
         .isAfter(LocalDateTime.now()));
     for (ExpiredMessageObserver observer : observers) {
@@ -54,7 +54,7 @@ public class ISONettyMessageObservable {
   @Getter
   @Builder
   @RequiredArgsConstructor
-  private class ExpiredMessageObserver {
+  private static class ExpiredMessageObserver {
     private final ISONettyMessageObserver observer;
     private final LocalDateTime expiredAt;
   }

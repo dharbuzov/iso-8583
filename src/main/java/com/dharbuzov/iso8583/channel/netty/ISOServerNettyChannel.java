@@ -16,12 +16,13 @@
 package com.dharbuzov.iso8583.channel.netty;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -44,7 +45,7 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
    * @param listenerFactory  listener factory
    */
   public ISOServerNettyChannel(ISOServerProperties serverProperties,
-      ISOPackagerFactory packagerFactory, ISOListenerFactory listenerFactory) {
+      ISOPackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory) {
     super(serverProperties, packagerFactory, listenerFactory);
   }
 
@@ -58,6 +59,8 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
       final EventLoopGroup childGroup = new NioEventLoopGroup();
       final ServerBootstrap bootstrap =
           new ServerBootstrap().group(parentGroup, childGroup).channel(NioServerSocketChannel.class)
+              .option(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
+              .option(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive())
               .handler(NettyChannelInitializer.builder()
                   .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
                   .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))

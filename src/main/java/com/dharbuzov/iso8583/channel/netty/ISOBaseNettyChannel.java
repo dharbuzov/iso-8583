@@ -17,10 +17,11 @@ package com.dharbuzov.iso8583.channel.netty;
 
 import java.util.List;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.exception.ISOPackageException;
-import com.dharbuzov.iso8583.factory.ISOListenerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
@@ -47,19 +48,18 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
   protected final T properties;
   protected final ISOConnProperties connProperties;
   protected final ISOPackagerFactory packagerFactory;
-  protected final ISOListenerFactory listenerFactory;
-
+  protected final ISOMessageListenerFactory listenerFactory;
   protected Channel nettyChannel;
 
   /**
-   * Base constructor.
+   * Base netty channel constructor.
    *
    * @param properties      iso properties
    * @param packagerFactory packager factory
    * @param listenerFactory listener factory
    */
   public ISOBaseNettyChannel(T properties, ISOPackagerFactory packagerFactory,
-      ISOListenerFactory listenerFactory) {
+      ISOMessageListenerFactory listenerFactory) {
     this.properties = properties;
     this.connProperties = properties.getConnection();
     this.packagerFactory = packagerFactory;
@@ -160,13 +160,13 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
 
   /**
    * The message handler class, the main responsibility of this class is to obtain the decoded
-   * incoming message and notify the message listeners {@link ISOListenerFactory} defined in the
-   * library.
+   * incoming message and notify the message listeners {@link ISOMessageListenerFactory} defined in
+   * the library.
    */
   @RequiredArgsConstructor
   protected static class NettyMessageHandler extends SimpleChannelInboundHandler<ISOMessage> {
 
-    protected final ISOListenerFactory listenerFactory;
+    protected final ISOMessageListenerFactory listenerFactory;
 
     /**
      * Reads the message from the channel out list.
@@ -178,7 +178,8 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-      listenerFactory.onMessage(msg);
+      final ISOReplyChannel replyChannel = new ISONettyReplyChannel(ctx);
+      listenerFactory.onMessage(replyChannel, msg);
     }
   }
 }

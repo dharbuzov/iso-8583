@@ -13,41 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
+package com.dharbuzov.iso8583.channel.netty;
 
+import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+
+import io.netty.channel.ChannelHandlerContext;
+import lombok.RequiredArgsConstructor;
 
 /**
- * Default implementation of packager factory.
+ * Netty based reply channel, which writes to the channel message and flushes.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+@RequiredArgsConstructor
+public class ISONettyReplyChannel implements ISOReplyChannel {
+
+  private final ChannelHandlerContext ctx;
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
-
-  @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
-
-  @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+  public void reply(ISOMessage message) {
+    ctx.writeAndFlush(message);
   }
 }

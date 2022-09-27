@@ -23,7 +23,6 @@ public class MainTest {
 
     final ISOClientConfiguration clientConfiguration = ISOClientConfiguration.builder()
         .properties(ISOClientProperties.builder()
-            .keepAlive(true)
             .name("MyISO8583Client")
             .build())
         .build();

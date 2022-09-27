@@ -13,41 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+package com.dharbuzov.iso8583.model.event;
 
 /**
- * Default implementation of packager factory.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public abstract class AbstractEvent implements Event {
+  protected final EventType eventType;
+  protected final Object value;
 
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+  public AbstractEvent(EventType eventType, Object value) {
+    this.eventType = eventType;
+    this.value = value;
   }
 
   @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
+  public EventType getEventType() {
+    return eventType;
   }
 
   @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+  @SuppressWarnings("unchecked")
+  public <T> T getValue() {
+    return (T) value;
   }
 }

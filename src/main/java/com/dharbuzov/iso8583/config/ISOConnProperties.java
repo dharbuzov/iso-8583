@@ -31,9 +31,15 @@ import lombok.Data;
 @Builder
 public class ISOConnProperties {
 
+  public static final String DEFAULT_HOST = "localhost";
+
   private String host;
 
   private int port;
+
+  private boolean noDelay;
+
+  private boolean keepAlive;
 
   /**
    * Gets the inet socket address based on provided host and port.
@@ -41,6 +47,6 @@ public class ISOConnProperties {
    * @return inet socket address
    */
   public InetSocketAddress getInetSocketAddress() {
-    return new InetSocketAddress(StringUtils.isEmpty(host) ? "localhost" : host, port);
+    return new InetSocketAddress(StringUtils.isEmpty(host) ? DEFAULT_HOST : host, port);
   }
 }

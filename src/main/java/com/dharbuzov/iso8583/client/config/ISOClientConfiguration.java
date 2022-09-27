@@ -32,6 +32,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 /**
+ * Client configuration class.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */

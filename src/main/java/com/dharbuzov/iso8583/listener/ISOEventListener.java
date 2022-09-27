@@ -16,11 +16,27 @@
 package com.dharbuzov.iso8583.listener;
 
 import com.dharbuzov.iso8583.model.event.Event;
+import com.dharbuzov.iso8583.order.ISOOrdered;
 
 /**
+ * A Listener interface that allows to listen of any particular events which occur in the library.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOEventListener extends ISOOrderedListener {
+public interface ISOEventListener extends ISOOrdered {
 
+  /**
+   * Handles the occurred event.
+   *
+   * @param event occurred event
+   */
   void onEvent(Event event);
+
+  /**
+   * Returns flag which indicates that the event is applicable by this listener.
+   *
+   * @param event occurred event
+   * @return {@code true} if event is applicable by this listener, otherwise {@code false}
+   */
+  boolean isApplicable(Event event);
 }

@@ -63,7 +63,7 @@ public interface ISOClientChannel extends ISOChannel {
 
   /**
    * Sends the message synchronously and waits the response message from the server. This method is
-   * blocking thread.
+   * blocking active thread.
    *
    * @param msg              message to send
    * @param requestTimeoutMs request timeout to wait for response in milliseconds

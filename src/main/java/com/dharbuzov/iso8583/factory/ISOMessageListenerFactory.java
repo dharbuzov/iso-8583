@@ -13,21 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.listener;
+package com.dharbuzov.iso8583.factory;
 
 import com.dharbuzov.iso8583.channel.ISOReplyChannel;
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.order.ISOOrdered;
 
 /**
- * A Listener for handling incoming ISO-8583 messages from the server.
+ * A Listener factory responsible for handling the incoming {@link ISOMessage} messages.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessageListener extends ISOOrdered {
+public interface ISOMessageListenerFactory {
 
   /**
-   * Handles the incoming message.
+   * Method which is invoked once the client receives incoming message.
    *
    * @param replyChannel channel is used to reply the response for request messages
    * @param message      incoming message
@@ -35,11 +35,16 @@ public interface ISOMessageListener extends ISOOrdered {
   void onMessage(ISOReplyChannel replyChannel, ISOMessage message);
 
   /**
-   * Returns flag which indicates that the message is applicable by this listener.
+   * Adds message listener.
    *
-   * @param message incoming message
-   * @return {@code true} if message is applicable by this listener, otherwise {@code false}
+   * @param messageListener event listener to add
    */
-  boolean isApplicable(ISOMessage message);
+  void addMessageListener(ISOMessageListener messageListener);
 
+  /**
+   * Removes message listener.
+   *
+   * @param messageListener message listener to remove
+   */
+  void removeMessageListener(ISOMessageListener messageListener);
 }

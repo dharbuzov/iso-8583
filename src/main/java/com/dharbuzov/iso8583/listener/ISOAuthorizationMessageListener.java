@@ -13,19 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
+package com.dharbuzov.iso8583.listener;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageClass;
 
 /**
- * Default implementation of listener factory.
+ * Interface to listen for authorization type of messages.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultListenerFactory implements ISOListenerFactory {
+public interface ISOAuthorizationMessageListener extends ISOMessageListener {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public ISOMessage onMessage(ISOMessage message) {
-    return null;
+  default boolean isApplicable(ISOMessage message) {
+    return message != null && message.getType() != null
+           && MessageClass.AUTHORIZATION == message.getType().getClazz();
   }
 }

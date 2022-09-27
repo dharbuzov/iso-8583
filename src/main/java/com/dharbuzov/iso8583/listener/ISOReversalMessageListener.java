@@ -13,41 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.factory;
+package com.dharbuzov.iso8583.listener;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.model.MessageClass;
 
 /**
- * Default implementation of packager factory.
+ * Interface to listen for reversal type of messages.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public interface ISOReversalMessageListener extends ISOMessageListener {
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public byte[] pack(ISOMessage msg) {
-    return new byte[0];
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
-
-  @Override
-  public void addMessagePackager(ISOMessagePackager messagePackager) {
-
-  }
-
-  @Override
-  public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+  default boolean isApplicable(ISOMessage message) {
+    return message != null && message.getType() != null
+           && MessageClass.REVERSAL_CHARGEBACK == message.getType().getClazz();
   }
 }
