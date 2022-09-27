@@ -19,16 +19,30 @@ import java.util.PriorityQueue;
 import java.util.Queue;
 
 /**
+ * Base class which represents the container which might keep elements in ordered manner.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
+ * @see ISOOrdered
  */
 public abstract class ISOOrderedContainer<T extends ISOOrdered> {
 
+  /* Ordered container */
   protected final Queue<T> queue = new PriorityQueue<>(new ISOOrdered.ISOOrderedComparator());
 
+  /**
+   * Adds element to the ordered queue.
+   *
+   * @param element element to add
+   */
   protected void addToQueue(T element) {
     this.queue.add(element);
   }
 
+  /**
+   * Removes element from the ordered queue.
+   *
+   * @param element element to remove
+   */
   protected void removeFromQueue(T element) {
     this.queue.remove(element);
   }

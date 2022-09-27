@@ -28,20 +28,34 @@ import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener>
     implements ISOEventFactory {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void notifyEvent(Event event) {
     for (ISOEventListener listener : this.queue) {
       if (listener.isApplicable(event)) {
-        listener.onEvent(event);
+        try {
+          listener.onEvent(event);
+        } catch (Exception ex) {
+          // Ignoring the exceptions to avoid any side effects in main flow
+          //TODO: log the exception
+        }
       }
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addEventListener(ISOEventListener eventListener) {
     addToQueue(eventListener);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void removeEventListener(ISOEventListener eventListener) {
     removeFromQueue(eventListener);

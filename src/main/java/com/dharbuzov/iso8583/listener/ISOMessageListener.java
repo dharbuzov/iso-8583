@@ -20,12 +20,26 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.order.ISOOrdered;
 
 /**
+ * A Listener for handling incoming ISO-8583 messages from the server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOMessageListener extends ISOOrdered {
 
+  /**
+   * Handles the incoming message.
+   *
+   * @param replyChannel channel is used to reply the response for request messages
+   * @param message      incoming message
+   */
   void onMessage(ISOReplyChannel replyChannel, ISOMessage message);
 
+  /**
+   * Returns flag which indicates that the message is applicable by this listener.
+   *
+   * @param message incoming message
+   * @return {@code true} if message is applicable by this listener, otherwise {@code false}
+   */
   boolean isApplicable(ISOMessage message);
 
 }

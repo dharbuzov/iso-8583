@@ -27,7 +27,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 public interface ISOMessageListenerFactory {
 
   /**
-   * Method which is invoked once the client receives any message.
+   * Method which is invoked once the client receives incoming message.
    *
    * @param replyChannel channel is used to reply the response for request messages
    * @param message      incoming message

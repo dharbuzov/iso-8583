@@ -16,18 +16,36 @@
 package com.dharbuzov.iso8583.exception;
 
 /**
+ * Exception thrown to indicate any errors occurred in the library.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOException extends RuntimeException {
 
+  /**
+   * Constructor based on another exception.
+   *
+   * @param ex another exception
+   */
   public ISOException(Exception ex) {
     super(ex);
   }
 
+  /**
+   * Constructor based on exception message.
+   *
+   * @param message error message
+   */
   public ISOException(String message) {
     super(message);
   }
 
+  /**
+   * Constructor based on format message.
+   *
+   * @param formatMessage format message
+   * @param args          arguments of formatted message
+   */
   public ISOException(String formatMessage, Object... args) {
     super(String.format(formatMessage, args));
   }

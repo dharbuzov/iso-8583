@@ -52,7 +52,7 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
   protected Channel nettyChannel;
 
   /**
-   * Base constructor.
+   * Base netty channel constructor.
    *
    * @param properties      iso properties
    * @param packagerFactory packager factory

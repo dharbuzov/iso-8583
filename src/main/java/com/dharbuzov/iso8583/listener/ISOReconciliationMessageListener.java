@@ -19,10 +19,15 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageClass;
 
 /**
+ * Interface to listen for reconciliation type of messages.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOReconciliationMessageListener extends ISOMessageListener {
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   default boolean isApplicable(ISOMessage message) {
     return message != null && message.getType() != null

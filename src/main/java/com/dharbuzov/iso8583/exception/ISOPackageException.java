@@ -16,14 +16,27 @@
 package com.dharbuzov.iso8583.exception;
 
 /**
+ * Exception thrown to indicate any errors occurred in the message packaging process.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISOPackageException extends ISOException {
 
+  /**
+   * Constructor based on exception message.
+   *
+   * @param message error message
+   */
   public ISOPackageException(String message) {
     super(message);
   }
 
+  /**
+   * Constructor based on format message.
+   *
+   * @param formatMessage format message
+   * @param args          arguments of formatted message
+   */
   public ISOPackageException(String formatMessage, Object... args) {
     super(formatMessage, args);
   }
