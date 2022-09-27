@@ -15,21 +15,21 @@
  */
 package com.dharbuzov.iso8583.order;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public abstract class ISOOrderedContainer<T extends ISOOrdered> {
 
-  protected final Set<T> orderedSet = new TreeSet<>(new ISOOrdered.ISOOrderedComparator());
+  protected final Queue<T> queue = new PriorityQueue<>(new ISOOrdered.ISOOrderedComparator());
 
-  protected void addToOrderedSet(T element) {
-    this.orderedSet.add(element);
+  protected void addToQueue(T element) {
+    this.queue.add(element);
   }
 
-  protected void removeFromOrderedSet(T element) {
-    this.orderedSet.remove(element);
+  protected void removeFromQueue(T element) {
+    this.queue.remove(element);
   }
 }

@@ -36,6 +36,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -91,12 +92,14 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
     if (nettyChannel == null) {
       final EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
       final Bootstrap bootstrap =
-          new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class).handler(
-              NettyChannelInitializer.builder()
-                  .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
-                  .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))
-                  .nettyMessageHandler(
-                      new SyncNettyMessageHandler(listenerFactory, messageObservable)).build());
+          new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class)
+              .option(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
+              .option(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive()).handler(
+                  NettyChannelInitializer.builder()
+                      .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
+                      .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))
+                      .nettyMessageHandler(
+                          new SyncNettyMessageHandler(listenerFactory, messageObservable)).build());
       try {
         ChannelFuture channelFuture =
             bootstrap.connect(connProperties.getInetSocketAddress()).sync();
@@ -173,8 +176,8 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
   /**
    * Class which decorates the netty message handler to be able to handle the messages in
    * {@link Future} futures that are awaiting a response message. This handler uses
-   * {@link MessageKeyGenerator} to identify that the response message is applicable for a request
-   * message.
+   * {@link MessageKeyGenerator} and {@link MessageBinder} to identify that the response message is
+   * applicable for a request message.
    */
   protected static class SyncNettyMessageHandler extends NettyMessageHandler {
 

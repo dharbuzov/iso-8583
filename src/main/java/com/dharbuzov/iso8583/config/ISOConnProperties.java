@@ -37,6 +37,10 @@ public class ISOConnProperties {
 
   private int port;
 
+  private boolean noDelay;
+
+  private boolean keepAlive;
+
   /**
    * Gets the inet socket address based on provided host and port.
    *

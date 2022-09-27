@@ -35,8 +35,6 @@ public class ISOClientProperties extends ISOBaseProperties {
 
   private String name;
 
-  private boolean keepAlive;
-
   private ISOReconnectProperties reconnect;
 
   private long requestTimeoutMs;

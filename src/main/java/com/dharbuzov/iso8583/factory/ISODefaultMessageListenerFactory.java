@@ -31,7 +31,7 @@ public class ISODefaultMessageListenerFactory extends ISOOrderedContainer<ISOMes
 
   @Override
   public void onMessage(ISOReplyChannel replyChannel, ISOMessage message) {
-    for (ISOMessageListener messageListener : this.orderedSet) {
+    for (ISOMessageListener messageListener : this.queue) {
       if (messageListener.isApplicable(message)) {
         messageListener.onMessage(replyChannel, message);
       }
@@ -40,11 +40,11 @@ public class ISODefaultMessageListenerFactory extends ISOOrderedContainer<ISOMes
 
   @Override
   public void addMessageListener(ISOMessageListener messageListener) {
-    addToOrderedSet(messageListener);
+    addToQueue(messageListener);
   }
 
   @Override
   public void removeMessageListener(ISOMessageListener messageListener) {
-    removeFromOrderedSet(messageListener);
+    removeFromQueue(messageListener);
   }
 }

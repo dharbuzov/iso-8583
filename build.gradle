@@ -18,16 +18,21 @@ repositories {
 ext {
     lombokVersion = '1.18.24'
     jupiterVersion = '5.9.0'
+    mockitoVersion = '4.8.0'
     nettyVersion = '4.1.82.Final'
 }
 
 dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
+    testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation "io.netty:netty-all:$nettyVersion"
 
     compileOnly "org.projectlombok:lombok:$lombokVersion"
+
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 }
 

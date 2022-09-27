@@ -30,7 +30,7 @@ public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener
 
   @Override
   public void notifyEvent(Event event) {
-    for (ISOEventListener listener : this.orderedSet) {
+    for (ISOEventListener listener : this.queue) {
       if (listener.isApplicable(event)) {
         listener.onEvent(event);
       }
@@ -39,11 +39,11 @@ public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener
 
   @Override
   public void addEventListener(ISOEventListener eventListener) {
-    addToOrderedSet(eventListener);
+    addToQueue(eventListener);
   }
 
   @Override
   public void removeEventListener(ISOEventListener eventListener) {
-    removeFromOrderedSet(eventListener);
+    removeFromQueue(eventListener);
   }
 }
