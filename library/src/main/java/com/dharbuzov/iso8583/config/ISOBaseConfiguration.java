@@ -35,6 +35,7 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
 
   protected final C channel;
   protected final ISOMessageListenerFactory listenerFactory;
+  protected final ISOEventFactory eventFactory;
   protected final ISOPackagerFactory packagerFactory;
 
   /**
@@ -45,6 +46,7 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
   public ISOBaseConfiguration(T properties) {
     this.channel = createChannel(properties);
     this.listenerFactory = createListenerFactory(properties);
+    this.eventFactory = createEventFactory(properties);
     this.packagerFactory = createPackagerFactory(properties);
   }
 

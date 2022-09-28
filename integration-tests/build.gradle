@@ -1,3 +1,8 @@
+dependencies {
+    implementation project(":library")
+    testImplementation "org.awaitility:awaitility:$awaitilityVersion"
+}
+
 jar {
     enabled = false
 }

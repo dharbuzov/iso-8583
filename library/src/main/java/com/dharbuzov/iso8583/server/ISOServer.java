@@ -15,6 +15,9 @@
  */
 package com.dharbuzov.iso8583.server;
 
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
+
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
@@ -36,4 +39,42 @@ public interface ISOServer {
    * Method for shutting down the ISO-8583 server.
    */
   void shutdown();
+
+  /**
+   * Adds message listener.
+   *
+   * @param messageListener event listener to add
+   */
+  void addMessageListener(ISOMessageListener messageListener);
+
+  /**
+   * Removes message listener.
+   *
+   * @param messageListener message listener to remove
+   */
+  void removeMessageListener(ISOMessageListener messageListener);
+
+  /**
+   * Removes all message listeners attached to the server.
+   */
+  void removeMessageListeners();
+
+  /**
+   * Adds event listener.
+   *
+   * @param eventListener event listener to add
+   */
+  void addEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes event listener.
+   *
+   * @param eventListener event listener to remove
+   */
+  void removeEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes all event listeners attached to the server.
+   */
+  void removeEventListeners();
 }

@@ -24,6 +24,7 @@ subprojects {
         jupiterVersion = '5.9.0'
         mockitoVersion = '4.8.0'
         nettyVersion = '4.1.82.Final'
+        awaitilityVersion = '4.2.0'
     }
 
     dependencies {

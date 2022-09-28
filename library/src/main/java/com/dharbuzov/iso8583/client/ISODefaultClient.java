@@ -5,6 +5,10 @@ import java.util.concurrent.Future;
 
 import com.dharbuzov.iso8583.channel.ISOClientChannel;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.util.StringUtils;
 
@@ -20,20 +24,25 @@ public class ISODefaultClient implements ISOSyncClient {
 
   @Getter
   protected final String name;
-
   @Getter
   protected final ISOClientChannel channel;
+  protected final ISOMessageListenerFactory listenerFactory;
+  protected final ISOEventFactory eventFactory;
 
   /**
    * Constructor based on properties and client channel.
    *
-   * @param properties properties to configure the client
-   * @param channel    client channel
+   * @param properties      properties to configure the client
+   * @param channel         client channel
+   * @param listenerFactory message listener factory
    */
-  public ISODefaultClient(ISOClientProperties properties, ISOClientChannel channel) {
+  public ISODefaultClient(ISOClientProperties properties, ISOClientChannel channel,
+      ISOMessageListenerFactory listenerFactory, ISOEventFactory eventFactory) {
     Objects.requireNonNull(properties);
     this.name = getOrCreateName(properties);
     this.channel = channel;
+    this.listenerFactory = listenerFactory;
+    this.eventFactory = eventFactory;
   }
 
   /**
@@ -63,6 +72,11 @@ public class ISODefaultClient implements ISOSyncClient {
   @Override
   public boolean isConnected() {
     return channel.isConnected();
+  }
+
+  @Override
+  public void disconnect() {
+    channel.disconnect();
   }
 
   /**
@@ -95,5 +109,53 @@ public class ISODefaultClient implements ISOSyncClient {
   @Override
   public ISOMessage send(ISOMessage msg, long requestTimeoutMs) {
     return channel.send(msg, requestTimeoutMs);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addMessageListener(ISOMessageListener messageListener) {
+    listenerFactory.addMessageListener(messageListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeMessageListener(ISOMessageListener messageListener) {
+    listenerFactory.removeMessageListener(messageListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeMessageListeners() {
+    listenerFactory.removeMessageListeners();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addEventListener(ISOEventListener eventListener) {
+    eventFactory.addEventListener(eventListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeEventListener(ISOEventListener eventListener) {
+    eventFactory.removeEventListener(eventListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeEventListeners() {
+    eventFactory.removeEventListeners();
   }
 }

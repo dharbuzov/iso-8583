@@ -50,6 +50,26 @@ public class ISOMessage {
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
 
   /**
+   * Returns flag which indicates that the message is request.
+   *
+   * @return {@code true} if message is request, otherwise {@code false}
+   */
+  public boolean isRequest() {
+    return !isResponse();
+  }
+
+  /**
+   * Returns flag which indicates that the message is response.
+   *
+   * @return {@code true} if message is response, otherwise {@code false}
+   */
+  public boolean isResponse() {
+    return type != null && type.getFunction() != null && (
+        MessageFunction.REQUEST_RESPONSE == type.getFunction()
+        || MessageFunction.ADVICE_RESPONSE == type.getFunction());
+  }
+
+  /**
    * Sets the current message as a response message.
    */
   public void setResponseType() {

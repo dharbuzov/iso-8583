@@ -17,16 +17,16 @@ package com.dharbuzov.iso8583.client.config;
 
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
-@Builder
+@SuperBuilder
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ISOClientProperties extends ISOBaseProperties {

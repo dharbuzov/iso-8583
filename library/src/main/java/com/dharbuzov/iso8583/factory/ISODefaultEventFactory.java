@@ -60,4 +60,12 @@ public class ISODefaultEventFactory extends ISOOrderedContainer<ISOEventListener
   public void removeEventListener(ISOEventListener eventListener) {
     removeFromQueue(eventListener);
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeEventListeners() {
+    removeAllFromQueue();
+  }
 }

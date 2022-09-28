@@ -17,18 +17,48 @@ package com.dharbuzov.iso8583.server.config;
 
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
+ * The properties to configure the server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
-@Builder
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class ISOServerProperties extends ISOBaseProperties {
 
+  // At least 1 thead to handle incoming messages
+  public static final int DEFAULT_NUMBER_OF_THREADS = 1;
+
+  private int numberOfThreads;
+
+  /**
+   * Gets configured number of threads or default.
+   *
+   * @return number of threads of default {@link ISOServerProperties#DEFAULT_NUMBER_OF_THREADS}
+   */
+  public int getNumberOfThreadsOrDefault() {
+    if (numberOfThreads < 1) {
+      return DEFAULT_NUMBER_OF_THREADS;
+    }
+    return numberOfThreads;
+  }
+
+  /**
+   * Overrides lombok {@link Builder} class, by adding additional methods.
+   public static class ISOServerPropertiesBuilder {
+
+   public
+   }*/
 }

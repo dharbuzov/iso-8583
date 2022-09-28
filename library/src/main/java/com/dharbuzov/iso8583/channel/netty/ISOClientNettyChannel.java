@@ -102,11 +102,12 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
                       .nettyMessageHandler(
                           new SyncNettyMessageHandler(listenerFactory, messageObservable)).build());
       try {
+        bootstrap.validate();
         ChannelFuture channelFuture =
             bootstrap.connect(connProperties.getInetSocketAddress()).sync();
         nettyChannel = channelFuture.channel();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
+      } catch (Exception e) {
+        throw new ISOException(e);
       } finally {
         eventLoopGroup.shutdownGracefully();
       }

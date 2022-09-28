@@ -46,4 +46,11 @@ public abstract class ISOOrderedContainer<T extends ISOOrdered> {
   protected void removeFromQueue(T element) {
     this.queue.remove(element);
   }
+
+  /**
+   * Removes all elements from the queue.
+   */
+  protected void removeAllFromQueue() {
+    this.queue.clear();
+  }
 }

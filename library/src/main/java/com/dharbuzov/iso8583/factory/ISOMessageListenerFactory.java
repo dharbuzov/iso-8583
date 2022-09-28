@@ -47,4 +47,9 @@ public interface ISOMessageListenerFactory {
    * @param messageListener message listener to remove
    */
   void removeMessageListener(ISOMessageListener messageListener);
+
+  /**
+   * Removes all message listeners from the factory.
+   */
+  void removeMessageListeners();
 }

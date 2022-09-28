@@ -16,6 +16,10 @@
 package com.dharbuzov.iso8583.server;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 /**
@@ -28,24 +32,94 @@ public class ISODefaultServer implements ISOServer {
 
   protected final ISOServerProperties serverProperties;
   protected final ISOServerChannel serverChannel;
+  protected final ISOMessageListenerFactory listenerFactory;
+  protected final ISOEventFactory eventFactory;
 
-  public ISODefaultServer(ISOServerProperties serverProperties, ISOServerChannel serverChannel) {
+  /**
+   * Default server constructor.
+   *
+   * @param serverProperties server properties
+   * @param serverChannel    server channel
+   * @param listenerFactory  message listener factory
+   * @param eventFactory     event factory
+   */
+  public ISODefaultServer(ISOServerProperties serverProperties, ISOServerChannel serverChannel,
+      ISOMessageListenerFactory listenerFactory, ISOEventFactory eventFactory) {
     this.serverProperties = serverProperties;
     this.serverChannel = serverChannel;
+    this.listenerFactory = listenerFactory;
+    this.eventFactory = eventFactory;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void start() {
     this.serverChannel.start();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isRunning() {
     return serverChannel.isRunning();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void shutdown() {
     serverChannel.shutdown();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addMessageListener(ISOMessageListener messageListener) {
+    listenerFactory.addMessageListener(messageListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeMessageListener(ISOMessageListener messageListener) {
+    listenerFactory.removeMessageListener(messageListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeMessageListeners() {
+    listenerFactory.removeMessageListeners();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void addEventListener(ISOEventListener eventListener) {
+    eventFactory.addEventListener(eventListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeEventListener(ISOEventListener eventListener) {
+    eventFactory.removeEventListener(eventListener);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeEventListeners() {
+    eventFactory.removeEventListeners();
   }
 }

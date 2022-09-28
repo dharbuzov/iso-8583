@@ -16,9 +16,10 @@
 package com.dharbuzov.iso8583.client;
 
 import com.dharbuzov.iso8583.channel.ISOClientChannel;
-import com.dharbuzov.iso8583.model.ISOMessage;
-
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
+import com.dharbuzov.iso8583.listener.ISOEventListener;
+import com.dharbuzov.iso8583.listener.ISOMessageListener;
+import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
  * The main client interface to interact with. This interface contains all needed methods for
@@ -29,8 +30,7 @@ import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 public interface ISOClient {
 
   /**
-   * Connects the client to the target ISO-8583 server, by using the
-   * {@link ISOClientProperties}.
+   * Connects the client to the target ISO-8583 server, by using the {@link ISOClientProperties}.
    */
   void connect();
 
@@ -40,6 +40,11 @@ public interface ISOClient {
    * @return {@code true} if client is connected and active, otherwise {@code false}.
    */
   boolean isConnected();
+
+  /**
+   * Disconnects the client from the server.
+   */
+  void disconnect();
 
   /**
    * Sends the message asynchronously to the target ISO-8583 server.
@@ -54,4 +59,42 @@ public interface ISOClient {
    * @return associated channel
    */
   ISOClientChannel getChannel();
+
+  /**
+   * Adds message listener.
+   *
+   * @param messageListener event listener to add
+   */
+  void addMessageListener(ISOMessageListener messageListener);
+
+  /**
+   * Removes message listener.
+   *
+   * @param messageListener message listener to remove
+   */
+  void removeMessageListener(ISOMessageListener messageListener);
+
+  /**
+   * Removes all message listeners attached to the client.
+   */
+  void removeMessageListeners();
+
+  /**
+   * Adds event listener.
+   *
+   * @param eventListener event listener to add
+   */
+  void addEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes event listener.
+   *
+   * @param eventListener event listener to remove
+   */
+  void removeEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes all event listeners attached to the client.
+   */
+  void removeEventListeners();
 }

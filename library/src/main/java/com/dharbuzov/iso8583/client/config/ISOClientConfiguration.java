@@ -22,11 +22,13 @@ import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ChannelType;
 import com.dharbuzov.iso8583.channel.ISOClientChannel;
 import com.dharbuzov.iso8583.channel.netty.ISOClientNettyChannel;
-import com.dharbuzov.iso8583.client.ISOClient;
 import com.dharbuzov.iso8583.client.ISODefaultClient;
+import com.dharbuzov.iso8583.client.ISOSyncClient;
 import com.dharbuzov.iso8583.config.ISOBaseConfiguration;
 import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -40,7 +42,7 @@ public class ISOClientConfiguration
     extends ISOBaseConfiguration<ISOClientProperties, ISOClientChannel> {
 
   @Getter
-  protected final ISOClient client;
+  protected final ISOSyncClient client;
   @Getter
   protected final MessageKeyGenerator messageKeyGenerator;
 
@@ -55,7 +57,7 @@ public class ISOClientConfiguration
   @Builder
   public ISOClientConfiguration(ISOClientProperties properties) {
     super(properties);
-    this.client = createClient(properties, channel);
+    this.client = createClient(properties, channel, listenerFactory, eventFactory);
     this.messageKeyGenerator = createMessageKeyGenerator(properties.getMessages());
     this.messageBinder = createMessageBinder(properties.getMessages(), this.messageKeyGenerator);
   }
@@ -105,11 +107,14 @@ public class ISOClientConfiguration
   /**
    * Creates the client based on properties and created channel.
    *
-   * @param properties properties to configure the client
-   * @param channel    client created channel
+   * @param properties      properties to configure the client
+   * @param channel         client created channel
+   * @param listenerFactory message listener factory
+   * @param eventFactory    event factory
    * @return created client interface
    */
-  protected ISOClient createClient(ISOClientProperties properties, ISOClientChannel channel) {
-    return new ISODefaultClient(properties, channel);
+  protected ISOSyncClient createClient(ISOClientProperties properties, ISOClientChannel channel,
+      ISOMessageListenerFactory listenerFactory, ISOEventFactory eventFactory) {
+    return new ISODefaultClient(properties, channel, listenerFactory, eventFactory);
   }
 }

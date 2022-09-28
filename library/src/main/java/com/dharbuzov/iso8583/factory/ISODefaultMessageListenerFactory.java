@@ -56,4 +56,12 @@ public class ISODefaultMessageListenerFactory extends ISOOrderedContainer<ISOMes
   public void removeMessageListener(ISOMessageListener messageListener) {
     removeFromQueue(messageListener);
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void removeMessageListeners() {
+    removeAllFromQueue();
+  }
 }

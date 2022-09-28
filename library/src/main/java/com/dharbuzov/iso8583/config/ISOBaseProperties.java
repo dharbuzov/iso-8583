@@ -17,7 +17,10 @@ package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ChannelType;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * The base properties which are applicable for the client as well as server.
@@ -25,6 +28,9 @@ import lombok.Data;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public abstract class ISOBaseProperties {
 
   private ISOMessageProperties messages;

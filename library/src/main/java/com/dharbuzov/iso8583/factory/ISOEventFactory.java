@@ -45,4 +45,9 @@ public interface ISOEventFactory {
    * @param eventListener event listener to remove
    */
   void removeEventListener(ISOEventListener eventListener);
+
+  /**
+   * Removes all event listeners from the factory.
+   */
+  void removeEventListeners();
 }

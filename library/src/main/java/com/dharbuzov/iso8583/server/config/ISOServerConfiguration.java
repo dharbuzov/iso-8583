@@ -20,6 +20,8 @@ import com.dharbuzov.iso8583.channel.ISOServerChannel;
 import com.dharbuzov.iso8583.channel.netty.ISOServerNettyChannel;
 import com.dharbuzov.iso8583.config.ISOBaseConfiguration;
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.server.ISODefaultServer;
 import com.dharbuzov.iso8583.server.ISOServer;
 
@@ -45,7 +47,7 @@ public class ISOServerConfiguration
   @Builder
   public ISOServerConfiguration(ISOServerProperties properties) {
     super(properties);
-    this.server = createServer(properties, channel);
+    this.server = createServer(properties, channel, listenerFactory, eventFactory);
   }
 
   @Override
@@ -59,7 +61,8 @@ public class ISOServerConfiguration
     }
   }
 
-  protected ISOServer createServer(ISOServerProperties properties, ISOServerChannel channel) {
-    return new ISODefaultServer(properties, channel);
+  protected ISOServer createServer(ISOServerProperties properties, ISOServerChannel channel,
+      ISOMessageListenerFactory listenerFactory, ISOEventFactory eventFactory) {
+    return new ISODefaultServer(properties, channel, listenerFactory, eventFactory);
   }
 }

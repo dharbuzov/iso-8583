@@ -16,6 +16,7 @@
 package com.dharbuzov.iso8583.channel.netty;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
+import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
@@ -59,16 +60,17 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
       final EventLoopGroup childGroup = new NioEventLoopGroup();
       final ServerBootstrap bootstrap =
           new ServerBootstrap().group(parentGroup, childGroup).channel(NioServerSocketChannel.class)
-              .option(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
-              .option(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive())
-              .handler(NettyChannelInitializer.builder()
+              .childOption(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
+              .childOption(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive())
+              .childHandler(NettyChannelInitializer.builder()
                   .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
                   .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))
                   .nettyMessageHandler(new NettyMessageHandler(listenerFactory)).build());
       try {
-        final ChannelFuture f = bootstrap.bind(connProperties.getPort()).sync();
-      } catch (InterruptedException e) {
-        throw new RuntimeException(e);
+        bootstrap.validate();
+        final ChannelFuture f = bootstrap.bind(connProperties.getPort()).sync().await();
+      } catch (Exception e) {
+        throw new ISOException(e);
       } finally {
         parentGroup.shutdownGracefully();
         childGroup.shutdownGracefully();
