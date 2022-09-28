@@ -1,41 +1,43 @@
-plugins {
-    id 'java'
+allprojects {
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+
+    group 'com.github.dharbuzov'
+    version '0.1-SNAPSHOT'
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
+subprojects {
+    apply plugin: 'java'
+
+    java {
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(8))
+        }
     }
-}
 
-group 'com.github.dharbuzov'
-version '0.1-SNAPSHOT'
+    repositories {
+        mavenCentral()
+    }
 
-repositories {
-    mavenCentral()
-}
+    ext {
+        lombokVersion = '1.18.24'
+        jupiterVersion = '5.9.0'
+        mockitoVersion = '4.8.0'
+        nettyVersion = '4.1.82.Final'
+    }
 
-ext {
-    lombokVersion = '1.18.24'
-    jupiterVersion = '5.9.0'
-    mockitoVersion = '4.8.0'
-    nettyVersion = '4.1.82.Final'
-}
+    dependencies {
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
+        testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
-dependencies {
-    testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
-    testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
-    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
+        compileOnly "org.projectlombok:lombok:$lombokVersion"
+        annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+    }
 
-    implementation "io.netty:netty-all:$nettyVersion"
-
-    compileOnly "org.projectlombok:lombok:$lombokVersion"
-
-    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
-}
-
-test {
-    useJUnitPlatform()
+    test {
+        useJUnitPlatform()
+    }
 }

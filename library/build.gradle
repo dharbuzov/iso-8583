@@ -1,0 +1,13 @@
+apply plugin: 'maven-publish'
+apply plugin: 'java-library'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+dependencies {
+    implementation "io.netty:netty-all:$nettyVersion"
+}
+
+
