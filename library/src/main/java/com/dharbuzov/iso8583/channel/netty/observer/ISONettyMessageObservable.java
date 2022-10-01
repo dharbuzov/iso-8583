@@ -15,47 +15,60 @@
  */
 package com.dharbuzov.iso8583.channel.netty.observer;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.LinkedList;
-import java.util.List;
-
 import com.dharbuzov.iso8583.model.ISOMessage;
-
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import com.dharbuzov.iso8583.order.ISOOrderedContainer;
 
 /**
+ * Class represents the netty message observable which works as an interceptor in
+ * {@link com.dharbuzov.iso8583.channel.netty.handler.NettySyncMessageHandler} to catch messages
+ * that should be returned by {@link java.util.concurrent.Future} in
+ * {@link com.dharbuzov.iso8583.client.ISOSyncClient#send(ISOMessage, long)},
+ * {@link com.dharbuzov.iso8583.client.ISOSyncClient#sendFuture(ISOMessage)} or
+ * {@link com.dharbuzov.iso8583.client.ISOSyncClient#send(ISOMessage)}
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISONettyMessageObservable {
+public class ISONettyMessageObservable extends ISOOrderedContainer<ISONettyExpiryMessageObserver>
+    implements ISOMessageObserver {
 
-  private List<ExpiredMessageObserver> observers = new LinkedList<>();
-
-  public boolean onMessage(ISOMessage msg) {
-    observers.removeIf(expiredMessageObserver -> expiredMessageObserver.getExpiredAt()
-        .isAfter(LocalDateTime.now()));
-    for (ExpiredMessageObserver observer : observers) {
-      if (observer.getObserver().notifyMessageIn(msg)) {
-        observers.remove(observer);
+  /**
+   * Handles the message and returns flag which indicates that message is applicable for particular
+   * {@link java.util.concurrent.Future} which waits response message to return.
+   *
+   * @param inMsg incoming message
+   * @return {@code true} if message is handled by await future, otherwise {@code false} which means
+   * that message should be processed by another listeners in default chain of
+   * {@link com.dharbuzov.iso8583.factory.ISOMessageListenerFactory}
+   */
+  @Override
+  public boolean onMessage(ISOMessage inMsg) {
+    removeExpiredObservers();
+    for (ISONettyExpiryMessageObserver messageObserver : this.queue) {
+      if (messageObserver.onMessage(inMsg)) {
+        removeFromQueue(messageObserver);
         return true;
       }
     }
     return false;
   }
 
-  public void addObserver(ISONettyMessageObserver observer, long expirationMs) {
-    observers.add(ExpiredMessageObserver.builder()
-        .expiredAt(LocalDateTime.now().plus(expirationMs, ChronoUnit.MILLIS)).observer(observer)
-        .build());
+  /**
+   * Adds observer to the queue.
+   *
+   * @param observer         observer which waits proper incoming message
+   * @param requestTimeoutMs message request timeout
+   */
+  public void addObserver(ISONettyMessageObserver observer, long requestTimeoutMs) {
+    removeExpiredObservers();
+    addToQueue(new ISONettyExpiryMessageObserver(observer, requestTimeoutMs));
   }
 
-  @Getter
-  @Builder
-  @RequiredArgsConstructor
-  private static class ExpiredMessageObserver {
-    private final ISONettyMessageObserver observer;
-    private final LocalDateTime expiredAt;
+  /**
+   * Removes the observers which are already expired.
+   */
+  protected void removeExpiredObservers() {
+    final long currentTimeMillis = System.currentTimeMillis();
+    removeAllFromQueue(
+        (expiryMsgObserver) -> expiryMsgObserver.getExpiredAtMs() < currentTimeMillis);
   }
 }

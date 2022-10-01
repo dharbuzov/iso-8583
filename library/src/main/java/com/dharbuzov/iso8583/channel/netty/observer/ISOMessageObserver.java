@@ -13,27 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.binder;
+package com.dharbuzov.iso8583.channel.netty.observer;
 
-import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
-import lombok.RequiredArgsConstructor;
-
 /**
+ * The interface represents the observer of incoming messages from ISO-8583 server.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@RequiredArgsConstructor
-public class DefaultMessageKeyGenerator implements MessageKeyGenerator {
-
-  private final ISOMessageProperties messageProperties;
+public interface ISOMessageObserver {
 
   /**
-   * {@inheritDoc}
+   * Handles the message and returns flag which indicates that message is applicable for particular
+   * {@link java.util.concurrent.Future} which waits response message to return.
+   *
+   * @param inMsg incoming message
+   * @return {@code true} if message is handled by await future, otherwise {@code false} which means
+   * that message should be processed by another listeners in default chain of
+   * {@link com.dharbuzov.iso8583.factory.ISOMessageListenerFactory}
    */
-  @Override
-  public String generate(ISOMessage msg) {
-    //TODO: implement proper generation of message keys.
-    return "";
-  }
+  boolean onMessage(ISOMessage inMsg);
 }

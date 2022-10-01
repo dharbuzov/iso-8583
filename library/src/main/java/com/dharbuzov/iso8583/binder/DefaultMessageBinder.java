@@ -37,22 +37,22 @@ public class DefaultMessageBinder implements MessageBinder {
    * {@inheritDoc}
    */
   @Override
-  public boolean isBind(MessageType reqMsgType, String reqMsgKey, ISOMessage inMsg) {
-    final MessageType inMsgType = inMsg.getType();
-    if (!(reqMsgType.getVersion() == inMsgType.getVersion())) {
+  public boolean isBind(MessageType reqMsgType, String reqMsgKey, ISOMessage resMsg) {
+    final MessageType resMsgType = resMsg.getType();
+    if (!(reqMsgType.getVersion() == resMsgType.getVersion())) {
       return false;
     }
-    if (!(reqMsgType.getClazz() == inMsgType.getClazz())) {
+    if (!(reqMsgType.getClazz() == resMsgType.getClazz())) {
       return false;
     }
-    if (!(MessageFunction.REQUEST == reqMsgType.getFunction()
-          && MessageFunction.REQUEST_RESPONSE == inMsgType.getFunction())) {
+    if (MessageFunction.REQUEST == reqMsgType.getFunction()
+        && MessageFunction.REQUEST_RESPONSE != resMsgType.getFunction()) {
       return false;
     }
-    if (!(MessageFunction.ADVICE == reqMsgType.getFunction()
-          && MessageFunction.ADVICE_RESPONSE == inMsgType.getFunction())) {
+    if (MessageFunction.ADVICE == reqMsgType.getFunction()
+        && MessageFunction.ADVICE_RESPONSE != resMsgType.getFunction()) {
       return false;
     }
-    return reqMsgKey.equals(messageKeyGenerator.generate(inMsg));
+    return reqMsgKey.equals(messageKeyGenerator.generate(resMsg));
   }
 }

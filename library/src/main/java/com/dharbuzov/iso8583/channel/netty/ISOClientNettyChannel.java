@@ -151,12 +151,14 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
    */
   @Override
   public Future<ISOMessage> sendFuture(ISOMessage msg) {
-    final String outMsgKey = messageKeyGenerator.generate(msg);
-    sendAsync(msg);
     final CompletableFuture<ISOMessage> awaitFuture = new CompletableFuture<>();
-    final ISONettyMessageObserver messageObserver =
-        ISONettyMessageObserver.builder().outMsgType(msg.getType()).outMsgKey(outMsgKey)
-            .awaitFuture(awaitFuture).messageBinder(messageBinder).build();
+    final ISONettyMessageObserver messageObserver = ISONettyMessageObserver.builder()
+        .messageBinder(messageBinder)
+        .keyGenerator(messageKeyGenerator)
+        .awaitFuture(awaitFuture)
+        .reqMsg(msg)
+        .build();
+    sendAsync(msg);
     messageObservable.addObserver(messageObserver, requestTimeoutMs);
     return awaitFuture;
   }

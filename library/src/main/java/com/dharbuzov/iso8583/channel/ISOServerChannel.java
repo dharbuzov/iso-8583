@@ -15,6 +15,8 @@
  */
 package com.dharbuzov.iso8583.channel;
 
+import com.dharbuzov.iso8583.exception.ISOException;
+
 /**
  * The interface which represents the server level channel abstraction to work with network
  * protocol. This channel is one per server instance and binds to the open port of the server.
@@ -26,12 +28,12 @@ public interface ISOServerChannel extends ISOChannel {
   /**
    * Starts the server instance.
    */
-  void start();
+  void start() throws ISOException;;
 
   /**
    * Shutdowns the server instance.
    */
-  void shutdown();
+  void shutdown() throws ISOException;;
 
   /**
    * Returns flag which indicates the server is in running state.

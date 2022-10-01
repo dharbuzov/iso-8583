@@ -15,6 +15,7 @@
  */
 package com.dharbuzov.iso8583.server;
 
+import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.listener.ISOEventListener;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 
@@ -26,7 +27,7 @@ public interface ISOServer {
   /**
    * Starts the ISO-8583 server instance.
    */
-  void start();
+  void start() throws ISOException;;
 
   /**
    * Returns flag which indicates that server is running.
@@ -38,7 +39,7 @@ public interface ISOServer {
   /**
    * Method for shutting down the ISO-8583 server.
    */
-  void shutdown();
+  void shutdown() throws ISOException;;
 
   /**
    * Adds message listener.

@@ -15,8 +15,8 @@
  */
 package com.dharbuzov.iso8583.order;
 
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.concurrent.PriorityBlockingQueue;
+import java.util.function.Predicate;
 
 /**
  * Base class which represents the container which might keep elements in ordered manner.
@@ -26,8 +26,11 @@ import java.util.Queue;
  */
 public abstract class ISOOrderedContainer<T extends ISOOrdered> {
 
-  /* Ordered container */
-  protected final Queue<T> queue = new PriorityQueue<>(new ISOOrdered.ISOOrderedComparator());
+  public static final int DEFAULT_QUEUE_CAPACITY = 100;
+
+  /* Ordered priority queue */
+  protected final PriorityBlockingQueue<T> queue =
+      new PriorityBlockingQueue<>(getQueueCapacity(), new ISOOrdered.ISOOrderedComparator());
 
   /**
    * Adds element to the ordered queue.
@@ -52,5 +55,23 @@ public abstract class ISOOrderedContainer<T extends ISOOrdered> {
    */
   protected void removeAllFromQueue() {
     this.queue.clear();
+  }
+
+  /**
+   * Removes all elements based on predicate.
+   *
+   * @param removePredicate predicate which indicates that element should be removed
+   */
+  protected void removeAllFromQueue(Predicate<T> removePredicate) {
+    this.queue.removeIf(removePredicate);
+  }
+
+  /**
+   * Returns queue capacity.
+   *
+   * @return queue capacity of default {@link  ISOOrderedContainer#DEFAULT_QUEUE_CAPACITY}
+   */
+  protected int getQueueCapacity() {
+    return DEFAULT_QUEUE_CAPACITY;
   }
 }

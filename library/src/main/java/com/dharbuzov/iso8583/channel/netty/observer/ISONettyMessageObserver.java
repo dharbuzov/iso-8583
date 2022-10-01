@@ -15,29 +15,57 @@
  */
 package com.dharbuzov.iso8583.channel.netty.observer;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.dharbuzov.iso8583.binder.MessageBinder;
+import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageType;
 
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 
 /**
+ * The class message observer which relies on {@link MessageBinder} to identify that request and
+ * response messages matches each other.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Builder
-@RequiredArgsConstructor
-public class ISONettyMessageObserver {
+public class ISONettyMessageObserver implements ISOMessageObserver {
 
-  private final MessageType outMsgType;
-  private final String outMsgKey;
+  private final MessageType reqMsgType;
+  private final String reqMsgKey;
   private final MessageBinder messageBinder;
   private final CompletableFuture<ISOMessage> awaitFuture;
 
-  public boolean notifyMessageIn(ISOMessage inMsg) {
-    if (messageBinder.isBind(outMsgType, outMsgKey, inMsg)) {
+  /**
+   * Constructor of message observer.
+   *
+   * @param messageBinder message binder
+   * @param keyGenerator  message key generator
+   * @param reqMsg        request message which will sent by the client
+   * @param awaitFuture   future which accepts the bind response from the server
+   */
+  @Builder
+  public ISONettyMessageObserver(MessageBinder messageBinder, MessageKeyGenerator keyGenerator,
+      ISOMessage reqMsg, CompletableFuture<ISOMessage> awaitFuture) {
+    Objects.requireNonNull(messageBinder);
+    Objects.requireNonNull(keyGenerator);
+    Objects.requireNonNull(reqMsg);
+    Objects.requireNonNull(awaitFuture);
+    this.reqMsgType = reqMsg.getType();
+    this.reqMsgKey = keyGenerator.generate(reqMsg);
+    this.messageBinder = messageBinder;
+    this.awaitFuture = awaitFuture;
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public boolean onMessage(ISOMessage inMsg) {
+    if (messageBinder.isBind(reqMsgType, reqMsgKey, inMsg)) {
+      // Completes the future with a response message.
       awaitFuture.complete(inMsg);
       return true;
     }

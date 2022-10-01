@@ -16,7 +16,6 @@
 package com.dharbuzov.iso8583;
 
 import com.dharbuzov.iso8583.channel.ISOReplyChannel;
-import com.dharbuzov.iso8583.client.ISOClient;
 import com.dharbuzov.iso8583.client.ISOSyncClient;
 import com.dharbuzov.iso8583.client.config.ISOClientConfiguration;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
@@ -54,11 +53,10 @@ public class ClientApplication {
       }
     });
     client.connect();
-    System.out.println(client.send(ISOMessage.builder().type(MessageType.builder()
-            .version(MessageVersion.V1993)
-            .function(MessageFunction.REQUEST)
-            .clazz(MessageClass.NETWORK_MANAGEMENT)
-            .origin(MessageOrigin.ACQUIRER)
-        .build()).build()));
+    final ISOMessage request = ISOMessage.builder().type(
+        MessageType.builder().version(MessageVersion.V1993).function(MessageFunction.REQUEST)
+            .clazz(MessageClass.NETWORK_MANAGEMENT).origin(MessageOrigin.ACQUIRER).build()).build();
+    final ISOMessage response = client.send(request);
+    log.info("Message response from client: {}", response);
   }
 }
