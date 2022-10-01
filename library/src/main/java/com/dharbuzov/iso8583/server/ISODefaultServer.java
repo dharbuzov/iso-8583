@@ -22,12 +22,15 @@ import com.dharbuzov.iso8583.listener.ISOEventListener;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Default implementation of {@link ISOServer} which works properly. This class could be easily
  * extended based on specific needs.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Slf4j
 public class ISODefaultServer implements ISOServer {
 
   protected final ISOServerProperties serverProperties;

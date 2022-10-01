@@ -15,6 +15,8 @@
  */
 package com.dharbuzov.iso8583.model;
 
+import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -75,4 +77,17 @@ public enum MessageClass {
   NETWORK_MANAGEMENT(8);
 
   private int value;
+
+  /**
+   * Returns class based on char value.
+   *
+   * @param ch char value
+   * @return iso 8583 version value
+   */
+  public static MessageClass fromChar(char ch) {
+    final int value = Character.getNumericValue(ch);
+    return Arrays.stream(MessageClass.values()).filter(enumVal -> enumVal.getValue() == value)
+        .findFirst().orElseThrow(() -> new RuntimeException(
+            String.format("Could not detect iso8583 message class from char '%s'", ch)));
+  }
 }

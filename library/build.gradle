@@ -8,6 +8,7 @@ java {
 
 dependencies {
     implementation "io.netty:netty-all:$nettyVersion"
+    implementation "org.slf4j:slf4j-api:$slf4jVersion"
 }
 
 

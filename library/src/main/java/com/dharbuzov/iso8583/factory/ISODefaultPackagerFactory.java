@@ -15,7 +15,11 @@
  */
 package com.dharbuzov.iso8583.factory;
 
+import java.nio.charset.Charset;
+
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageSource;
+import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 
 /**
@@ -30,7 +34,7 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
    */
   @Override
   public byte[] pack(ISOMessage msg) {
-    return new byte[0];
+    return msg.getType().toMTIString().getBytes(Charset.defaultCharset());
   }
 
   /**
@@ -38,7 +42,8 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
    */
   @Override
   public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+    MessageType messageType = MessageType.fromMTIString(new String(msgBytes));
+    return ISOMessage.builder().source(MessageSource.IN).type(messageType).build();
   }
 
   @Override

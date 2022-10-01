@@ -22,6 +22,7 @@ import com.dharbuzov.iso8583.util.StringUtils;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * The class wrapper for Message Type Indicator (MTI). The message type indicator is a four-digit
@@ -32,6 +33,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
+@ToString
 @EqualsAndHashCode
 public class MessageType {
 
@@ -97,9 +99,8 @@ public class MessageType {
       throw new ISOPackageException("MTI header should have length equals to 4!");
     }
     final char[] mtiChars = mtiStr.toCharArray();
-    return MessageType.builder().build();
-    /*return MessageType.builder().version(MessageVersion.fromChar(mtiChars[0]))
+    return MessageType.builder().version(MessageVersion.fromChar(mtiChars[0]))
         .clazz(MessageClass.fromChar(mtiChars[1])).function(MessageFunction.fromChar(mtiChars[2]))
-        .origin(MessageOrigin.fromChar(mtiChars[3])).build();*/
+        .origin(MessageOrigin.fromChar(mtiChars[3])).build();
   }
 }

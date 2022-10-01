@@ -33,6 +33,9 @@ public class DefaultMessageBinder implements MessageBinder {
   private final ISOMessageProperties properties;
   private final MessageKeyGenerator messageKeyGenerator;
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public boolean isBind(MessageType reqMsgType, String reqMsgKey, ISOMessage inMsg) {
     final MessageType inMsgType = inMsg.getType();

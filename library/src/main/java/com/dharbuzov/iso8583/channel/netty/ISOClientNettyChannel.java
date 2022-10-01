@@ -24,6 +24,8 @@ import java.util.concurrent.TimeoutException;
 import com.dharbuzov.iso8583.binder.MessageBinder;
 import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ISOClientChannel;
+import com.dharbuzov.iso8583.channel.netty.handler.NettyChannelInitializer;
+import com.dharbuzov.iso8583.channel.netty.handler.NettySyncMessageHandler;
 import com.dharbuzov.iso8583.channel.netty.observer.ISONettyMessageObservable;
 import com.dharbuzov.iso8583.channel.netty.observer.ISONettyMessageObserver;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
@@ -35,12 +37,11 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import lombok.Builder;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The netty client channel implementation, this type of channel establishes connection with
@@ -48,6 +49,7 @@ import lombok.Builder;
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Slf4j
 public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperties>
     implements ISOClientChannel {
 
@@ -82,7 +84,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
    */
   @Override
   public boolean isConnected() {
-    return nettyChannel != null && nettyChannel.isOpen() && nettyChannel.isActive();
+    return nettyChannel != null && nettyChannel.isActive();
   }
 
   /**
@@ -94,22 +96,20 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
       final EventLoopGroup eventLoopGroup = new NioEventLoopGroup();
       final Bootstrap bootstrap =
           new Bootstrap().group(eventLoopGroup).channel(NioSocketChannel.class)
-              .option(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
-              .option(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive()).handler(
-                  NettyChannelInitializer.builder()
-                      .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
-                      .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))
-                      .nettyMessageHandler(
-                          new SyncNettyMessageHandler(listenerFactory, messageObservable)).build());
+              .option(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelayOrDefault())
+              .option(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAliveOrDefault())
+              .handler(NettyChannelInitializer.builder()
+                  .packagerFactory(packagerFactory)
+                  .nettyMessageHandler(
+                      new NettySyncMessageHandler(listenerFactory, messageObservable)).build());
       try {
         bootstrap.validate();
+        log.info("Connecting client-netty-channel to '{}'", connProperties.getInetSocketAddress());
         ChannelFuture channelFuture =
             bootstrap.connect(connProperties.getInetSocketAddress()).sync();
         nettyChannel = channelFuture.channel();
       } catch (Exception e) {
         throw new ISOException(e);
-      } finally {
-        eventLoopGroup.shutdownGracefully();
       }
     }
   }
@@ -173,42 +173,5 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
       throw new ISOException("Channel is not writable!");
     }
     nettyChannel.writeAndFlush(msg);
-  }
-
-  /**
-   * Class which decorates the netty message handler to be able to handle the messages in
-   * {@link Future} futures that are awaiting a response message. This handler uses
-   * {@link MessageKeyGenerator} and {@link MessageBinder} to identify that the response message is
-   * applicable for a request message.
-   */
-  protected static class SyncNettyMessageHandler extends NettyMessageHandler {
-
-    protected final ISONettyMessageObservable messageObservable;
-
-    /**
-     * Constructor based on listener factory and message observable.
-     *
-     * @param listenerFactory   listener factory
-     * @param messageObservable message observable
-     */
-    @Builder
-    public SyncNettyMessageHandler(ISOMessageListenerFactory listenerFactory,
-        ISONettyMessageObservable messageObservable) {
-      super(listenerFactory);
-      this.messageObservable = messageObservable;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-      final boolean consumed = messageObservable.onMessage(msg);
-      if (consumed) {
-        // This message has been consumed by await future in #sendFuture() method
-        return;
-      }
-      super.channelRead0(ctx, msg);
-    }
   }
 }

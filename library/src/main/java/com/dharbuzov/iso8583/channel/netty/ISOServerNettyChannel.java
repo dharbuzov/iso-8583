@@ -16,6 +16,10 @@
 package com.dharbuzov.iso8583.channel.netty;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
+import com.dharbuzov.iso8583.channel.netty.handler.NettyChannelInitializer;
+import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageDecoder;
+import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageEncoder;
+import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageHandler;
 import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
@@ -27,6 +31,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The netty server channel implementation, this type of channel creates the ISO-8583 tcp/ip server
@@ -35,6 +40,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Slf4j
 public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperties>
     implements ISOServerChannel {
 
@@ -60,15 +66,19 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
       final EventLoopGroup childGroup = new NioEventLoopGroup();
       final ServerBootstrap bootstrap =
           new ServerBootstrap().group(parentGroup, childGroup).channel(NioServerSocketChannel.class)
-              .childOption(ChannelOption.TCP_NODELAY, properties.getConnection().isNoDelay())
-              .childOption(ChannelOption.SO_KEEPALIVE, properties.getConnection().isKeepAlive())
-              .childHandler(NettyChannelInitializer.builder()
-                  .nettyMessageDecoder(new NettyMessageDecoder(packagerFactory))
-                  .nettyMessageEncoder(new NettyMessageEncoder(packagerFactory))
-                  .nettyMessageHandler(new NettyMessageHandler(listenerFactory)).build());
+              .childOption(ChannelOption.TCP_NODELAY,
+                  properties.getConnection().isNoDelayOrDefault())
+              .childOption(ChannelOption.SO_KEEPALIVE,
+                  properties.getConnection().isKeepAliveOrDefault()).childHandler(
+                  NettyChannelInitializer.builder()
+                      .packagerFactory(packagerFactory)
+                      .nettyMessageHandler(new NettyMessageHandler(listenerFactory)).build());
       try {
         bootstrap.validate();
-        final ChannelFuture f = bootstrap.bind(connProperties.getPort()).sync().await();
+        log.info("Starting netty-server, on port: '{}'", connProperties.getPort());
+        final ChannelFuture f = bootstrap.bind(connProperties.getPort()).sync();
+        log.info("Started netty-server, on port: '{}'", connProperties.getPort());
+        f.channel().closeFuture().sync();
       } catch (Exception e) {
         throw new ISOException(e);
       } finally {

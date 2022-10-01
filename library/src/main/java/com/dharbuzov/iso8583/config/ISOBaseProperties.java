@@ -38,6 +38,8 @@ public abstract class ISOBaseProperties {
   private ISOConnProperties connection;
   private ChannelType channelType;
 
+  private ISOThreadProperties thread;
+
   /**
    * Gets the defined channel type of default one.
    *

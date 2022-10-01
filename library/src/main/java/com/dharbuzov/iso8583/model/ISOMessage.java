@@ -20,6 +20,7 @@ import com.dharbuzov.iso8583.exception.ISOException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * The pojo class which represents the ISO 8583 message.
@@ -27,6 +28,7 @@ import lombok.Setter;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Builder
+@ToString
 public class ISOMessage {
 
   public static final int FIELDS_SIZE = 129;

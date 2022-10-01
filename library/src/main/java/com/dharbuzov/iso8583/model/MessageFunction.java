@@ -15,6 +15,8 @@
  */
 package com.dharbuzov.iso8583.model;
 
+import java.util.Arrays;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -94,4 +96,17 @@ public enum MessageFunction {
   RESERVED_9(9);
 
   private int value;
+
+  /**
+   * Returns function based on char value.
+   *
+   * @param ch char value
+   * @return iso 8583 version value
+   */
+  public static MessageFunction fromChar(char ch) {
+    final int value = Character.getNumericValue(ch);
+    return Arrays.stream(MessageFunction.values()).filter(enumVal -> enumVal.getValue() == value)
+        .findFirst().orElseThrow(() -> new RuntimeException(
+            String.format("Could not detect iso8583 message function from char '%s'", ch)));
+  }
 }

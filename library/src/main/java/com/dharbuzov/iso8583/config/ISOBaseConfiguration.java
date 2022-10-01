@@ -15,6 +15,10 @@
  */
 package com.dharbuzov.iso8583.config;
 
+import com.dharbuzov.iso8583.binder.DefaultMessageBinder;
+import com.dharbuzov.iso8583.binder.DefaultMessageKeyGenerator;
+import com.dharbuzov.iso8583.binder.MessageBinder;
+import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ISOChannel;
 import com.dharbuzov.iso8583.factory.ISODefaultEventFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultMessageListenerFactory;
@@ -38,16 +42,22 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
   protected final ISOEventFactory eventFactory;
   protected final ISOPackagerFactory packagerFactory;
 
+  protected final MessageKeyGenerator messageKeyGenerator;
+
+  protected final MessageBinder messageBinder;
+
   /**
    * Base configuration constructor.
    *
    * @param properties configuration properties
    */
   public ISOBaseConfiguration(T properties) {
-    this.channel = createChannel(properties);
+    this.messageKeyGenerator = createMessageKeyGenerator(properties.getMessages());
+    this.messageBinder = createMessageBinder(properties.getMessages(), this.messageKeyGenerator);
     this.listenerFactory = createListenerFactory(properties);
     this.eventFactory = createEventFactory(properties);
     this.packagerFactory = createPackagerFactory(properties);
+    this.channel = createChannel(properties);
   }
 
   /**
@@ -72,5 +82,22 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
   @Override
   public ISOPackagerFactory createPackagerFactory(T properties) {
     return new ISODefaultPackagerFactory();
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public MessageKeyGenerator createMessageKeyGenerator(ISOMessageProperties properties) {
+    return new DefaultMessageKeyGenerator(properties);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public MessageBinder createMessageBinder(ISOMessageProperties properties,
+      MessageKeyGenerator messageKeyGenerator) {
+    return new DefaultMessageBinder(properties, messageKeyGenerator);
   }
 }
