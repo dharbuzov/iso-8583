@@ -1,2 +1,4 @@
 rootProject.name = 'iso-8583'
+include 'library'
+include 'integration-tests'
 
