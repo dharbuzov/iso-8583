@@ -16,7 +16,6 @@
 package com.dharbuzov.iso8583;
 
 import org.awaitility.Awaitility;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -57,14 +56,14 @@ public abstract class AbstractIntegrationTest {
     configureClient(client);
 
     if (!server.isRunning()) {
-      server.start();
+      new Thread(server::start).start();
     }
     if (!client.isConnected()) {
       client.connect();
     }
 
-    Awaitility.await("Server is ready!").until(server::isRunning);
-    Awaitility.await("Client is ready!").until(client::isConnected);
+    Awaitility.await("Server is running!").until(server::isRunning);
+    Awaitility.await("Client is connected!").until(client::isConnected);
   }
 
   @AfterEach
@@ -79,11 +78,6 @@ public abstract class AbstractIntegrationTest {
     if (server.isRunning()) {
       server.shutdown();
     }
-  }
-
-  @AfterAll
-  protected static void afterAll() {
-
   }
 
   /**

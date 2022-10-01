@@ -36,11 +36,14 @@ import com.dharbuzov.iso8583.model.MessageVersion;
 import com.dharbuzov.iso8583.server.ISOServer;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Test to ensure that client and server can communicate properly with each other.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
+@Slf4j
 public class ClientServerIntegrationTest extends AbstractIntegrationTest {
   private static final ISOClientProperties clientProperties = ISOClientProperties.builder()
       .connection(ISOConnProperties.builder().host("localhost").port(50000).build()).build();
@@ -94,7 +97,14 @@ public class ClientServerIntegrationTest extends AbstractIntegrationTest {
     final ISOMessage response = client.send(ISOMessage.builder().type(
             MessageType.builder().version(MessageVersion.V1987).function(MessageFunction.REQUEST)
                 .clazz(MessageClass.NETWORK_MANAGEMENT).origin(MessageOrigin.ACQUIRER).build())
-        .build(), 10000);
+        .build(), 500);
+
     Assertions.assertNotNull(response);
+    final MessageType resMsgType = response.getType();
+    Assertions.assertNotNull(resMsgType);
+    Assertions.assertEquals(resMsgType.getVersion(), MessageVersion.V1987);
+    Assertions.assertEquals(resMsgType.getFunction(), MessageFunction.REQUEST_RESPONSE);
+    Assertions.assertEquals(resMsgType.getClazz(), MessageClass.NETWORK_MANAGEMENT);
+    Assertions.assertEquals(resMsgType.getOrigin(), MessageOrigin.ACQUIRER);
   }
 }

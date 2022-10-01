@@ -54,8 +54,8 @@ public class ClientApplication {
     });
     client.connect();
     final ISOMessage request = ISOMessage.builder().type(
-        MessageType.builder().version(MessageVersion.V1993).function(MessageFunction.REQUEST)
-            .clazz(MessageClass.NETWORK_MANAGEMENT).origin(MessageOrigin.ACQUIRER).build()).build();
+        MessageType.from(MessageVersion.V1993, MessageClass.NETWORK_MANAGEMENT,
+            MessageFunction.REQUEST, MessageOrigin.ACQUIRER)).build();
     final ISOMessage response = client.send(request);
     log.info("Message response from client: {}", response);
   }

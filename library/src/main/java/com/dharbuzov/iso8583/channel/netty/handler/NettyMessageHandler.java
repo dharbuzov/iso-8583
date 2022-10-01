@@ -27,7 +27,9 @@ import io.netty.channel.SimpleChannelInboundHandler;
 /**
  * The message handler class, the main responsibility of this class is to obtain the decoded
  * incoming message and notify the message listeners {@link ISOMessageListenerFactory} defined in
- * the library.
+ * the library. This message handler is working in multi thread environment,
+ * {@link io.netty.channel.ChannelHandler.Sharable} identifies that Netty will use the handler
+ * across different channels and threads.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
@@ -50,7 +52,17 @@ public class NettyMessageHandler extends SimpleChannelInboundHandler<ISOMessage>
    */
   @Override
   protected void channelRead0(ChannelHandlerContext ctx, ISOMessage msg) throws Exception {
-    final ISOReplyChannel replyChannel = new ISONettyReplyChannel(ctx);
+    final ISOReplyChannel replyChannel = createReplyChannel(ctx);
     listenerFactory.onMessage(replyChannel, msg);
+  }
+
+  /**
+   * Creates the reply channel which could be used to reply the response for incoming message.
+   *
+   * @param ctx netty channel handler context
+   * @return created reply channel
+   */
+  protected ISOReplyChannel createReplyChannel(ChannelHandlerContext ctx) {
+    return new ISONettyReplyChannel(ctx);
   }
 }

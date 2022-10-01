@@ -49,6 +49,7 @@ public class ISOMessage {
   @Getter
   @Setter
   private String header;
+
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
 
   /**
@@ -76,7 +77,6 @@ public class ISOMessage {
    */
   public void setResponseType() {
     this.type.setResponseType();
-    this.source = MessageSource.OUT;
   }
 
   /**

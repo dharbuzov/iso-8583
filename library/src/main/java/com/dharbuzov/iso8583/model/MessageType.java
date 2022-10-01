@@ -76,11 +76,27 @@ public class MessageType {
   }
 
   /**
+   * Factory method to create message type based on all 4 fields.
+   *
+   * @param version  message version
+   * @param clazz    message class
+   * @param function message function
+   * @param origin   message origin
+   * @return created message type
+   */
+  public static MessageType from(MessageVersion version, MessageClass clazz,
+      MessageFunction function, MessageOrigin origin) {
+    return MessageType.builder().version(version).clazz(clazz).function(function).origin(origin)
+        .build();
+  }
+
+  /**
    * Returns message type as a MTI string like 'xxxx'.
    *
    * @return mti string
    */
   public String toMTIString() {
+    //TODO: remove later, this logic should be a part of ISOMessagePackager
     return String.format("%s%s%s%s", version.getValue(), clazz.getValue(), function.getValue(),
         origin.getValue());
   }
@@ -92,6 +108,7 @@ public class MessageType {
    * @return message type instance
    */
   public static MessageType fromMTIString(String mtiStr) {
+    //TODO: remove later, this logic should be a part of ISOMessagePackager
     if (StringUtils.isEmpty(mtiStr)) {
       throw new ISOPackageException("MTI header is missing!");
     }

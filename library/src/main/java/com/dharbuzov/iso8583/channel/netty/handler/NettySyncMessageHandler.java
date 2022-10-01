@@ -39,6 +39,7 @@ import lombok.Builder;
 @ChannelHandler.Sharable
 public class NettySyncMessageHandler extends NettyMessageHandler {
 
+  /* Message observable which is interested in particular incoming messages. */
   protected final ISONettyMessageObservable messageObservable;
 
   /**

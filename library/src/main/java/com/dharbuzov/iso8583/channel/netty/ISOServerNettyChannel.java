@@ -17,8 +17,6 @@ package com.dharbuzov.iso8583.channel.netty;
 
 import com.dharbuzov.iso8583.channel.ISOServerChannel;
 import com.dharbuzov.iso8583.channel.netty.handler.NettyChannelInitializer;
-import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageDecoder;
-import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageEncoder;
 import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageHandler;
 import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
@@ -70,15 +68,15 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
                   properties.getConnection().isNoDelayOrDefault())
               .childOption(ChannelOption.SO_KEEPALIVE,
                   properties.getConnection().isKeepAliveOrDefault()).childHandler(
-                  NettyChannelInitializer.builder()
-                      .packagerFactory(packagerFactory)
+                  NettyChannelInitializer.builder().packagerFactory(packagerFactory)
                       .nettyMessageHandler(new NettyMessageHandler(listenerFactory)).build());
       try {
         bootstrap.validate();
         log.info("Starting netty-server, on port: '{}'", connProperties.getPort());
-        final ChannelFuture f = bootstrap.bind(connProperties.getPort()).sync();
+        final ChannelFuture channelFuture = bootstrap.bind(connProperties.getPort()).sync();
         log.info("Started netty-server, on port: '{}'", connProperties.getPort());
-        f.channel().closeFuture().sync();
+        nettyChannel = channelFuture.channel();
+        channelFuture.channel().closeFuture().sync();
       } catch (Exception e) {
         throw new ISOException(e);
       } finally {
@@ -104,6 +102,6 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
    */
   @Override
   public boolean isRunning() {
-    return nettyChannel != null && nettyChannel.isOpen() && nettyChannel.isActive();
+    return nettyChannel != null && nettyChannel.isActive();
   }
 }

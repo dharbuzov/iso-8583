@@ -56,7 +56,9 @@ public class ServerApplication {
       });
       server.start();
     } finally {
-      server.shutdown();
+      if (server != null) {
+        server.shutdown();
+      }
     }
   }
 }
