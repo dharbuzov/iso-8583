@@ -16,6 +16,7 @@
 package com.dharbuzov.iso8583;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import com.dharbuzov.iso8583.channel.ISOReplyChannel;
@@ -69,6 +70,7 @@ public class ClientServerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Disabled
   public void clientServerIntegrationEchoMessage() {
     final ISOMessage response = client.send(ISOMessage.builder().type(
             MessageType.builder().version(MessageVersion.V1987).function(MessageFunction.REQUEST)
