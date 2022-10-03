@@ -1,7 +1,6 @@
 dependencies {
     implementation project(":library")
     implementation("org.slf4j:slf4j-simple:$slf4jVersion")
-    testImplementation "org.awaitility:awaitility:$awaitilityVersion"
     testImplementation("org.slf4j:slf4j-simple:$slf4jVersion")
 }
 

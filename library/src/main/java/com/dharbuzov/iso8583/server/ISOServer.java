@@ -27,7 +27,7 @@ public interface ISOServer {
   /**
    * Starts the ISO-8583 server instance.
    */
-  void start() throws ISOException;;
+  void start() throws ISOException;
 
   /**
    * Returns flag which indicates that server is running.

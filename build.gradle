@@ -1,17 +1,55 @@
+plugins {
+    id 'com.github.spotbugs' version '5.0.9' apply false
+}
+
 allprojects {
+    apply plugin: 'java'
+
     apply plugin: 'idea'
     apply plugin: 'eclipse'
 
+    apply plugin: 'checkstyle'
+    apply plugin: 'com.github.spotbugs'
+
     group 'com.github.dharbuzov'
     version '0.1-SNAPSHOT'
-}
-
-subprojects {
-    apply plugin: 'java'
 
     java {
         toolchain {
             languageVersion.set(JavaLanguageVersion.of(8))
+        }
+    }
+
+    checkstyle {
+        toolVersion '9.1'
+        configFile file("../config/checkstyle/checkstyle.xml")
+    }
+
+    spotbugs {
+        toolVersion = '4.7.2'
+        ignoreFailures = true
+        showProgress = true
+        reportsDir = file("$buildDir/spotbugs")
+    }
+
+    spotbugsMain {
+        reports {
+            html {
+                required = true
+                reportLevel = 'high'
+                outputLocation = file("$buildDir/reports/spotbugs/main/spotbugs.html")
+                stylesheet = 'fancy-hist.xsl'
+            }
+        }
+    }
+
+    spotbugsTest {
+        reports {
+            html {
+                required = true
+                outputLocation = file("$buildDir/reports/spotbugs/test/spotbugs.html")
+                stylesheet = 'fancy-hist.xsl'
+            }
         }
     }
 
@@ -26,17 +64,20 @@ subprojects {
         nettyVersion = '4.1.82.Final'
         awaitilityVersion = '4.2.0'
         slf4jVersion = '2.0.3'
+        spotbugsAnnotationsVersion = '4.7.2'
     }
 
     dependencies {
-        testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
-        testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
-        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
-        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
-        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
-
+        compileOnly "com.github.spotbugs:spotbugs-annotations:$spotbugsAnnotationsVersion"
         compileOnly "org.projectlombok:lombok:$lombokVersion"
         annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+        testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiterVersion"
+        testImplementation "org.mockito:mockito-junit-jupiter:$mockitoVersion"
+        testImplementation "org.awaitility:awaitility:$awaitilityVersion"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiterVersion"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
     }
 
     test {
