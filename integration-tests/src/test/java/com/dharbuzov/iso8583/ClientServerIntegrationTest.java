@@ -15,15 +15,10 @@
  */
 package com.dharbuzov.iso8583;
 
-import java.util.concurrent.Future;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.MockitoJUnitRunner;
 
 import com.dharbuzov.iso8583.channel.ISOReplyChannel;
-import com.dharbuzov.iso8583.client.ISOClient;
 import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
@@ -56,25 +51,6 @@ public class ClientServerIntegrationTest extends AbstractIntegrationTest {
   }
 
   @Override
-  protected void configureClient(ISOClient client) {
-    client.addMessageListener(new ISOMessageListener() {
-      @Override
-      public void onMessage(ISOReplyChannel replyChannel, ISOMessage message) {
-        if (message.isResponse()) {
-
-        } else {
-
-        }
-      }
-
-      @Override
-      public boolean isApplicable(ISOMessage message) {
-        return true;
-      }
-    });
-  }
-
-  @Override
   protected void configureServer(ISOServer server) {
     server.addMessageListener(new ISOMessageListener() {
       @Override
@@ -96,8 +72,8 @@ public class ClientServerIntegrationTest extends AbstractIntegrationTest {
   public void clientServerIntegrationEchoMessage() {
     final ISOMessage response = client.send(ISOMessage.builder().type(
             MessageType.builder().version(MessageVersion.V1987).function(MessageFunction.REQUEST)
-                .clazz(MessageClass.NETWORK_MANAGEMENT).origin(MessageOrigin.ACQUIRER).build())
-        .build(), 500);
+                .clazz(MessageClass.NETWORK_MANAGEMENT).origin(MessageOrigin.ACQUIRER).build()).build(),
+        500);
 
     Assertions.assertNotNull(response);
     final MessageType resMsgType = response.getType();

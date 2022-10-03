@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.dharbuzov.iso8583;
 
 import com.dharbuzov.iso8583.channel.ISOReplyChannel;
