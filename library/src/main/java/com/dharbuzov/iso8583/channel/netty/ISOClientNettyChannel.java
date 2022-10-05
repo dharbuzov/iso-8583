@@ -34,6 +34,7 @@ import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.MessageSource;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -174,6 +175,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
     if (!nettyChannel.isWritable()) {
       throw new ISOException("Channel is not writable!");
     }
+    msg.setSource(MessageSource.OUT);
     nettyChannel.writeAndFlush(msg);
   }
 }

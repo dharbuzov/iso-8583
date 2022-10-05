@@ -20,7 +20,8 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.order.ISOOrdered;
 
 /**
- * A Listener for handling incoming ISO-8583 messages from the server.
+ * A Listener for handling incoming ISO-8583 messages from the message producers like client and
+ * server.
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
