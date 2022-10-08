@@ -16,6 +16,7 @@
 package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ChannelType;
+import com.dharbuzov.iso8583.model.schema.ISOSchema;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,8 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public abstract class ISOBaseProperties {
+
+  private ISOSchema schema;
 
   private ISOMessageProperties messages;
 

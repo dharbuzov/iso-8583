@@ -19,6 +19,8 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
 /**
+ * Miscellaneous {@link String} utility methods. Mainly for internal use within the library.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

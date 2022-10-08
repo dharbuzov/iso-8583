@@ -13,29 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.binder;
+package com.dharbuzov.iso8583.packager;
 
-import com.dharbuzov.iso8583.client.ISOSyncClient;
-import com.dharbuzov.iso8583.config.ISOMessageProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 /**
- * Interface which represents message key generator, the key is used to bind the request and
- * response messages from the server in synchronous communication model.
- *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
- * @see ISOMessageProperties
- * @see ISOSyncClient
  */
-public interface MessageKeyGenerator {
+public class HEXMessagePackager implements ISOMessagePackager, ISOFieldPackager {
 
-  /**
-   * Generates the unique key for a message which could be used to bind the request and response
-   * messages.
-   *
-   * @param msg msg to generate the key
-   * @return generated key
-   */
-  String generate(ISOMessage msg);
+  @Override
+  public byte[] pack(ISOMessage message) {
+    return new byte[0];
+  }
 
+  @Override
+  public ISOMessage unpack(byte[] msgBytes) {
+    return null;
+  }
 }

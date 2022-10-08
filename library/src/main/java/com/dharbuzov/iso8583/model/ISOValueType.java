@@ -16,7 +16,27 @@
 package com.dharbuzov.iso8583.model;
 
 /**
+ * Enum which represents possible value types defined by ISO-8583 specification.
+ *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum ISOValueType {
+  /** A fixed-length alphanumeric value. */
+  ALPHA,
+  /** A fixed-length numeric value. */
+  NUMERIC,
+  /** A variable length alphanumeric value with a 2-digit header length. */
+  LLVAR,
+  /** A variable length alphanumeric value with a 3-digit header length. */
+  LLLVAR,
+  /** variable length byte array with 4-digit header length. */
+  LLLLVAR,
+  /** Holds the binary data. */
+  BINARY,
+  /** Similar to LLVAR but holds byte arrays instead of strings. */
+  LLBIN,
+  /** Similar to LLLVAR but holds byte arrays instead of strings. */
+  LLLBIN,
+  /** variable length byte array with 4-digit header length. */
+  LLLLBIN
 }

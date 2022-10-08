@@ -28,6 +28,9 @@ import com.dharbuzov.iso8583.model.MessageFunction;
 import com.dharbuzov.iso8583.model.MessageOrigin;
 import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.model.MessageVersion;
+import com.dharbuzov.iso8583.model.schema.ISOKnownSchema;
+import com.dharbuzov.iso8583.model.schema.ISOSchema;
+import com.dharbuzov.iso8583.model.schema.ISOSchemas;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,8 +40,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClientApplication {
 
-  private static final ISOClientProperties clientProperties = ISOClientProperties.builder()
-      .connection(ISOConnProperties.builder().host("localhost").port(8080).build()).build();
+  private static final ISOClientProperties clientProperties =
+      ISOClientProperties.builder().schema(ISOSchemas.knownSchema(ISOKnownSchema.ISO_87_ASCII))
+          .connection(ISOConnProperties.builder().host("localhost").port(8080).build()).build();
 
   public static void main(String[] args) {
     ISOSyncClient client = new ISOClientConfiguration(clientProperties).getClient();
