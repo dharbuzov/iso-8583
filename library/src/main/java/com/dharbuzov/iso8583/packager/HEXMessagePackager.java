@@ -20,7 +20,7 @@ import com.dharbuzov.iso8583.model.ISOMessage;
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class HEXMessagePackager implements ISOMessagePackager, ISOFieldPackager {
+public class HEXMessagePackager implements ISOMessagePackager {
 
   @Override
   public byte[] pack(ISOMessage message) {

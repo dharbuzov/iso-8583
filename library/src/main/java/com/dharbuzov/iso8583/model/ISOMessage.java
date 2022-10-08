@@ -34,9 +34,28 @@ import lombok.ToString;
 @ToString
 public class ISOMessage {
 
+  /**
+   * The field which describers the source of message, incoming or outgoing.
+   */
   @Getter
   @Setter
   private MessageSource source;
+
+  /**
+   * The message header string to be sent as ISO header, header goes after message length but before
+   * the message type.
+   */
+  @Getter
+  @Setter
+  private String headerStr;
+
+  /**
+   * The message header byte array to be sent as ISO header, header goes after message length but
+   * before the message type.
+   */
+  @Getter
+  @Setter
+  private byte[] headerBytes;
 
   /**
    * The message type indicator is a four-digit numeric field which indicates the overall function
@@ -48,11 +67,15 @@ public class ISOMessage {
   private MessageType type;
 
   @Getter
-  @Setter
-  private String header;
-
-  @Getter
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
+
+  /**
+   * The last character byte of message which indicates the termination of message bytes in the
+   * message streaming.
+   */
+  @Getter
+  @Setter
+  private int etx = -1;
 
   /**
    * Returns flag which indicates that the message is request.
@@ -129,5 +152,16 @@ public class ISOMessage {
     ValidationUtils.validateFieldPosition(position);
     final ISOField field = new ISOField(position, value);
     fields[position] = field;
+  }
+
+  /**
+   * Removes field from the message.
+   *
+   * @param position position of the field
+   * @throws ISOException if the position is less than 0 or more than 129
+   */
+  public void removeField(int position) throws ISOException {
+    ValidationUtils.validateFieldPosition(position);
+    fields[position] = null;
   }
 }

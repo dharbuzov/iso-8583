@@ -22,6 +22,7 @@ import com.dharbuzov.iso8583.binder.MessageBinder;
 import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageType;
+import com.dharbuzov.iso8583.util.ValidationUtils;
 
 import lombok.Builder;
 
@@ -49,10 +50,10 @@ public class ISONettyMessageObserver implements ISOMessageObserver {
   @Builder
   public ISONettyMessageObserver(MessageBinder messageBinder, MessageKeyGenerator keyGenerator,
       ISOMessage reqMsg, CompletableFuture<ISOMessage> awaitFuture) {
-    Objects.requireNonNull(messageBinder);
-    Objects.requireNonNull(keyGenerator);
-    Objects.requireNonNull(reqMsg);
-    Objects.requireNonNull(awaitFuture);
+    ValidationUtils.validateNotNull(messageBinder, "MessageBinder is missing!");
+    ValidationUtils.validateNotNull(keyGenerator, "MessageKeyGenerator is missing!");
+    ValidationUtils.validateNotNull(reqMsg, "Request ISOMessage is missing!");
+    ValidationUtils.validateNotNull(awaitFuture, "Future is missing!");
     this.reqMsgType = reqMsg.getType();
     this.reqMsgKey = keyGenerator.generate(reqMsg);
     this.messageBinder = messageBinder;

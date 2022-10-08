@@ -15,8 +15,6 @@
  */
 package com.dharbuzov.iso8583.factory;
 
-import java.nio.charset.Charset;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -24,8 +22,10 @@ import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageSource;
 import com.dharbuzov.iso8583.model.MessageType;
+import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
 import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
 import com.dharbuzov.iso8583.util.ValidationUtils;
 
 /**
@@ -66,7 +66,14 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
    */
   @Override
   public byte[] pack(ISOMessage msg) {
-    return msg.getType().toMTIString().getBytes(Charset.defaultCharset());
+    final ISOMessageSchema messageSchema = schema.getApplicableSchema(msg.getType());
+    ValidationUtils.validateNotNull(messageSchema,
+        String.format("Can't find the applicable message schema for type '%s'", msg.getType()));
+    final ISOPackagerContext packagerContext =
+        ISOPackagerContext.builder().message(msg).messageSchema(messageSchema)
+            .packagers(this.packagers).build();
+    final ISOMessagePackager packager = getMessagePackager(schema.getPackager());
+    return packager.pack(msg);
   }
 
   /**
@@ -78,12 +85,28 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
     return ISOMessage.builder().source(MessageSource.IN).type(messageType).build();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addMessagePackager(ISOMessagePackager messagePackager) {
     ValidationUtils.validateNotNull(messagePackager, "ISOMessagePackager is missing!");
     this.packagers.put(messagePackager.getClass(), messagePackager);
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public ISOMessagePackager getMessagePackager(
+      Class<? extends ISOMessagePackager> messagePackager) {
+    ValidationUtils.validateNotNull(messagePackager, "ISOMessagePackager class is missing!");
+    return this.packagers.get(messagePackager);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void removeMessagePackager(ISOMessagePackager messagePackager) {
     ValidationUtils.validateNotNull(messagePackager, "ISOMessagePackager is missing!");

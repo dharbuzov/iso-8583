@@ -21,6 +21,11 @@ package com.dharbuzov.iso8583.model;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public enum ISOValueType {
+  /**
+   * In every ISO8583 message, there is a bit map to indicate which fields are included in the
+   * message.
+   **/
+  BITMAP,
   /** A fixed-length alphanumeric value. */
   ALPHA,
   /** A fixed-length numeric value. */

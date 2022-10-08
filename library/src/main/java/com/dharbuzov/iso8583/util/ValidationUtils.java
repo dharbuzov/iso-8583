@@ -20,6 +20,7 @@ import static com.dharbuzov.iso8583.model.schema.ISOMessageSchema.FIELDS_SIZE;
 import java.util.Map;
 
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.exception.ISOValidationException;
 import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
@@ -44,7 +45,7 @@ public class ValidationUtils {
    */
   public static void validateNotNull(Object o) throws ISOException {
     if (o == null) {
-      throw new ISOException("Object is missing!");
+      throw new ISOValidationException("Object is missing!");
     }
   }
 
@@ -57,19 +58,19 @@ public class ValidationUtils {
    */
   public static void validateNotNull(Object o, String message) throws ISOException {
     if (o == null) {
-      throw new ISOException(message);
+      throw new ISOValidationException(message);
     }
   }
 
   /**
-   * Validate that int parameter is more than zero.
+   * Validate that length parameter is more than zero.
    *
-   * @param value value to validate
+   * @param length length value to validate
    * @throws ISOException if value is less than
    */
-  public static void validateLength(int value, String message) throws ISOException {
-    if (value < 1 || value > 999) {
-      throw new ISOException(message);
+  public static void validateLength(int length, String message) throws ISOException {
+    if (length < 1 || length > 999) {
+      throw new ISOValidationException(message);
     }
   }
 
@@ -81,7 +82,7 @@ public class ValidationUtils {
    */
   public static void validateSubFieldPosition(int fieldPosition) throws ISOException {
     if (fieldPosition <= 0 || fieldPosition > 999) {
-      throw new ISOException(
+      throw new ISOValidationException(
           "Wrong subfield position, '%s', should be more than '%s' and less than '%s'",
           fieldPosition, 0, 999);
     }
@@ -95,7 +96,7 @@ public class ValidationUtils {
    */
   public static void validateFieldPosition(int fieldPosition) throws ISOException {
     if (fieldPosition < 0 || fieldPosition > FIELDS_SIZE) {
-      throw new ISOException(
+      throw new ISOValidationException(
           "Wrong field position, '%s', should be more than '%s' and less than '%s'", fieldPosition,
           0, FIELDS_SIZE);
     }
@@ -109,10 +110,10 @@ public class ValidationUtils {
    */
   public static void validateGenericMessageTypeString(String messageTypeStr) throws ISOException {
     if (StringUtils.isEmpty(messageTypeStr)) {
-      throw new ISOException("Message type string is missing!");
+      throw new ISOValidationException("Message type string is missing!");
     }
     if (messageTypeStr.length() != 4) {
-      throw new ISOException("Message type string length should be equal to '4'");
+      throw new ISOValidationException("Message type string length should be equal to '4'");
     }
     final char[] chars = messageTypeStr.toCharArray();
     for (int i = 0; i < chars.length; i++) {
@@ -121,7 +122,7 @@ public class ValidationUtils {
       }
       int digit = chars[i];
       if (digit > 9) {
-        throw new ISOException(
+        throw new ISOValidationException(
             "Position '%s'. Char '%s' is not valid for Message Type, valid are '1..9' or '*'", i,
             chars[i]);
       }
@@ -135,16 +136,16 @@ public class ValidationUtils {
    */
   public static void validateMessageTypeString(String messageTypeStr) throws ISOException {
     if (StringUtils.isEmpty(messageTypeStr)) {
-      throw new ISOException("Message type string is missing!");
+      throw new ISOValidationException("Message type string is missing!");
     }
     if (messageTypeStr.length() != 4) {
-      throw new ISOException("Message type string length should be equal to '4'");
+      throw new ISOValidationException("Message type string length should be equal to '4'");
     }
     final char[] chars = messageTypeStr.toCharArray();
     for (int i = 0; i < chars.length; i++) {
       int digit = chars[i];
       if (digit > 9) {
-        throw new ISOException(
+        throw new ISOValidationException(
             "Position '%s'. Char '%s' is not valid for Message Type, valid are '1..9' or '*'", i,
             chars[i]);
       }
@@ -177,7 +178,7 @@ public class ValidationUtils {
   public static void validateSchema(String type, ISOMessageSchema schema) throws ISOException {
     final ISOFieldSchema[] fields = schema.getFields();
     if (fields == null || fields.length == 0) {
-      throw new ISOException(
+      throw new ISOValidationException(
           "ISOFieldSchema schemas are missing, for type '%s'. Please define the field schemas!",
           type);
     }

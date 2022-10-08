@@ -20,6 +20,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 import com.dharbuzov.iso8583.util.ValidationUtils;
 
@@ -40,8 +41,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ISOSchema {
-  /* Default encoding of messages */
+  /* Default encoding of messages. */
   public static final Charset DEFAULT_ENCODING = StandardCharsets.ISO_8859_1;
+
+  /* Default message length. */
+  public static final int DEFAULT_LENGTH = 4;
+
+  /* The message length in bytes. */
+  private int length = DEFAULT_LENGTH;
 
   /* Message encoding */
   private Charset encoding = DEFAULT_ENCODING;
@@ -51,6 +58,19 @@ public class ISOSchema {
 
   /* The map which holds all possible schemas for different message types. */
   private Map<String, ISOMessageSchema> schemas = new HashMap<>();
+
+  /**
+   * Sets the message length number of bytes.
+   *
+   * @param length length to set
+   * @return reference to this object {@link  ISOSchema}
+   */
+  public ISOSchema length(int length) {
+    ValidationUtils.validateLength(length,
+        "Message length should be more than '0' and less than '999'");
+    this.length = length;
+    return this;
+  }
 
   /**
    * Sets encoding of messages.
@@ -99,6 +119,17 @@ public class ISOSchema {
   }
 
   /**
+   * Gets the applicable message schema by provided message type.
+   *
+   * @param messageType message type
+   * @return the most applicable message schema by type
+   */
+  public ISOMessageSchema getApplicableSchema(MessageType messageType) {
+    //TODO: implement proper mechanism to get the applicable schema
+    return getSchema(messageType.toMTIString());
+  }
+
+  /**
    * Gets the message schema by generic type.
    *
    * @param type generic type
@@ -122,6 +153,7 @@ public class ISOSchema {
    */
   public static class ISOSchemaBuilder {
 
+    private int length = DEFAULT_LENGTH;
     private Charset encoding = DEFAULT_ENCODING;
     private Class<? extends ISOMessagePackager> packager;
     private final Map<String, ISOMessageSchema> schemas = new HashMap<>();
@@ -173,12 +205,25 @@ public class ISOSchema {
     }
 
     /**
+     * Sets the message length number of bytes.
+     *
+     * @param length length to set
+     * @return reference to this object {@link  ISOSchemaBuilder}
+     */
+    public ISOSchemaBuilder length(int length) {
+      ValidationUtils.validateLength(length,
+          "Message length should be more than '0' and less than '999'");
+      this.length = length;
+      return this;
+    }
+
+    /**
      * Builds the iso schema.
      *
      * @return {@link ISOSchema} instance
      */
     public ISOSchema build() {
-      return new ISOSchema(this.encoding, this.packager, this.schemas);
+      return new ISOSchema(this.length, this.encoding, this.packager, this.schemas);
     }
   }
 }

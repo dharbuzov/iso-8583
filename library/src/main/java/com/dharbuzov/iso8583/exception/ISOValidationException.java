@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
+package com.dharbuzov.iso8583.exception;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ASCIIMessagePackager implements ISOMessagePackager {
+public class ISOValidationException extends ISOException {
 
-  @Override
-  public byte[] pack(ISOMessage message) {
-    return new byte[0];
+  public ISOValidationException(Exception ex) {
+    super(ex);
   }
 
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+  public ISOValidationException(String message) {
+    super(message);
+  }
+
+  public ISOValidationException(String formatMessage, Object... args) {
+    super(formatMessage, args);
   }
 }

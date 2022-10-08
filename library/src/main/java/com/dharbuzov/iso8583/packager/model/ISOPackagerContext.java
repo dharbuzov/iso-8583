@@ -13,22 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.model;
+
+import java.util.Map;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
+import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ASCIIMessagePackager implements ISOMessagePackager {
-
-  @Override
-  public byte[] pack(ISOMessage message) {
-    return new byte[0];
-  }
-
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
-  }
+@Data
+@Builder
+@ToString
+@EqualsAndHashCode
+public class ISOPackagerContext {
+  private ISOMessageSchema messageSchema;
+  private Map<Class<? extends ISOMessagePackager>, ISOMessagePackager> packagers;
+  private ISOMessage message;
 }

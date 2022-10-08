@@ -44,6 +44,14 @@ public interface ISOPackagerFactory {
   ISOMessage unpack(byte[] msgBytes);
 
   /**
+   * Gets the message packager by class.
+   *
+   * @param messagePackager message packager class to get by
+   * @return found message packager in the factory
+   */
+  ISOMessagePackager getMessagePackager(Class<? extends ISOMessagePackager> messagePackager);
+
+  /**
    * Adds message packager to factory.
    *
    * @param messagePackager message packager to add

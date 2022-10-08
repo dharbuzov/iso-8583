@@ -15,14 +15,14 @@
  */
 package com.dharbuzov.iso8583.packager;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.ISOField;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOFieldPackager {
 
-  byte[] pack(ISOMessage message);
+  byte[] pack(ISOField field);
 
-  ISOMessage unpack(byte[] msgBytes);
+  ISOField unpack(byte[] fldBytes);
 }
