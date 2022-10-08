@@ -15,10 +15,6 @@
  */
 package com.dharbuzov.iso8583.config;
 
-import com.dharbuzov.iso8583.binder.DefaultMessageBinder;
-import com.dharbuzov.iso8583.binder.DefaultMessageKeyGenerator;
-import com.dharbuzov.iso8583.binder.MessageBinder;
-import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ISOChannel;
 import com.dharbuzov.iso8583.factory.ISODefaultEventFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultMessageListenerFactory;
@@ -26,6 +22,9 @@ import com.dharbuzov.iso8583.factory.ISODefaultPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOEventFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.model.schema.ISOSchema;
+import com.dharbuzov.iso8583.packager.ASCIIMessagePackager;
+import com.dharbuzov.iso8583.packager.HEXMessagePackager;
 
 /**
  * Base implementation of library configuration.
@@ -41,10 +40,7 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
   protected final ISOMessageListenerFactory listenerFactory;
   protected final ISOEventFactory eventFactory;
   protected final ISOPackagerFactory packagerFactory;
-
-  protected final MessageKeyGenerator messageKeyGenerator;
-
-  protected final MessageBinder messageBinder;
+  protected final ISOSchema schema;
 
   /**
    * Base configuration constructor.
@@ -52,12 +48,22 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
    * @param properties configuration properties
    */
   public ISOBaseConfiguration(T properties) {
-    this.messageKeyGenerator = createMessageKeyGenerator(properties.getMessages());
-    this.messageBinder = createMessageBinder(properties.getMessages(), this.messageKeyGenerator);
+    this.beforeConstruct(properties);
+    this.schema = properties.getSchema();
     this.listenerFactory = createListenerFactory(properties);
     this.eventFactory = createEventFactory(properties);
     this.packagerFactory = createPackagerFactory(properties);
     this.channel = createChannel(properties);
+    addDefaultPackagers(this.packagerFactory);
+  }
+
+  /**
+   * Method which would be called before calling the constructor of base configuration.
+   *
+   * @param properties configuration properties
+   */
+  protected void beforeConstruct(T properties) {
+    //NOOP
   }
 
   /**
@@ -81,23 +87,16 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
    */
   @Override
   public ISOPackagerFactory createPackagerFactory(T properties) {
-    return new ISODefaultPackagerFactory();
+    return new ISODefaultPackagerFactory(properties);
   }
 
   /**
-   * {@inheritDoc}
+   * Adds default message packagers to the packager factory.
+   *
+   * @param packagerFactory packager factory
    */
-  @Override
-  public MessageKeyGenerator createMessageKeyGenerator(ISOMessageProperties properties) {
-    return new DefaultMessageKeyGenerator(properties);
-  }
-
-  /**
-   * {@inheritDoc}
-   */
-  @Override
-  public MessageBinder createMessageBinder(ISOMessageProperties properties,
-      MessageKeyGenerator messageKeyGenerator) {
-    return new DefaultMessageBinder(properties, messageKeyGenerator);
+  protected void addDefaultPackagers(ISOPackagerFactory packagerFactory) {
+    packagerFactory.addMessagePackager(new ASCIIMessagePackager());
+    packagerFactory.addMessagePackager(new HEXMessagePackager());
   }
 }

@@ -20,6 +20,9 @@ import com.dharbuzov.iso8583.channel.ISOReplyChannel;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.schema.ISOKnownSchema;
+import com.dharbuzov.iso8583.model.schema.ISOSchema;
+import com.dharbuzov.iso8583.model.schema.ISOSchemas;
 import com.dharbuzov.iso8583.server.ISOServer;
 import com.dharbuzov.iso8583.server.config.ISOServerConfiguration;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
@@ -33,8 +36,8 @@ import lombok.extern.slf4j.Slf4j;
 public class ServerApplication {
 
   private static final ISOServerProperties serverProperties =
-      ISOServerProperties.builder().connection(ISOConnProperties.builder().port(8080).build())
-          .build();
+      ISOServerProperties.builder().schema(ISOSchemas.knownSchema(ISOKnownSchema.ISO_87_ASCII))
+          .connection(ISOConnProperties.builder().port(8080).build()).build();
 
   public static void main(String[] args) {
     ISOServer server = null;

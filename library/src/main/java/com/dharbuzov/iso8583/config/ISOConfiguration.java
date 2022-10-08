@@ -15,8 +15,6 @@
  */
 package com.dharbuzov.iso8583.config;
 
-import com.dharbuzov.iso8583.binder.MessageBinder;
-import com.dharbuzov.iso8583.binder.MessageKeyGenerator;
 import com.dharbuzov.iso8583.channel.ISOChannel;
 import com.dharbuzov.iso8583.factory.ISOEventFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
@@ -63,22 +61,4 @@ public interface ISOConfiguration<T extends ISOBaseProperties, C extends ISOChan
    * @return created packager factory
    */
   ISOPackagerFactory createPackagerFactory(T properties);
-
-  /**
-   * Creates message key generator.
-   *
-   * @param properties properties to configure the message generator
-   * @return created message key generator
-   */
-  MessageKeyGenerator createMessageKeyGenerator(ISOMessageProperties properties);
-
-  /**
-   * Creates message binder.
-   *
-   * @param properties          properties to configure the message binder.
-   * @param messageKeyGenerator message key generator
-   * @return created message binder
-   */
-  MessageBinder createMessageBinder(ISOMessageProperties properties,
-      MessageKeyGenerator messageKeyGenerator);
 }

@@ -40,6 +40,7 @@ import lombok.extern.slf4j.Slf4j;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Slf4j
+@Disabled
 public class ClientServerIntegrationTest extends AbstractIntegrationTest {
   private static final ISOClientProperties clientProperties = ISOClientProperties.builder()
       .connection(ISOConnProperties.builder().host("localhost").port(50000).build()).build();

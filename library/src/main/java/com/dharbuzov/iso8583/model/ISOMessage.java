@@ -15,7 +15,10 @@
  */
 package com.dharbuzov.iso8583.model;
 
+import static com.dharbuzov.iso8583.model.schema.ISOMessageSchema.FIELDS_SIZE;
+
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.util.ValidationUtils;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -30,8 +33,6 @@ import lombok.ToString;
 @Builder
 @ToString
 public class ISOMessage {
-
-  public static final int FIELDS_SIZE = 129;
 
   @Getter
   @Setter
@@ -50,6 +51,7 @@ public class ISOMessage {
   @Setter
   private String header;
 
+  @Getter
   private final ISOField[] fields = new ISOField[FIELDS_SIZE];
 
   /**
@@ -87,33 +89,45 @@ public class ISOMessage {
    * @throws ISOException if position is less than 0 or more than 129
    */
   public ISOField getField(int position) throws ISOException {
-    validatePosition(position);
+    ValidationUtils.validateFieldPosition(position);
     return fields[position];
   }
 
   /**
-   * Sets the field to specific position.
+   * Sets the field value to the specific position.
    *
    * @param position position of the field in message
    * @param field    field to set
    * @throws ISOException if the position is less than 0 or more than 129
    */
   public void setField(int position, ISOField field) throws ISOException {
-    validatePosition(position);
+    ValidationUtils.validateFieldPosition(position);
     fields[position] = field;
   }
 
   /**
-   * Validates that field's position is applicable by ISO 8583 specification.
+   * Sets the field value to the specific position.
    *
-   * @param position position of the field to manipulate
-   * @throws ISOException if position is less than 0 or more than 129
+   * @param position position of the field in message
+   * @param value    string value to set
+   * @throws ISOException if the position is less than 0 or more than 129
    */
-  private void validatePosition(int position) throws ISOException {
-    if (position <= 0 || position > FIELDS_SIZE) {
-      throw new ISOException(
-          "Wrong field position, '%s', should be more than '%s' and less than '%s'", position, 0,
-          FIELDS_SIZE);
-    }
+  public void setField(int position, String value) throws ISOException {
+    ValidationUtils.validateFieldPosition(position);
+    final ISOField field = new ISOField(position, value);
+    fields[position] = field;
+  }
+
+  /**
+   * Sets the field value to the specific position.
+   *
+   * @param position position of the field in message
+   * @param value    byte array value to set
+   * @throws ISOException if the position is less than 0 or more than 129
+   */
+  public void setField(int position, byte[] value) throws ISOException {
+    ValidationUtils.validateFieldPosition(position);
+    final ISOField field = new ISOField(position, value);
+    fields[position] = field;
   }
 }

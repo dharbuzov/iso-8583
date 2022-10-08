@@ -16,11 +16,17 @@
 package com.dharbuzov.iso8583.factory;
 
 import java.nio.charset.Charset;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageSource;
 import com.dharbuzov.iso8583.model.MessageType;
+import com.dharbuzov.iso8583.model.schema.ISOSchema;
 import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.util.ValidationUtils;
 
 /**
  * Default implementation of packager factory.
@@ -28,6 +34,32 @@ import com.dharbuzov.iso8583.packager.ISOMessagePackager;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+
+  protected final ISOSchema schema;
+  protected final Map<Class<? extends ISOMessagePackager>, ISOMessagePackager> packagers =
+      new ConcurrentHashMap<>();
+
+  /**
+   * Constructor based on properties.
+   *
+   * @param properties base properties
+   */
+  public ISODefaultPackagerFactory(ISOBaseProperties properties) {
+    final ISOSchema schema = properties.getSchema();
+    validateSchema(schema);
+    this.schema = schema;
+  }
+
+  /**
+   * Validates the provided iso schema.
+   *
+   * @param schema schema to validate
+   */
+  protected void validateSchema(ISOSchema schema) {
+    ValidationUtils.validateNotNull(schema,
+        "ISOSchema is missing! Please set the ISOSchema in the properties!");
+    ValidationUtils.validateSchema(schema);
+  }
 
   /**
    * {@inheritDoc}
@@ -48,11 +80,13 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
 
   @Override
   public void addMessagePackager(ISOMessagePackager messagePackager) {
-
+    ValidationUtils.validateNotNull(messagePackager, "ISOMessagePackager is missing!");
+    this.packagers.put(messagePackager.getClass(), messagePackager);
   }
 
   @Override
   public void removeMessagePackager(ISOMessagePackager messagePackager) {
-
+    ValidationUtils.validateNotNull(messagePackager, "ISOMessagePackager is missing!");
+    this.packagers.remove(messagePackager.getClass());
   }
 }
