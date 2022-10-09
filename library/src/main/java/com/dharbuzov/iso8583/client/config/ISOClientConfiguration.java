@@ -81,7 +81,7 @@ public class ISOClientConfiguration
     }
     switch (channelType) {
       case NETTY:
-        return new ISOClientNettyChannel(properties, packagerFactory, listenerFactory,
+        return new ISOClientNettyChannel(properties, messagePackagerFactory, listenerFactory,
             messageBinder, messageKeyGenerator);
       default:
         throw new ISOException("Can't create a channel for type: '%s'", channelType);

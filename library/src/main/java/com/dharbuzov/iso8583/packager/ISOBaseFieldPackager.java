@@ -15,15 +15,21 @@
  */
 package com.dharbuzov.iso8583.packager;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.ISOField;
+import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+public abstract class ISOBaseFieldPackager implements ISOFieldPackager {
+  @Override
+  public byte[] pack(ISOPackagerContext packagerContext) {
+    return new byte[0];
+  }
 
-  byte[] pack(ISOPackagerContext packagerContext);
-
-  ISOMessage unpack(byte[] msgBytes);
+  @Override
+  public ISOField unpack(ISOFieldSchema schema, byte[] fldBytes) {
+    return null;
+  }
 }

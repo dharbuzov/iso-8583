@@ -16,8 +16,8 @@
 package com.dharbuzov.iso8583.model.schema;
 
 import com.dharbuzov.iso8583.exception.ISOException;
-import com.dharbuzov.iso8583.packager.ASCIIMessagePackager;
-import com.dharbuzov.iso8583.packager.HEXMessagePackager;
+import com.dharbuzov.iso8583.packager.ascii.ASCIIMessagePackager;
+import com.dharbuzov.iso8583.packager.hex.HEXMessagePackager;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

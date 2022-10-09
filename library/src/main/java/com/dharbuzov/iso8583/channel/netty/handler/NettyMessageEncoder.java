@@ -15,7 +15,7 @@
  */
 package com.dharbuzov.iso8583.channel.netty.handler;
 
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -30,9 +30,9 @@ import io.netty.handler.codec.MessageToByteEncoder;
  */
 public class NettyMessageEncoder extends MessageToByteEncoder<ISOMessage> {
 
-  private final ISOPackagerFactory packagerFactory;
+  private final ISOMessagePackagerFactory packagerFactory;
 
-  public NettyMessageEncoder(ISOPackagerFactory packagerFactory) {
+  public NettyMessageEncoder(ISOMessagePackagerFactory packagerFactory) {
     this.packagerFactory = packagerFactory;
   }
 

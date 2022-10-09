@@ -13,17 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.hex;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.packager.ISOMessagePackager;
+import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ASCIIMessagePackager implements ISOMessagePackager {
+public class HEXMessagePackager implements ISOMessagePackager {
 
   @Override
-  public byte[] pack(ISOMessage message) {
+  public byte[] pack(ISOPackagerContext packagerContext) {
     return new byte[0];
   }
 

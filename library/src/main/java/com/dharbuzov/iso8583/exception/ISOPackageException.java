@@ -23,6 +23,15 @@ package com.dharbuzov.iso8583.exception;
 public class ISOPackageException extends ISOException {
 
   /**
+   * Constructor based on exception.
+   *
+   * @param ex occurred exception
+   */
+  public ISOPackageException(Exception ex) {
+    super(ex);
+  }
+
+  /**
    * Constructor based on exception message.
    *
    * @param message error message

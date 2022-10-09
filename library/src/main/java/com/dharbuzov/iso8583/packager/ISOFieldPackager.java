@@ -16,13 +16,15 @@
 package com.dharbuzov.iso8583.packager;
 
 import com.dharbuzov.iso8583.model.ISOField;
+import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
+import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 public interface ISOFieldPackager {
 
-  byte[] pack(ISOField field);
+  byte[] pack(ISOPackagerContext packagerContext);
 
-  ISOField unpack(byte[] fldBytes);
+  ISOField unpack(ISOFieldSchema schema, byte[] fldBytes);
 }

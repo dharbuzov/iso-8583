@@ -25,7 +25,7 @@ import com.dharbuzov.iso8583.packager.ISOMessagePackager;
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  * @see ISOMessagePackager
  */
-public interface ISOPackagerFactory {
+public interface ISOMessagePackagerFactory {
 
   /**
    * Packs the message into ISO-8583 byte representation.

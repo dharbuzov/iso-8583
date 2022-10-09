@@ -18,7 +18,7 @@ package com.dharbuzov.iso8583.channel.netty;
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 
 import io.netty.channel.Channel;
 
@@ -33,7 +33,7 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
 
   protected final T properties;
   protected final ISOConnProperties connProperties;
-  protected final ISOPackagerFactory packagerFactory;
+  protected final ISOMessagePackagerFactory packagerFactory;
   protected final ISOMessageListenerFactory listenerFactory;
   protected Channel nettyChannel;
 
@@ -44,7 +44,7 @@ public abstract class ISOBaseNettyChannel<T extends ISOBaseProperties> {
    * @param packagerFactory packager factory
    * @param listenerFactory listener factory
    */
-  public ISOBaseNettyChannel(T properties, ISOPackagerFactory packagerFactory,
+  public ISOBaseNettyChannel(T properties, ISOMessagePackagerFactory packagerFactory,
       ISOMessageListenerFactory listenerFactory) {
     this.properties = properties;
     this.connProperties = properties.getConnection();

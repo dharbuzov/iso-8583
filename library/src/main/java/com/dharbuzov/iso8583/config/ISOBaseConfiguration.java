@@ -17,14 +17,16 @@ package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ISOChannel;
 import com.dharbuzov.iso8583.factory.ISODefaultEventFactory;
+import com.dharbuzov.iso8583.factory.ISODefaultFieldPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISODefaultMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISODefaultPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISODefaultMessagePackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
-import com.dharbuzov.iso8583.packager.ASCIIMessagePackager;
-import com.dharbuzov.iso8583.packager.HEXMessagePackager;
+import com.dharbuzov.iso8583.packager.ascii.ASCIIMessagePackager;
+import com.dharbuzov.iso8583.packager.hex.HEXMessagePackager;
 
 /**
  * Base implementation of library configuration.
@@ -39,7 +41,8 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
   protected final C channel;
   protected final ISOMessageListenerFactory listenerFactory;
   protected final ISOEventFactory eventFactory;
-  protected final ISOPackagerFactory packagerFactory;
+  protected final ISOFieldPackagerFactory fieldPackagerFactory;
+  protected final ISOMessagePackagerFactory messagePackagerFactory;
   protected final ISOSchema schema;
 
   /**
@@ -52,9 +55,11 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
     this.schema = properties.getSchema();
     this.listenerFactory = createListenerFactory(properties);
     this.eventFactory = createEventFactory(properties);
-    this.packagerFactory = createPackagerFactory(properties);
+    this.fieldPackagerFactory = createFieldPackagerFactory(properties);
+    this.messagePackagerFactory =
+        createMessagePackagerFactory(properties, this.fieldPackagerFactory);
     this.channel = createChannel(properties);
-    addDefaultPackagers(this.packagerFactory);
+    addDefaultPackagers(this.messagePackagerFactory, this.fieldPackagerFactory);
   }
 
   /**
@@ -82,21 +87,29 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
     return new ISODefaultMessageListenerFactory();
   }
 
+  @Override
+  public ISOFieldPackagerFactory createFieldPackagerFactory(T properties) {
+    return new ISODefaultFieldPackagerFactory();
+  }
+
   /**
    * {@inheritDoc}
    */
   @Override
-  public ISOPackagerFactory createPackagerFactory(T properties) {
-    return new ISODefaultPackagerFactory(properties);
+  public ISOMessagePackagerFactory createMessagePackagerFactory(T properties,
+      ISOFieldPackagerFactory fieldPackagerFactory) {
+    return new ISODefaultMessagePackagerFactory(properties, fieldPackagerFactory);
   }
 
   /**
-   * Adds default message packagers to the packager factory.
+   * Adds default message and field packagers to the packager factories.
    *
-   * @param packagerFactory packager factory
+   * @param messagePackagerFactory message packager factory
+   * @param fieldPackagerFactory   field packager factory
    */
-  protected void addDefaultPackagers(ISOPackagerFactory packagerFactory) {
-    packagerFactory.addMessagePackager(new ASCIIMessagePackager());
-    packagerFactory.addMessagePackager(new HEXMessagePackager());
+  protected void addDefaultPackagers(ISOMessagePackagerFactory messagePackagerFactory,
+      ISOFieldPackagerFactory fieldPackagerFactory) {
+    messagePackagerFactory.addMessagePackager(new ASCIIMessagePackager());
+    messagePackagerFactory.addMessagePackager(new HEXMessagePackager());
   }
 }

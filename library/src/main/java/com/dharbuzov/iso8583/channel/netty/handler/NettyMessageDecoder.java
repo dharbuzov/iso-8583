@@ -18,7 +18,7 @@ package com.dharbuzov.iso8583.channel.netty.handler;
 import java.util.List;
 
 import com.dharbuzov.iso8583.exception.ISOPackageException;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -34,9 +34,9 @@ import io.netty.handler.codec.ByteToMessageDecoder;
  */
 public class NettyMessageDecoder extends ByteToMessageDecoder {
 
-  private final ISOPackagerFactory packagerFactory;
+  private final ISOMessagePackagerFactory packagerFactory;
 
-  public NettyMessageDecoder(ISOPackagerFactory packagerFactory) {
+  public NettyMessageDecoder(ISOMessagePackagerFactory packagerFactory) {
     this.packagerFactory = packagerFactory;
   }
 

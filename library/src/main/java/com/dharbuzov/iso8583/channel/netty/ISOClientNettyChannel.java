@@ -32,7 +32,7 @@ import com.dharbuzov.iso8583.client.config.ISOClientProperties;
 import com.dharbuzov.iso8583.client.config.ISOReconnectProperties;
 import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.MessageSource;
 
@@ -70,7 +70,7 @@ public class ISOClientNettyChannel extends ISOBaseNettyChannel<ISOClientProperti
    * @param messageKeyGenerator message key generator
    */
   public ISOClientNettyChannel(ISOClientProperties clientProperties,
-      ISOPackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory,
+      ISOMessagePackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory,
       MessageBinder messageBinder, MessageKeyGenerator messageKeyGenerator) {
     super(clientProperties, packagerFactory, listenerFactory);
     this.messageBinder = messageBinder;

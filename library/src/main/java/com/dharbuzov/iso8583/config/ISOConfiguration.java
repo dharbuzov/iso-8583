@@ -17,8 +17,9 @@ package com.dharbuzov.iso8583.config;
 
 import com.dharbuzov.iso8583.channel.ISOChannel;
 import com.dharbuzov.iso8583.factory.ISOEventFactory;
+import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 
 /**
  * A Configuration interface is responsible for specifying the proper configuration of client or
@@ -55,10 +56,20 @@ public interface ISOConfiguration<T extends ISOBaseProperties, C extends ISOChan
   ISOMessageListenerFactory createListenerFactory(T properties);
 
   /**
-   * Creates the packager factory.
+   * Creates the message packager factory.
    *
-   * @param properties properties to configure the packager factory
-   * @return created packager factory
+   * @param properties           properties to configure the message packager factory
+   * @param fieldPackagerFactory field packager factory
+   * @return created message packager factory
    */
-  ISOPackagerFactory createPackagerFactory(T properties);
+  ISOMessagePackagerFactory createMessagePackagerFactory(T properties,
+      ISOFieldPackagerFactory fieldPackagerFactory);
+
+  /**
+   * Creates the field packager factory.
+   *
+   * @param properties properties to configure the field packager factory
+   * @return created field packager factory
+   */
+  ISOFieldPackagerFactory createFieldPackagerFactory(T properties);
 }

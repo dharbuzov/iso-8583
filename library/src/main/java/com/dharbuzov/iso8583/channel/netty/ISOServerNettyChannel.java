@@ -20,7 +20,7 @@ import com.dharbuzov.iso8583.channel.netty.handler.NettyChannelInitializer;
 import com.dharbuzov.iso8583.channel.netty.handler.NettyMessageHandler;
 import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.server.config.ISOServerProperties;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -50,7 +50,7 @@ public class ISOServerNettyChannel extends ISOBaseNettyChannel<ISOServerProperti
    * @param listenerFactory  listener factory
    */
   public ISOServerNettyChannel(ISOServerProperties serverProperties,
-      ISOPackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory) {
+      ISOMessagePackagerFactory packagerFactory, ISOMessageListenerFactory listenerFactory) {
     super(serverProperties, packagerFactory, listenerFactory);
   }
 

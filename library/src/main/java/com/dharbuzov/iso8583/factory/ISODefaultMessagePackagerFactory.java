@@ -33,21 +33,27 @@ import com.dharbuzov.iso8583.util.ValidationUtils;
  *
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ISODefaultPackagerFactory implements ISOPackagerFactory {
+public class ISODefaultMessagePackagerFactory implements ISOMessagePackagerFactory {
 
   protected final ISOSchema schema;
   protected final Map<Class<? extends ISOMessagePackager>, ISOMessagePackager> packagers =
       new ConcurrentHashMap<>();
+  protected final ISOFieldPackagerFactory fieldPackagerFactory;
 
   /**
    * Constructor based on properties.
    *
-   * @param properties base properties
+   * @param properties           base properties
+   * @param fieldPackagerFactory field packager factory
    */
-  public ISODefaultPackagerFactory(ISOBaseProperties properties) {
+  public ISODefaultMessagePackagerFactory(ISOBaseProperties properties,
+      ISOFieldPackagerFactory fieldPackagerFactory) {
+    ValidationUtils.validateNotNull(properties, "ISOBaseProperties are missing!");
+    ValidationUtils.validateNotNull(fieldPackagerFactory, "ISOFieldPackagerFactory are missing!");
     final ISOSchema schema = properties.getSchema();
     validateSchema(schema);
     this.schema = schema;
+    this.fieldPackagerFactory = fieldPackagerFactory;
   }
 
   /**
@@ -71,9 +77,10 @@ public class ISODefaultPackagerFactory implements ISOPackagerFactory {
         String.format("Can't find the applicable message schema for type '%s'", msg.getType()));
     final ISOPackagerContext packagerContext =
         ISOPackagerContext.builder().message(msg).messageSchema(messageSchema)
-            .packagers(this.packagers).build();
+            .encoding(schema.getEncoding()).fieldPackagerFactory(fieldPackagerFactory)
+            .messageLength(schema.getLength()).build();
     final ISOMessagePackager packager = getMessagePackager(schema.getPackager());
-    return packager.pack(msg);
+    return packager.pack(packagerContext);
   }
 
   /**

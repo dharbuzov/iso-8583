@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.ascii;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.packager.ISOBaseMessagePackager;
+import com.dharbuzov.iso8583.packager.ISOFieldPackager;
+import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class HEXMessagePackager implements ISOMessagePackager {
+public class ASCIIMessagePackager extends ISOBaseMessagePackager {
 
   @Override
-  public byte[] pack(ISOMessage message) {
-    return new byte[0];
+  protected void packLength(ISOPackagerContext packagerContext, byte[] data) {
+
   }
 
   @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+  protected Class<? extends ISOFieldPackager> getDefaultFieldPackagerClass() {
+    return ASCIIFieldPackager.class;
   }
 }

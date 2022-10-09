@@ -15,11 +15,14 @@
  */
 package com.dharbuzov.iso8583.packager.model;
 
-import java.util.Map;
+import java.io.ByteArrayOutputStream;
+import java.nio.charset.Charset;
 
+import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
+import com.dharbuzov.iso8583.model.ISOField;
 import com.dharbuzov.iso8583.model.ISOMessage;
+import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
 
 import lombok.Builder;
 import lombok.Data;
@@ -34,7 +37,13 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class ISOPackagerContext {
+  private Charset encoding;
+  private int messageLength;
   private ISOMessageSchema messageSchema;
-  private Map<Class<? extends ISOMessagePackager>, ISOMessagePackager> packagers;
   private ISOMessage message;
+  private ISOFieldSchema fieldSchema;
+  private ISOField field;
+  private int fieldPosition;
+  private ISOFieldPackagerFactory fieldPackagerFactory;
+  private ByteArrayOutputStream bout;
 }

@@ -13,17 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.ascii;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
+import com.dharbuzov.iso8583.packager.ISOBaseFieldPackager;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
-
-  byte[] pack(ISOPackagerContext packagerContext);
-
-  ISOMessage unpack(byte[] msgBytes);
+public class ASCIIFieldPackager extends ISOBaseFieldPackager {
 }

@@ -15,7 +15,7 @@
  */
 package com.dharbuzov.iso8583.channel.netty.handler;
 
-import com.dharbuzov.iso8583.factory.ISOPackagerFactory;
+import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NettyChannelInitializer extends ChannelInitializer<Channel> {
 
-  protected final ISOPackagerFactory packagerFactory;
+  protected final ISOMessagePackagerFactory packagerFactory;
   protected final NettyMessageHandler nettyMessageHandler;
 
   /**

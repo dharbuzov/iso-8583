@@ -22,26 +22,48 @@ package com.dharbuzov.iso8583.model;
  */
 public enum ISOValueType {
   /**
-   * In every ISO8583 message, there is a bit map to indicate which fields are included in the
-   * message.
+   * The message type indicator is a four-digit numeric field which indicates the overall function
+   * of the message.
+   */
+  MESSAGE_TYPE,
+  /**
+   * A bit map to indicate which fields are included in the message or composite field.
    **/
   BITMAP,
-  /** A fixed-length alphanumeric value. */
+  /**
+   * A fixed-length alphanumeric value.
+   */
   ALPHA,
-  /** A fixed-length numeric value. */
+  /**
+   * A fixed-length numeric value.
+   */
   NUMERIC,
-  /** A variable length alphanumeric value with a 2-digit header length. */
+  /**
+   * A variable length alphanumeric value with a 2-digit header length.
+   */
   LLVAR,
-  /** A variable length alphanumeric value with a 3-digit header length. */
+  /**
+   * A variable length alphanumeric value with a 3-digit header length.
+   */
   LLLVAR,
-  /** variable length byte array with 4-digit header length. */
+  /**
+   * Variable length byte array with 4-digit header length.
+   */
   LLLLVAR,
-  /** Holds the binary data. */
+  /**
+   * Holds the binary data.
+   */
   BINARY,
-  /** Similar to LLVAR but holds byte arrays instead of strings. */
+  /**
+   * Similar to LLVAR but holds byte arrays instead of strings.
+   */
   LLBIN,
-  /** Similar to LLLVAR but holds byte arrays instead of strings. */
+  /**
+   * Similar to LLLVAR but holds byte arrays instead of strings.
+   */
   LLLBIN,
-  /** variable length byte array with 4-digit header length. */
+  /**
+   * Variable length byte array with 4-digit header length.
+   */
   LLLLBIN
 }
