@@ -13,24 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager.hex;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.ISOMessagePackager;
-import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
+package com.dharbuzov.iso8583.model.field;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class HEXMessagePackager implements ISOMessagePackager {
+public class ISOCompositeField extends ISOAbstractCompoundField {
 
-  @Override
-  public byte[] pack(ISOPackagerContext packagerContext) {
-    return new byte[0];
+  public ISOCompositeField() {
+    super(ISOFieldType.COMPOSITE, 999);
   }
 
-  @Override
-  public ISOMessage unpack(byte[] msgBytes) {
-    return null;
+  public ISOCompositeField(int maxFieldsSize) {
+    super(ISOFieldType.COMPOSITE, maxFieldsSize);
   }
+
 }

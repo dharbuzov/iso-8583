@@ -21,6 +21,7 @@ import java.util.Map;
 
 import com.dharbuzov.iso8583.exception.ISOException;
 import com.dharbuzov.iso8583.exception.ISOValidationException;
+import com.dharbuzov.iso8583.model.field.ISOValueType;
 import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
@@ -82,6 +83,22 @@ public class ValidationUtils {
    */
   public static void validateSubFieldPosition(int fieldPosition) throws ISOException {
     if (fieldPosition <= 0 || fieldPosition > 999) {
+      throw new ISOValidationException(
+          "Wrong subfield position, '%s', should be more than '%s' and less than '%s'",
+          fieldPosition, 0, 999);
+    }
+  }
+
+  /**
+   * Validates that field's position is applicable by ISO 8583 specification.
+   *
+   * @param fieldPosition position of the field in message
+   * @param fieldSize     fields size
+   * @throws ISOException if position is less than 0 or more than 129
+   */
+  public static void validateSubFieldPosition(int fieldPosition, int fieldSize)
+      throws ISOException {
+    if (fieldPosition <= 0 || fieldPosition > fieldSize) {
       throw new ISOValidationException(
           "Wrong subfield position, '%s', should be more than '%s' and less than '%s'",
           fieldPosition, 0, 999);
@@ -206,5 +223,17 @@ public class ValidationUtils {
     validateLength(schema.getLength(), String.format(
         "Position '%s'. Field length is incorrect should be more than '0' and not more than '999'!",
         position));
+  }
+
+  /**
+   * Validates the value type for compound field types.
+   *
+   * @param valueType value type
+   */
+  public static void validateCompoundValueType(ISOValueType valueType) {
+    if (ISOValueType.BITMAP == valueType || ISOValueType.MESSAGE_TYPE == valueType) {
+      throw new ISOValidationException("Value type '%s' is not allowed for compound field types",
+          valueType);
+    }
   }
 }

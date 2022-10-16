@@ -13,18 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
-
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+package com.dharbuzov.iso8583.model.field;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+public abstract class ISOAbstractValue<T> implements ISOValue<T>{
 
-  byte[] pack(ISOMessagePackContext packagerContext);
+  protected T value;
 
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+  @Override
+  public void setValue(T value) {
+    this.value = value;
+  }
+
+  @Override
+  public T getValue() {
+    return value;
+  }
 }

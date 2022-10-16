@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.model;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
+import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+public interface ISOFieldContext {
 
-  byte[] pack(ISOMessagePackContext packagerContext);
+  ISOFieldSchema getSchema();
 
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+  ISOFieldPackagerFactory getFieldPackagerFactory();
 }

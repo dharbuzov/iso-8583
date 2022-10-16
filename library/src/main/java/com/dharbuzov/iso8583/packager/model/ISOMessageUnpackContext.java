@@ -13,18 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.model;
+
+import java.io.ByteArrayInputStream;
+import java.nio.charset.Charset;
 
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+@Data
+@SuperBuilder
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ISOMessageUnpackContext extends ISOBaseMessageContext {
 
-  byte[] pack(ISOMessagePackContext packagerContext);
-
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+  private Charset encoding;
+  private int messageLengthDigits;
+  private ISOMessage message;
+  private ByteArrayInputStream bin;
 }

@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.model.field;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+import java.util.BitSet;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
-
-  byte[] pack(ISOMessagePackContext packagerContext);
-
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+public class ISOBitSetValue extends ISOAbstractValue<BitSet> {
 }

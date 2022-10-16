@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.dharbuzov.iso8583.exception.ISOException;
-import com.dharbuzov.iso8583.model.ISOFieldType;
-import com.dharbuzov.iso8583.model.ISOValueType;
+import com.dharbuzov.iso8583.model.field.ISOFieldType;
+import com.dharbuzov.iso8583.model.field.ISOValueType;
 import com.dharbuzov.iso8583.packager.ISOFieldPackager;
 import com.dharbuzov.iso8583.util.ValidationUtils;
 

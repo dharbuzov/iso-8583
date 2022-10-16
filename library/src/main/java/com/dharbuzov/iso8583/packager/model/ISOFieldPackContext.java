@@ -13,18 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.packager.model;
+
+import java.util.Optional;
 
 import com.dharbuzov.iso8583.model.field.ISOField;
-import com.dharbuzov.iso8583.packager.model.ISOFieldPackContext;
-import com.dharbuzov.iso8583.packager.model.ISOFieldUnpackContext;
+import com.dharbuzov.iso8583.model.field.ISOValue;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOFieldPackager {
+@Data
+@SuperBuilder
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
+public class ISOFieldPackContext extends ISOBaseFieldContext {
+  private ISOField field;
+  private int position;
 
-  byte[] pack(ISOFieldPackContext fieldPackContext);
-
-  ISOField unpack(ISOFieldUnpackContext fieldUnpackContext);
+  public <T> T getFieldValue(Class<T> clazz) {
+    return Optional.ofNullable(field).map(ISOField::getValue).map(ISOValue::getValue)
+        .map(clazz::cast).orElse(null);
+  }
 }

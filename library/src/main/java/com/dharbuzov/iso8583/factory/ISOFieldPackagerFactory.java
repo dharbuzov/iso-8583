@@ -15,7 +15,7 @@
  */
 package com.dharbuzov.iso8583.factory;
 
-import com.dharbuzov.iso8583.model.ISOField;
+import com.dharbuzov.iso8583.model.field.ISOField;
 import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
 import com.dharbuzov.iso8583.packager.ISOFieldPackager;
 

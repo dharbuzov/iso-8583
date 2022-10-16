@@ -15,14 +15,33 @@
  */
 package com.dharbuzov.iso8583.model;
 
+import java.nio.charset.Charset;
+
+import com.dharbuzov.iso8583.util.StringUtils;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public enum ISOFieldType {
-  /* Constructed data type. This type has predefined number of sub elements.*/
-  CONSTRUCTED,
-  /* Primitive data type. This type doesn't have sub elements.*/
-  PRIMITIVE,
-  /* Composite data type. This type has dynamic number of sub elements.*/
-  COMPOSITE;
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MessageStringHeader implements MessageHeader {
+
+  @Setter
+  @Getter
+  private String value;
+
+  @Override
+  public byte[] getValue(Charset encoding) {
+    if (StringUtils.isEmpty(value)) {
+      return new byte[0];
+    }
+    return value.getBytes(encoding);
+  }
 }

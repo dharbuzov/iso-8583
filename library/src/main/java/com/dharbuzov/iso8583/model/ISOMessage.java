@@ -18,10 +18,16 @@ package com.dharbuzov.iso8583.model;
 import static com.dharbuzov.iso8583.model.schema.ISOMessageSchema.FIELDS_SIZE;
 
 import com.dharbuzov.iso8583.exception.ISOException;
+import com.dharbuzov.iso8583.model.field.ISOByteValue;
+import com.dharbuzov.iso8583.model.field.ISOField;
+import com.dharbuzov.iso8583.model.field.ISOPrimitiveField;
+import com.dharbuzov.iso8583.model.field.ISOStringValue;
 import com.dharbuzov.iso8583.util.ValidationUtils;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -32,6 +38,8 @@ import lombok.ToString;
  */
 @Builder
 @ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class ISOMessage {
 
   /**
@@ -47,15 +55,7 @@ public class ISOMessage {
    */
   @Getter
   @Setter
-  private String headerStr;
-
-  /**
-   * The message header byte array to be sent as ISO header, header goes after message length but
-   * before the message type.
-   */
-  @Getter
-  @Setter
-  private byte[] headerBytes;
+  private MessageHeader header;
 
   /**
    * The message type indicator is a four-digit numeric field which indicates the overall function
@@ -78,12 +78,30 @@ public class ISOMessage {
   private int etx = -1;
 
   /**
+   * Sets the string header.
+   *
+   * @param header string header
+   */
+  public void setStringHeader(String header) {
+    this.header = MessageStringHeader.builder().value(header).build();
+  }
+
+  /**
+   * Sets the byte header.
+   *
+   * @param header byte header
+   */
+  public void setByteHeader(byte[] header) {
+    this.header = MessageByteHeader.builder().value(header).build();
+  }
+
+  /**
    * Returns flag which indicates that the message is request.
    *
    * @return {@code true} if message is request, otherwise {@code false}
    */
   public boolean isRequest() {
-    return !isResponse();
+    return type != null && type.isRequest();
   }
 
   /**
@@ -92,9 +110,7 @@ public class ISOMessage {
    * @return {@code true} if message is response, otherwise {@code false}
    */
   public boolean isResponse() {
-    return type != null && type.getFunction() != null && (
-        MessageFunction.REQUEST_RESPONSE == type.getFunction()
-        || MessageFunction.ADVICE_RESPONSE == type.getFunction());
+    return type != null && type.isResponse();
   }
 
   /**
@@ -109,7 +125,7 @@ public class ISOMessage {
    *
    * @param position position of the field in message
    * @return field
-   * @throws ISOException if position is less than 0 or more than 129
+   * @throws ISOException if position is not valid
    */
   public ISOField getField(int position) throws ISOException {
     ValidationUtils.validateFieldPosition(position);
@@ -121,7 +137,7 @@ public class ISOMessage {
    *
    * @param position position of the field in message
    * @param field    field to set
-   * @throws ISOException if the position is less than 0 or more than 129
+   * @throws ISOException if position is not valid
    */
   public void setField(int position, ISOField field) throws ISOException {
     ValidationUtils.validateFieldPosition(position);
@@ -133,11 +149,14 @@ public class ISOMessage {
    *
    * @param position position of the field in message
    * @param value    string value to set
-   * @throws ISOException if the position is less than 0 or more than 129
+   * @throws ISOException if position is not valid
    */
   public void setField(int position, String value) throws ISOException {
     ValidationUtils.validateFieldPosition(position);
-    final ISOField field = new ISOField(position, value);
+    final ISOStringValue stringValue = new ISOStringValue();
+    stringValue.setValue(value);
+    final ISOField field = new ISOPrimitiveField();
+    field.setValue(stringValue);
     fields[position] = field;
   }
 
@@ -146,11 +165,14 @@ public class ISOMessage {
    *
    * @param position position of the field in message
    * @param value    byte array value to set
-   * @throws ISOException if the position is less than 0 or more than 129
+   * @throws ISOException if position is not valid
    */
   public void setField(int position, byte[] value) throws ISOException {
     ValidationUtils.validateFieldPosition(position);
-    final ISOField field = new ISOField(position, value);
+    final ISOByteValue byteValue = new ISOByteValue();
+    byteValue.setValue(value);
+    final ISOField field = new ISOPrimitiveField();
+    field.setValue(byteValue);
     fields[position] = field;
   }
 
@@ -158,10 +180,76 @@ public class ISOMessage {
    * Removes field from the message.
    *
    * @param position position of the field
-   * @throws ISOException if the position is less than 0 or more than 129
+   * @throws ISOException if position is not valid
    */
   public void removeField(int position) throws ISOException {
     ValidationUtils.validateFieldPosition(position);
     fields[position] = null;
+  }
+
+  /**
+   * Removes specified fields from the message.
+   *
+   * @param positions array of positions
+   * @throws ISOException if position is not valid
+   */
+  public void removeFields(int... positions) throws ISOException {
+    for (int position : positions) {
+      // Validate all positions, so that we will not have a situation where some positions are
+      // not valid method throws an exception and previous positions have been removed
+      ValidationUtils.validateFieldPosition(position);
+    }
+    for (int position : positions) {
+      removeField(position);
+    }
+  }
+
+  /**
+   * Returns flag which indicates that message has field at the specified position.
+   *
+   * @param position position of the field
+   * @return {@code true} if field exists in the message, otherwise {@code false}
+   * @throws ISOException if position is not valid
+   */
+  public boolean hasField(int position) throws ISOException {
+    ValidationUtils.validateFieldPosition(position);
+    if (position == 0) {
+      return type != null;
+    }
+    return fields[position] != null;
+  }
+
+  /**
+   * Returns flag which indicates that message has every field at the specified positions.
+   *
+   * @param positions array of positions
+   * @return {@code true} if message contains any field specified at the positions, otherwise
+   * {@code false}
+   * @throws ISOException if position is not valid
+   */
+  public boolean hasEveryField(int... positions) throws ISOException {
+    for (int position : positions) {
+      if (!hasField(position)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  /**
+   * Returns flag which indicates that message has any of field at the specified positions.
+   *
+   * @param positions array of positions
+   * @return {@code true} if message contains any field specified at the positions, otherwise
+   * {@code false}
+   * @throws ISOException if the position is less than 0 or more than 129
+   */
+  public boolean hasAnyField(int... positions) throws ISOException {
+    for (int position : positions) {
+      if (hasField(position)) {
+        return true;
+      }
+    }
+    return false;
   }
 }

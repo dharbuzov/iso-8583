@@ -13,18 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.model;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+import java.nio.charset.Charset;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+public interface MessageHeader {
 
-  byte[] pack(ISOMessagePackContext packagerContext);
-
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+  byte[] getValue(Charset encoding);
 }

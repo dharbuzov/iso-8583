@@ -13,18 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.model;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+import java.nio.charset.Charset;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MessageByteTrailer implements MessageTrailer {
 
-  byte[] pack(ISOMessagePackContext packagerContext);
+  @Setter
+  @Getter
+  private byte value;
 
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+  @Override
+  public byte getValue(Charset encoding) {
+    return value;
+  }
 }

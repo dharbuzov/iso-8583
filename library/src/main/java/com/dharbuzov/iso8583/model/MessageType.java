@@ -16,8 +16,6 @@
 package com.dharbuzov.iso8583.model;
 
 import com.dharbuzov.iso8583.exception.ISOException;
-import com.dharbuzov.iso8583.exception.ISOPackageException;
-import com.dharbuzov.iso8583.util.StringUtils;
 
 import lombok.Builder;
 import lombok.Data;
@@ -58,6 +56,25 @@ public class MessageType {
   private MessageOrigin origin;
 
   /**
+   * Returns flag which indicates that the message type is request.
+   *
+   * @return {@code true} if message is request, otherwise {@code false}
+   */
+  public boolean isRequest() {
+    return !isResponse();
+  }
+
+  /**
+   * Returns flag which indicates that the message type is response.
+   *
+   * @return {@code true} if message is response, otherwise {@code false}
+   */
+  public boolean isResponse() {
+    return getFunction() != null && (MessageFunction.REQUEST_RESPONSE == getFunction()
+                                     || MessageFunction.ADVICE_RESPONSE == getFunction());
+  }
+
+  /**
    * Converts current type to response.
    */
   public void setResponseType() {
@@ -88,36 +105,5 @@ public class MessageType {
       MessageFunction function, MessageOrigin origin) {
     return MessageType.builder().version(version).clazz(clazz).function(function).origin(origin)
         .build();
-  }
-
-  /**
-   * Returns message type as a MTI string like 'xxxx'.
-   *
-   * @return mti string
-   */
-  public String toMTIString() {
-    //TODO: remove later, this logic should be a part of ISOMessagePackager
-    return String.format("%s%s%s%s", version.getValue(), clazz.getValue(), function.getValue(),
-        origin.getValue());
-  }
-
-  /**
-   * Returns message type constructed from mti string.
-   *
-   * @param mtiStr mti string to get message type from
-   * @return message type instance
-   */
-  public static MessageType fromMTIString(String mtiStr) {
-    //TODO: remove later, this logic should be a part of ISOMessagePackager
-    if (StringUtils.isEmpty(mtiStr)) {
-      throw new ISOPackageException("MTI header is missing!");
-    }
-    if (mtiStr.length() != 4) {
-      throw new ISOPackageException("MTI header should have length equals to 4!");
-    }
-    final char[] mtiChars = mtiStr.toCharArray();
-    return MessageType.builder().version(MessageVersion.fromChar(mtiChars[0]))
-        .clazz(MessageClass.fromChar(mtiChars[1])).function(MessageFunction.fromChar(mtiChars[2]))
-        .origin(MessageOrigin.fromChar(mtiChars[3])).build();
   }
 }

@@ -29,7 +29,6 @@ import com.dharbuzov.iso8583.model.MessageOrigin;
 import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.model.MessageVersion;
 import com.dharbuzov.iso8583.model.schema.ISOKnownSchema;
-import com.dharbuzov.iso8583.model.schema.ISOSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchemas;
 
 import lombok.extern.slf4j.Slf4j;

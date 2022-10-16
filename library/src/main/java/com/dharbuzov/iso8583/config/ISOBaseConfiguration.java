@@ -25,8 +25,10 @@ import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
 import com.dharbuzov.iso8583.factory.ISOMessageListenerFactory;
 import com.dharbuzov.iso8583.factory.ISOMessagePackagerFactory;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
+import com.dharbuzov.iso8583.packager.ascii.ASCIIFieldPackager;
 import com.dharbuzov.iso8583.packager.ascii.ASCIIMessagePackager;
-import com.dharbuzov.iso8583.packager.hex.HEXMessagePackager;
+import com.dharbuzov.iso8583.packager.binary.BinaryFieldPackager;
+import com.dharbuzov.iso8583.packager.binary.BinaryMessagePackager;
 
 /**
  * Base implementation of library configuration.
@@ -109,7 +111,12 @@ public abstract class ISOBaseConfiguration<T extends ISOBaseProperties, C extend
    */
   protected void addDefaultPackagers(ISOMessagePackagerFactory messagePackagerFactory,
       ISOFieldPackagerFactory fieldPackagerFactory) {
+    // Default message packagers
     messagePackagerFactory.addMessagePackager(new ASCIIMessagePackager());
-    messagePackagerFactory.addMessagePackager(new HEXMessagePackager());
+    messagePackagerFactory.addMessagePackager(new BinaryMessagePackager());
+
+    // Default field packagers
+    fieldPackagerFactory.addFieldPackager(new ASCIIFieldPackager());
+    fieldPackagerFactory.addFieldPackager(new BinaryFieldPackager());
   }
 }

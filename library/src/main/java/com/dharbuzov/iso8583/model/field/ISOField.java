@@ -13,16 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.model;
+package com.dharbuzov.iso8583.model.field;
 
-import lombok.Builder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-@Builder
-public class ISOField {
+public interface ISOField {
 
-  private final int position;
-  private final Object value;
+  ISOFieldType getFieldType();
+
+  <T> void setValue(ISOValue<T> value);
+
+  <T> ISOValue<T> getValue();
 }

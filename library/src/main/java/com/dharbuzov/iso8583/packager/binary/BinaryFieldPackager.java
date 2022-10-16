@@ -13,9 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager.ascii;
+package com.dharbuzov.iso8583.packager.binary;
 
-import java.io.ByteArrayInputStream;
 import java.nio.charset.Charset;
 import java.util.BitSet;
 
@@ -24,33 +23,23 @@ import com.dharbuzov.iso8583.model.field.ISOField;
 import com.dharbuzov.iso8583.packager.ISOBaseFieldPackager;
 import com.dharbuzov.iso8583.packager.model.ISOFieldPackContext;
 import com.dharbuzov.iso8583.packager.model.ISOFieldUnpackContext;
-import com.dharbuzov.iso8583.util.ByteStreamUtils;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ASCIIFieldPackager extends ISOBaseFieldPackager {
+public class BinaryFieldPackager extends ISOBaseFieldPackager {
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected byte[] packMessageType(ISOFieldPackContext fieldPackContext) {
     final Charset encoding = fieldPackContext.getEncoding();
     final MessageType messageType = fieldPackContext.getFieldValue(MessageType.class);
-    return convertMessageTypeToMTIString(messageType).getBytes(encoding);
+
+    return new byte[0];
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   protected MessageType unpackMessageType(ISOFieldUnpackContext fieldUnpackContext) {
-    final Charset encoding = fieldUnpackContext.getEncoding();
-    final ByteArrayInputStream bain = fieldUnpackContext.getBain();
-    final byte[] mtiBytes = new byte[4];
-    ByteStreamUtils.readBytes(bain, mtiBytes, 0, 4);
-    return convertMTIStringToMessageType(new String(mtiBytes, encoding));
+    return null;
   }
 
   @Override

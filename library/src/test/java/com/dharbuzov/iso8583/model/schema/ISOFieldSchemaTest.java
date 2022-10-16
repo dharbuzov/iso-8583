@@ -18,8 +18,8 @@ package com.dharbuzov.iso8583.model.schema;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.dharbuzov.iso8583.model.ISOFieldType;
-import com.dharbuzov.iso8583.model.ISOValueType;
+import com.dharbuzov.iso8583.model.field.ISOFieldType;
+import com.dharbuzov.iso8583.model.field.ISOValueType;
 import com.dharbuzov.iso8583.packager.ISOFieldPackager;
 
 /**

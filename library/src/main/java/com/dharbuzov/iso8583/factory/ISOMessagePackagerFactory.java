@@ -30,10 +30,10 @@ public interface ISOMessagePackagerFactory {
   /**
    * Packs the message into ISO-8583 byte representation.
    *
-   * @param msg message to pack
+   * @param message message to pack
    * @return the packed message
    */
-  byte[] pack(ISOMessage msg);
+  byte[] pack(ISOMessage message);
 
   /**
    * Un packs the message from byte into message object representation.

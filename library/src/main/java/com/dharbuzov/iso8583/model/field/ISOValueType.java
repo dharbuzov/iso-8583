@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.model;
+package com.dharbuzov.iso8583.model.field;
 
 /**
  * Enum which represents possible value types defined by ISO-8583 specification.

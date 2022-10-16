@@ -15,7 +15,6 @@
  */
 package com.dharbuzov.iso8583.channel.netty.observer;
 
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.dharbuzov.iso8583.binder.MessageBinder;

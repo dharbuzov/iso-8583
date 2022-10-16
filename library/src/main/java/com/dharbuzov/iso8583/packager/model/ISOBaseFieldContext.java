@@ -15,35 +15,26 @@
  */
 package com.dharbuzov.iso8583.packager.model;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.Charset;
 
 import com.dharbuzov.iso8583.factory.ISOFieldPackagerFactory;
-import com.dharbuzov.iso8583.model.ISOField;
-import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.schema.ISOFieldSchema;
-import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
 
-import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
 @Data
-@Builder
 @ToString
+@SuperBuilder
 @EqualsAndHashCode
-public class ISOPackagerContext {
-  private Charset encoding;
-  private int messageLength;
-  private ISOMessageSchema messageSchema;
-  private ISOMessage message;
-  private ISOFieldSchema fieldSchema;
-  private ISOField field;
-  private int fieldPosition;
-  private ISOFieldPackagerFactory fieldPackagerFactory;
-  private ByteArrayOutputStream bout;
+public abstract class ISOBaseFieldContext implements ISOFieldContext {
+
+  protected Charset encoding;
+  protected ISOFieldSchema schema;
+  protected ISOFieldPackagerFactory fieldPackagerFactory;
 }

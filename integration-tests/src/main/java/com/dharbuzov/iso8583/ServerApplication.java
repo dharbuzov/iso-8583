@@ -21,7 +21,6 @@ import com.dharbuzov.iso8583.config.ISOConnProperties;
 import com.dharbuzov.iso8583.listener.ISOMessageListener;
 import com.dharbuzov.iso8583.model.ISOMessage;
 import com.dharbuzov.iso8583.model.schema.ISOKnownSchema;
-import com.dharbuzov.iso8583.model.schema.ISOSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchemas;
 import com.dharbuzov.iso8583.server.ISOServer;
 import com.dharbuzov.iso8583.server.config.ISOServerConfiguration;

@@ -13,12 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager.ascii;
+package com.dharbuzov.iso8583.packager.binary;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.math.BigInteger;
-import java.nio.charset.Charset;
 
 import com.dharbuzov.iso8583.exception.ISOPackageException;
 import com.dharbuzov.iso8583.packager.ISOBaseMessagePackager;
@@ -26,44 +24,78 @@ import com.dharbuzov.iso8583.packager.ISOFieldPackager;
 import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
 import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
 import com.dharbuzov.iso8583.util.ByteStreamUtils;
-import com.dharbuzov.iso8583.util.PaddingUtils;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public class ASCIIMessagePackager extends ISOBaseMessagePackager {
+public class BinaryMessagePackager extends ISOBaseMessagePackager {
+
+  public static final int MAX_LENGTH_DIGITS = 4;
 
   @Override
   protected void packLength(ISOMessagePackContext messagePackContext, int length) {
-    final Charset encoding = messagePackContext.getEncoding();
     final int lengthDigits = messagePackContext.getMessageLengthDigits();
     if (length < 0) {
       throw new ISOPackageException("Invalid negative length '%s'", length);
     }
-    // Maximum possible length based on number of digits of length is 10^lengthDigits - 1
-    final int maxLen = BigInteger.TEN.pow(lengthDigits).intValue() - 1;
-    if (length > maxLen) {
-      throw new ISOPackageException("Length '%s' exceeds the maximum possible value '%'", length,
-          maxLen);
+    if (lengthDigits > MAX_LENGTH_DIGITS) {
+      throw new ISOPackageException(
+          "Invalid message length digits '%s', for binary packager message length could not be "
+          + "more than '%s'", lengthDigits, MAX_LENGTH_DIGITS);
+    }
+    final byte[] lengthBytes = new byte[lengthDigits];
+    switch (lengthDigits) {
+      case 1:
+        lengthBytes[0] = (byte) (length);
+        break;
+      case 2:
+        lengthBytes[0] = (byte) (length >> 8);
+        lengthBytes[1] = (byte) (length);
+        break;
+      case 3:
+        lengthBytes[0] = (byte) (length >> 16);
+        lengthBytes[1] = (byte) (length >> 8);
+        lengthBytes[2] = (byte) (length);
+        break;
+      case 4:
+        lengthBytes[0] = (byte) (length >> 24);
+        lengthBytes[1] = (byte) (length >> 16);
+        lengthBytes[2] = (byte) (length >> 8);
+        lengthBytes[3] = (byte) (length);
+        break;
     }
     final ByteArrayOutputStream bout = messagePackContext.getBout();
-    final byte[] lengthBytes = PaddingUtils.padLeftZeros(length, lengthDigits).getBytes(encoding);
     ByteStreamUtils.writeBytes(bout, lengthBytes);
   }
 
   @Override
+  protected Class<? extends ISOFieldPackager> getDefaultFieldPackagerClass() {
+    return BinaryFieldPackager.class;
+  }
+
+  @Override
   protected int unpackLength(ISOMessageUnpackContext messageUnpackContext) {
-    final Charset encoding = messageUnpackContext.getEncoding();
     final int lengthDigits = messageUnpackContext.getMessageLengthDigits();
     final ByteArrayInputStream bin = messageUnpackContext.getBin();
     final byte[] lengthBytes = new byte[lengthDigits];
     ByteStreamUtils.readBytes(bin, lengthBytes, 0, lengthDigits);
-    return Integer.parseInt(new String(lengthBytes, encoding));
-  }
-
-
-  @Override
-  protected Class<? extends ISOFieldPackager> getDefaultFieldPackagerClass() {
-    return ASCIIFieldPackager.class;
+    int length = 0;
+    switch (lengthDigits) {
+      case 1:
+        length = lengthBytes[0] & 0xFF;
+        break;
+      case 2:
+        length = ((int) lengthBytes[0] & 0xFF) << 8 | (int) lengthBytes[1] & 0xFF;
+        break;
+      case 3:
+        length = ((int) lengthBytes[0] & 0xFF) << 16 | ((int) lengthBytes[1] & 0xFF) << 8
+                 | (int) lengthBytes[2] & 0xFF;
+        break;
+      case 4:
+        length = ((int) lengthBytes[0] & 0xFF) << 24 | ((int) lengthBytes[1] & 0xFF) << 16
+                 | ((int) lengthBytes[2] & 0xFF) << 8 | (int) lengthBytes[3] & 0xFF;
+        break;
+    }
+    return length;
   }
 }

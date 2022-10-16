@@ -20,12 +20,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.dharbuzov.iso8583.config.ISOBaseProperties;
 import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.model.MessageSource;
-import com.dharbuzov.iso8583.model.MessageType;
 import com.dharbuzov.iso8583.model.schema.ISOMessageSchema;
 import com.dharbuzov.iso8583.model.schema.ISOSchema;
 import com.dharbuzov.iso8583.packager.ISOMessagePackager;
-import com.dharbuzov.iso8583.packager.model.ISOPackagerContext;
+import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
+import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
 import com.dharbuzov.iso8583.util.ValidationUtils;
 
 /**
@@ -71,16 +70,25 @@ public class ISODefaultMessagePackagerFactory implements ISOMessagePackagerFacto
    * {@inheritDoc}
    */
   @Override
-  public byte[] pack(ISOMessage msg) {
-    final ISOMessageSchema messageSchema = schema.getApplicableSchema(msg.getType());
-    ValidationUtils.validateNotNull(messageSchema,
-        String.format("Can't find the applicable message schema for type '%s'", msg.getType()));
-    final ISOPackagerContext packagerContext =
-        ISOPackagerContext.builder().message(msg).messageSchema(messageSchema)
-            .encoding(schema.getEncoding()).fieldPackagerFactory(fieldPackagerFactory)
-            .messageLength(schema.getLength()).build();
+  public byte[] pack(ISOMessage message) {
+    final ISOMessagePackContext messagePackContext = createMessagePackContext(message);
     final ISOMessagePackager packager = getMessagePackager(schema.getPackager());
-    return packager.pack(packagerContext);
+    return packager.pack(messagePackContext);
+  }
+
+  /**
+   * Creates the context for packing the message into the byte representation.
+   *
+   * @param message message to create context for
+   * @return created message pack context
+   */
+  protected ISOMessagePackContext createMessagePackContext(ISOMessage message) {
+    final ISOMessageSchema messageSchema = schema.getApplicableSchema(message.getType());
+    ValidationUtils.validateNotNull(messageSchema,
+        String.format("Can't find the applicable message schema for type '%s'", message.getType()));
+    return ISOMessagePackContext.builder().message(message).schema(messageSchema)
+        .encoding(schema.getEncoding()).fieldPackagerFactory(fieldPackagerFactory)
+        .messageLengthDigits(schema.getLengthDigits()).build();
   }
 
   /**
@@ -88,8 +96,22 @@ public class ISODefaultMessagePackagerFactory implements ISOMessagePackagerFacto
    */
   @Override
   public ISOMessage unpack(byte[] msgBytes) {
-    MessageType messageType = MessageType.fromMTIString(new String(msgBytes));
-    return ISOMessage.builder().source(MessageSource.IN).type(messageType).build();
+    final ISOMessageUnpackContext messageUnpackContext = createMessageUnpackContext(msgBytes);
+    final ISOMessagePackager packager = getMessagePackager(schema.getPackager());
+    return packager.unpack(messageUnpackContext);
+  }
+
+  /**
+   * Creates the context for unpacking the message from bytes representation.
+   *
+   * @param msgBytes message bytes to create context for
+   * @return created message unpack context
+   */
+  protected ISOMessageUnpackContext createMessageUnpackContext(byte[] msgBytes) {
+    final ISOMessageSchema messageSchema = schema.getSchema("****");
+    return ISOMessageUnpackContext.builder().schema(messageSchema).encoding(schema.getEncoding())
+        .fieldPackagerFactory(fieldPackagerFactory).messageLengthDigits(schema.getLengthDigits())
+        .build();
   }
 
   /**

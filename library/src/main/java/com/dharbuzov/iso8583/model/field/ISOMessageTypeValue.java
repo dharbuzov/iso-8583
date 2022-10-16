@@ -13,18 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.dharbuzov.iso8583.packager;
+package com.dharbuzov.iso8583.model.field;
 
-import com.dharbuzov.iso8583.model.ISOMessage;
-import com.dharbuzov.iso8583.packager.model.ISOMessagePackContext;
-import com.dharbuzov.iso8583.packager.model.ISOMessageUnpackContext;
+import com.dharbuzov.iso8583.model.MessageType;
 
 /**
  * @author Dmytro Harbuzov (dmytro.harbuzov@gmail.com).
  */
-public interface ISOMessagePackager {
-
-  byte[] pack(ISOMessagePackContext packagerContext);
-
-  ISOMessage unpack(ISOMessageUnpackContext packagerContext);
+public class ISOMessageTypeValue extends ISOAbstractValue<MessageType> {
 }
